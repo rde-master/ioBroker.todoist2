@@ -2,7 +2,6 @@
  *
  Das ist ein test!
 
-
 // "Aufgabe" bzw Einkaufsgegenstand von todoist entfernen
 // ********************************************************************
 /*
@@ -156,6 +155,8 @@ async function startAdapter(options) {
     return adapter;
 }
 
+
+//Erstelle neuen Task wenn der Objekt New.Task geänderd wird.
 async function newwithstate(id, state){
 
     var new_project = await adapter.getStateAsync('New.Project');
@@ -182,6 +183,7 @@ async function newwithstate(id, state){
     await addTask(state.val, new_project.val, "", "", "", new_label.val, new_priority.val, new_date.val);
 }
 
+//Baue neue States
 
 async function newstate(){
     await adapter.setObjectNotExistsAsync("New.Task", {

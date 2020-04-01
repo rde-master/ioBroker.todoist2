@@ -1,6 +1,6 @@
 /**
  *
- Das ist ein test!!
+ Das ist ein test!
 
 
 // "Aufgabe" bzw Einkaufsgegenstand von todoist entfernen

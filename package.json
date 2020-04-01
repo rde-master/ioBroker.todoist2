@@ -1,0 +1,60 @@
+{
+  "_from": "https://github.com/rde-master/ioBroker.todoist2/tarball/76c1037f18679af8e6b8bce994225a780351fad3",
+  "_id": "iobroker.todoist2@0.0.5",
+  "_inBundle": false,
+  "_integrity": "sha512-rfXdSoZNz2tLMOF4qbEQ2yHx3MyfEnRagqVZESJk5DUWSp22ob4okCVE4Fge+CZUjEWcawyR6vjTZeAYy8UvRg==",
+  "_location": "/iobroker.todoist2",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "remote",
+    "raw": "https://github.com/rde-master/ioBroker.todoist2/tarball/76c1037f18679af8e6b8bce994225a780351fad3",
+    "rawSpec": "https://github.com/rde-master/ioBroker.todoist2/tarball/76c1037f18679af8e6b8bce994225a780351fad3",
+    "saveSpec": "https://github.com/rde-master/ioBroker.todoist2/tarball/76c1037f18679af8e6b8bce994225a780351fad3",
+    "fetchSpec": "https://github.com/rde-master/ioBroker.todoist2/tarball/76c1037f18679af8e6b8bce994225a780351fad3"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://github.com/rde-master/ioBroker.todoist2/tarball/76c1037f18679af8e6b8bce994225a780351fad3",
+  "_shasum": "3987c18ed9fcdd46c6e729f5a879d3916e0d600e",
+  "_spec": "https://github.com/rde-master/ioBroker.todoist2/tarball/76c1037f18679af8e6b8bce994225a780351fad3",
+  "_where": "/opt/iobroker",
+  "author": {
+    "name": "rde-master",
+    "email": "info@rde-master.de"
+  },
+  "bugs": {
+    "url": "https://github.com/rde-master/ioBroker.todoist2/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "node-telegram-bot-api": "^0.30.0",
+    "socksv5": "https://github.com/christophgysin/socksv5/tarball/7b4eba5b30ecdb6d9e656dcfede1e6884dc7c6d9"
+  },
+  "deprecated": false,
+  "description": "The adapter allows to send and receive telegram messages from ioBroker and to be a broker.",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "gulp": "^4.0.0",
+    "mocha": "^5.2.0"
+  },
+  "homepage": "https://github.com/rde-master/ioBroker.todoist2",
+  "keywords": [
+    "iobroker",
+    "notification",
+    "todoist",
+    "message"
+  ],
+  "license": "MIT",
+  "main": "main.js",
+  "name": "iobroker.todoist2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rde-master/ioBroker.todoist2.git"
+  },
+  "scripts": {
+    "test": "node node_modules/mocha/bin/mocha --exit"
+  },
+  "version": "0.0.5"
+}

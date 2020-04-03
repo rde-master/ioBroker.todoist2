@@ -1,5 +1,6 @@
 /**
- *
+ Api erkärung:
+ https://developer.todoist.com/rest/v1/
  Das ist ein test!
 
 // "Aufgabe" bzw Einkaufsgegenstand von todoist entfernen
@@ -631,7 +632,7 @@ function delSection(section_id){
 
 
 async function getProject(){
-	
+	adapter.log.info("getproject");
 	var APItoken = adapter.config.token;
 	var project = { method: 'GET',
           url: 'https://api.todoist.com/rest/v1/projects',
@@ -641,21 +642,28 @@ async function getProject(){
 	var ToDoListen = []; // wird mit IDs der TO-DO Listen befuellt
     var Projects_names = []; // wird mit Namen der TO-DO Listen befuellt
     
+    var json_neu = "[]";
+    var json_neu_parse = JSON.parse(json_neu);
 	await request(project, async function (error, response, body) {
         try {
             var projects_json = JSON.parse(body);
             var k;
             all_project_objekts = projects_json; // Alle Projekte in die globelae Variable schreiben
+           
             for (k = 0; k < projects_json.length; k++) {
                 var projects = parseInt(projects_json[k].id);
                 var projects_name = JSON.stringify(projects_json[k].name);
                 projects_name = projects_name.replace(/\"/g, ''); //entfernt die Anfuehrungszeichen aus dem Quellstring
                 projects_name = projects_name.replace(/\./g, '-'); //entfent die PUnkte hoffentlich...
+                //wird für den Return benötigt
                 ToDoListen[ToDoListen.length] = projects;
                 Projects_names[Projects_names.length] = projects_name;
-                
+                /* wird glaub nciht mehr benötigt
                 var Listenname = Projects_names[k];
                 var listenID = ToDoListen[k];
+                */
+               var Listenname = projects_name;
+                var listenID = projects;
                 await adapter.setObjectNotExistsAsync("Projects-HTML." + Listenname, {
                     type: 'state',
                     common: {
@@ -675,8 +683,16 @@ async function getProject(){
                     },
                     native: {}
               		});
-	
-				
+        
+            //json_neu[k].Name.push(Listenname);
+            // json_neu[k].ID.push(listenID);
+            
+            json_neu_parse.push({"name":Listenname, "ID":listenID});
+            
+            json_neu = JSON.stringify(json_neu_parse);
+            if(debug) adapter.log.info("Aufbau Projekt Liste: " + json_neu);
+
+
             }
             
             await adapter.setObjectNotExistsAsync("JSON-Projects", {
@@ -689,11 +705,13 @@ async function getProject(){
                     native: {}
               		});	
             
-            projects_json = JSON.stringify(projects_json);  	
-             await adapter.setStateAsync("JSON-Projects", {val: projects_json, ack: true});
+            
+           	
+           
+             await adapter.setStateAsync("JSON-Projects", {val: json_neu, ack: true});
             
         } catch (err) {
-            
+            adapter.log.error("Error bei Get Projekte: " + err);
         }
          
     });
@@ -716,6 +734,9 @@ async function getLabels(){
 	};
 	var Labelsid = []; 
     var Labels_names = []; 
+
+    var json_neu = "[]";
+    var json_neu_parse = JSON.parse(json_neu);
     	await request(labels, async function (error, response, body) {
         try {
             var labels_json = JSON.parse(body);
@@ -751,7 +772,12 @@ async function getLabels(){
                         
                     },
                     native: {}
-              		});
+                      });
+                      //Baut den Json auf für Json-Labels
+                      json_neu_parse.push({"name":Labels2name, "ID":Labels2ID});
+            
+                      json_neu = JSON.stringify(json_neu_parse);
+                      if(debug) adapter.log.info("Aufbau Projekt Liste: " + json_neu)   
                 
             }
             
@@ -765,8 +791,8 @@ async function getLabels(){
                     native: {}
               		});
             
-            labels_json = JSON.stringify(labels_json);  	
-             await adapter.setStateAsync("JSON-Labels", {val: labels_json, ack: true});
+             	
+             await adapter.setStateAsync("JSON-Labels", {val: json_neu, ack: true});
             
         } catch (err) {
             adapter.log.error(err); 
@@ -820,6 +846,9 @@ async function getSections(){
 	var Sectionsid = []; 
     var Sections_names = [];
     
+    var json_neu = "[]";
+    var json_neu_parse = JSON.parse(json_neu);
+
 	await request(sections, async function (error, response, body) {
         try {
             var sections_json = JSON.parse(body);
@@ -846,7 +875,13 @@ async function getSections(){
                         
                     },
                     native: {}
-              		});
+                      });
+                      
+                      //Baut den Json auf für Json-Labels
+                      json_neu_parse.push({"name":Sections2name, "ID":Sections2ID});
+            
+                      json_neu = JSON.stringify(json_neu_parse);
+                      if(debug) adapter.log.info("Aufbau Projekt Liste: " + json_neu)   
                 
             }
             
@@ -865,8 +900,8 @@ async function getSections(){
                     native: {}
               		});
             
-            sections_json = JSON.stringify(sections_json);  	
-             await adapter.setStateAsync("JSON-Sections", {val: sections_json, ack: true});
+              	
+             await adapter.setStateAsync("JSON-Sections", {val: json_neu, ack: true});
         
         
         } catch (err) {
@@ -910,7 +945,9 @@ async function readTasks(project){
                     var HTMLstring = '';
                     //adapter.setState('Lists.' + project.projects_name[j], {ack: true, val: 'empty'});
                     var i = 0;
-                    var json_task = "Tasks";
+
+                    var json_task = "[]";
+                    var json_task_parse = JSON.parse(json_task);
                     for (i = 0; i < json.length; i++) {
                         
                         var Liste = parseInt(json[i].project_id);
@@ -941,8 +978,14 @@ async function readTasks(project){
                             if(debug)adapter.log.info('[' + content + '] in ' + project.projects_names[j] + ' found');
                             
                             HTMLstring = HTMLstring + '<tr><td><li><a href="' + taskurl + '" target="_blank">' + content + ' ID: ' + id + '</a></li></td></tr>';
-                            var json_zwischen = JSON.stringify(json[i]);
-                            json_task = json_task + json_zwischen;
+                            //var json_zwischen = JSON.stringify(json[i]);
+                            //json_task = json_task + json_zwischen;
+                            
+                            json_task_parse.push({"name":content, "ID":id});
+            
+                            json_task = JSON.stringify(json_task_parse);
+                            if(debug) adapter.log.info("Aufbau Projekt Liste: " + json_task)
+
                         }
                     }
                if(debug) adapter.log.info("schreibe in liste: " + 'Lists.'+project.projects_names[j]);
@@ -953,6 +996,9 @@ async function readTasks(project){
                
                //Setzte den Status:
                adapter.setState('Projects-HTML.'+project.projects_names[j], {val: '<table><ul>' + HTMLstring + '</ul></table>', ack: true});
+               if(json_task === "[]"){
+                json_task = '[{"name":"no Todos"}]';
+               }
                adapter.setState('Projects-JSON.'+project.projects_names[j], {val: json_task, ack: true});
                 }
                if(adapter.config.tasks === true){
@@ -966,10 +1012,23 @@ async function readTasks(project){
                     native: {}
               		});
                }
+            //hier gehen wir nochmals durch die Tasks für den Datenpunkt Json-Tasks
+            var json_neu = "[]";
+            var json_neu_parse = JSON.parse(json_neu);   
             
-               json = JSON.stringify(json);  
+            for (i = 0; i < json.length; i++) {
+
+                json_neu_parse.push({"name":json[i].content, "ID":json[i].project_id});
+            
+                 json_neu = JSON.stringify(json_neu_parse);
+                    if(debug) adapter.log.info("Aufbau Projekt Liste: " + json_neu);
+
+               }
+
+
+               
             	
-             await adapter.setStateAsync("JSON-Tasks", {val: json, ack: true});
+             await adapter.setStateAsync("JSON-Tasks", {val: json_neu, ack: true});
               
                
             } catch (err) {
@@ -1007,7 +1066,8 @@ async function readTasks2(labels){
                     var HTMLstring = '';
                     //adapter.setState('Lists.' + project.projects_name[j], {ack: true, val: 'empty'});
                     var i = 0;
-                    var json_task = "Tasks";
+                    var json_task = "[]";
+                    var json_task_parse = JSON.parse(json_task);
                     for (i = 0; i < json.length; i++) {
                         
                         var Liste = parseInt(json[i].project_id);
@@ -1028,8 +1088,13 @@ async function readTasks2(labels){
                         		if(debug)adapter.log.info('[' + content + '] in ' + labels.labes_names[j] + ' found');
                         		
                         		HTMLstring = HTMLstring + '<tr><td><li><a href="' + taskurl + '" target="_blank">' + content + ' ID: ' + id + '</a></li></td></tr>';
-                            var json_zwischen = JSON.stringify(json[i]);
-                            json_task = json_task + json_zwischen;
+                            //var json_zwischen = JSON.stringify(json[i]);
+                            //json_task = json_task + json_zwischen;
+
+                            json_task_parse.push({"name":content, "ID":id});
+            
+                            json_task = JSON.stringify(json_task_parse);
+                            if(debug) adapter.log.info("Aufbau Projekt Liste: " + json_task)
                         		
                         	}
                         	
@@ -1040,12 +1105,19 @@ async function readTasks2(labels){
                if(debug) adapter.log.info(HTMLstring);
                
                //json wandeln 
-				json_task = JSON.stringify(json_task);
-                json_task = json_task.replace(/\\/g, ''); //Backschlasche entfernen!
+				//json_task = JSON.stringify(json_task);
+               // json_task = json_task.replace(/\\/g, ''); //Backschlasche entfernen!
                //Setzte den Status:
                adapter.setState('Labels-HTML.'+labels.labes_names[j], {val: '<table><ul>' + HTMLstring + '</ul></table>', ack: true});
+               
+               if(json_task === "[]"){
+                json_task = '[{"name":"no Todos"}]';
+               }
                adapter.setState('Labels-JSON.'+labels.labes_names[j], {val: json_task, ack: true});
-                }
+                
+            
+            
+            }
                
                
             

@@ -632,7 +632,7 @@ function delSection(section_id){
 
 
 async function getProject(){
-	adapter.log.info("getproject");
+	if(debug) adapter.log.info("getproject");
 	var APItoken = adapter.config.token;
 	var project = { method: 'GET',
           url: 'https://api.todoist.com/rest/v1/projects',

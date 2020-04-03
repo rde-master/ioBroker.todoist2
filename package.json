@@ -1,6 +1,6 @@
 {
   "_from": "https://github.com/rde-master/ioBroker.todoist2/tarball/76c1037f18679af8e6b8bce994225a780351fad3",
-  "_id": "iobroker.todoist2@0.0.5",
+  "_id": "iobroker.todoist2@0.0.7",
   "_inBundle": false,
   "_integrity": "sha512-rfXdSoZNz2tLMOF4qbEQ2yHx3MyfEnRagqVZESJk5DUWSp22ob4okCVE4Fge+CZUjEWcawyR6vjTZeAYy8UvRg==",
   "_location": "/iobroker.todoist2",
@@ -56,5 +56,5 @@
   "scripts": {
     "test": "node node_modules/mocha/bin/mocha --exit"
   },
-  "version": "0.0.5"
+  "version": "0.0.7"
 }

@@ -664,7 +664,8 @@ async function getProject(){
                 */
                var Listenname = projects_name;
                 var listenID = projects;
-                await adapter.setObjectNotExistsAsync("Projects-HTML." + Listenname, {
+                if(adapter.config.html_objects == true){
+                await adapter.setObjectNotExistsAsync("HTML.Projects-HTML." + Listenname, {
                     type: 'state',
                     common: {
                         name: 'ID ' + listenID,
@@ -673,8 +674,9 @@ async function getProject(){
                     },
                     native: {}
               		});
-              		
-              	await adapter.setObjectNotExistsAsync("Projects-JSON." + Listenname, {
+                }
+                if(adapter.config.json_objects == true){	
+              	await adapter.setObjectNotExistsAsync("JSON.Projects-JSON." + Listenname, {
                     type: 'state',
                     common: {
                         name: 'ID ' + listenID,
@@ -683,7 +685,18 @@ async function getProject(){
                     },
                     native: {}
               		});
-        
+                }
+                if(adapter.config.text_objects == true){	
+                    await adapter.setObjectNotExistsAsync("TEXT.Projects-TEXT." + Listenname, {
+                      type: 'state',
+                      common: {
+                          name: 'ID ' + listenID,
+                          type: 'string',
+                          
+                      },
+                      native: {}
+                        });
+                  }
             //json_neu[k].Name.push(Listenname);
             // json_neu[k].ID.push(listenID);
             
@@ -695,7 +708,8 @@ async function getProject(){
 
             }
             
-            await adapter.setObjectNotExistsAsync("JSON-Projects", {
+            if(adapter.config.json_objects == true){
+            await adapter.setObjectNotExistsAsync("ALL.JSON-Projects", {
 					type: 'state',
                     common: {
                         name: 'JSON Objekt of all Projects',
@@ -704,11 +718,10 @@ async function getProject(){
                     },
                     native: {}
               		});	
-            
-            
-           	
+
            
-             await adapter.setStateAsync("JSON-Projects", {val: json_neu, ack: true});
+             await adapter.setStateAsync("ALL.JSON-Projects", {val: json_neu, ack: true});
+            }
             
         } catch (err) {
             adapter.log.error("Error bei Get Projekte: " + err);
@@ -754,7 +767,9 @@ async function getLabels(){
                 var Labels2name = Labels_names[i];
                 var Labels2ID = Labelsid[i];
                 if (debug) adapter.log.info("labels anlegen....");
-                await adapter.setObjectNotExistsAsync("Labels-HTML." + Labels2name, {
+                
+                if(adapter.config.html_objects == true){
+                await adapter.setObjectNotExistsAsync("HTML.Labels-HTML." + Labels2name, {
                     type: 'state',
                     common: {
                         name: 'ID ' + Labels2ID,
@@ -763,8 +778,9 @@ async function getLabels(){
                     },
                     native: {}
               		});
-              		
-            	await adapter.setObjectNotExistsAsync("Labels-JSON." + Labels2name, {
+                }
+                if(adapter.config.json_objects == true){	
+            	await adapter.setObjectNotExistsAsync("JSON.Labels-JSON." + Labels2name, {
                     type: 'state',
                     common: {
                         name: 'ID ' + Labels2ID,
@@ -773,6 +789,18 @@ async function getLabels(){
                     },
                     native: {}
                       });
+                }
+                if(adapter.config.text_objects == true){	
+                    await adapter.setObjectNotExistsAsync("TEXT.Labels-TEXT." + Labels2name, {
+                        type: 'state',
+                        common: {
+                            name: 'ID ' + Labels2ID,
+                            type: 'string',
+                            
+                        },
+                        native: {}
+                          });
+                    }
                       //Baut den Json auf für Json-Labels
                       json_neu_parse.push({"name":Labels2name, "ID":Labels2ID});
             
@@ -781,7 +809,8 @@ async function getLabels(){
                 
             }
             
-            await adapter.setObjectNotExistsAsync("JSON-Labels", {
+            if(adapter.config.json_objects == true){
+            await adapter.setObjectNotExistsAsync("ALL.JSON-Labels", {
 					type: 'state',
                     common: {
                         name: 'JSON Objekt of all Labels',
@@ -792,8 +821,9 @@ async function getLabels(){
               		});
             
              	
-             await adapter.setStateAsync("JSON-Labels", {val: json_neu, ack: true});
-            
+             await adapter.setStateAsync("ALL.JSON-Labels", {val: json_neu, ack: true});
+            }
+
         } catch (err) {
             adapter.log.error(err); 
         }
@@ -867,6 +897,8 @@ async function getSections(){
                 
                 var Sections2name = Sections_names[i];
                 var Sections2ID = Sectionsid[i];
+                
+                
                 await adapter.setObjectNotExistsAsync("Sections." + Sections2name, {
                     type: 'state',
                     common: {
@@ -887,10 +919,11 @@ async function getSections(){
             
             }else{
         	
-        	adapter.log.warn("no Sections found");
+        	adapter.log.warn("no Sections found. Please turn it off");
         }
         
-        await adapter.setObjectNotExistsAsync("JSON-Sections", {
+        if(adapter.config.json_objects == true){
+        await adapter.setObjectNotExistsAsync("ALL.JSON-Sections", {
 					type: 'state',
                     common: {
                         name: 'JSON Objekt of all Sections',
@@ -901,8 +934,8 @@ async function getSections(){
               		});
             
               	
-             await adapter.setStateAsync("JSON-Sections", {val: json_neu, ack: true});
-        
+             await adapter.setStateAsync("ALL.JSON-Sections", {val: json_neu, ack: true});
+        }
         
         } catch (err) {
             adapter.log.error(err); 
@@ -948,6 +981,9 @@ async function readTasks(project){
 
                     var json_task = "[]";
                     var json_task_parse = JSON.parse(json_task);
+
+                    var text_task = "";
+
                     for (i = 0; i < json.length; i++) {
                         
                         var Liste = parseInt(json[i].project_id);
@@ -977,15 +1013,21 @@ async function readTasks(project){
                         if (Liste === project.projects_id[j]) {
                             if(debug)adapter.log.info('[' + content + '] in ' + project.projects_names[j] + ' found');
                             
+                            //HTML
                             HTMLstring = HTMLstring + '<tr><td><li><a href="' + taskurl + '" target="_blank">' + content + ' ID: ' + id + '</a></li></td></tr>';
                             //var json_zwischen = JSON.stringify(json[i]);
                             //json_task = json_task + json_zwischen;
+                            if(debug) adapter.log.info("Aufbau Projekt Liste HTML: " + HTMLstring);
                             
+                            //JSON
                             json_task_parse.push({"name":content, "ID":id});
             
                             json_task = JSON.stringify(json_task_parse);
-                            if(debug) adapter.log.info("Aufbau Projekt Liste: " + json_task)
+                            if(debug) adapter.log.info("Aufbau Projekt Liste JSON: " + json_task)
 
+                            //TEXT
+                            text_task = text_task + content + ", ";
+                            if(debug) adapter.log.info("Aufbau Projekt Liste Text: " + text_task);
                         }
                     }
                if(debug) adapter.log.info("schreibe in liste: " + 'Lists.'+project.projects_names[j]);
@@ -995,14 +1037,25 @@ async function readTasks(project){
 				//json_task = JSON.stringify(json_task);
                
                //Setzte den Status:
-               adapter.setState('Projects-HTML.'+project.projects_names[j], {val: '<table><ul>' + HTMLstring + '</ul></table>', ack: true});
+               if(adapter.config.html_objects == true){
+               adapter.setState('HTML.Projects-HTML.'+project.projects_names[j], {val: '<table><ul>' + HTMLstring + '</ul></table>', ack: true});
+               }
                if(json_task === "[]"){
                 json_task = '[{"name":"no Todos"}]';
                }
-               adapter.setState('Projects-JSON.'+project.projects_names[j], {val: json_task, ack: true});
-                }
+               if(adapter.config.json_objects == true){
+               adapter.setState('JSON.Projects-JSON.'+project.projects_names[j], {val: json_task, ack: true});
+               }
+               if(text_task == ""){
+                   text_task = "No Todos";
+               }
+               if(adapter.config.text_objects == true){
+                adapter.setState('TEXT.Projects-TEXT.'+project.projects_names[j], {val: text_task, ack: true});
+               }
+            
+            }
                if(adapter.config.tasks === true){
-               await adapter.setObjectNotExistsAsync("JSON-Tasks", {
+               await adapter.setObjectNotExistsAsync("ALL.JSON-Tasks", {
 					type: 'state',
                     common: {
                         name: 'JSON Objekt of all Tasks',
@@ -1027,9 +1080,9 @@ async function readTasks(project){
 
 
                
-            	
-             await adapter.setStateAsync("JSON-Tasks", {val: json_neu, ack: true});
-              
+            if(adapter.config.json_objects === true){	
+             await adapter.setStateAsync("ALL.JSON-Tasks", {val: json_neu, ack: true});
+            }
                
             } catch (err) {
                 adapter.log.error('Error by read of task: ' + err);
@@ -1068,6 +1121,9 @@ async function readTasks2(labels){
                     var i = 0;
                     var json_task = "[]";
                     var json_task_parse = JSON.parse(json_task);
+
+                    var text_task = "";
+
                     for (i = 0; i < json.length; i++) {
                         
                         var Liste = parseInt(json[i].project_id);
@@ -1086,16 +1142,18 @@ async function readTasks2(labels){
                         	
                         	if(label[d] === labels.labels_id[j]){
                         		if(debug)adapter.log.info('[' + content + '] in ' + labels.labes_names[j] + ' found');
-                        		
+                        		//HTML
                         		HTMLstring = HTMLstring + '<tr><td><li><a href="' + taskurl + '" target="_blank">' + content + ' ID: ' + id + '</a></li></td></tr>';
                             //var json_zwischen = JSON.stringify(json[i]);
                             //json_task = json_task + json_zwischen;
-
+                                // JSON
                             json_task_parse.push({"name":content, "ID":id});
             
                             json_task = JSON.stringify(json_task_parse);
                             if(debug) adapter.log.info("Aufbau Projekt Liste: " + json_task)
-                        		
+                                //TEXT
+                            text_task = text_task + content + ", ";
+                            if(debug) adapter.log.info("Aufbau Projekt Liste Text: " + text_task);    
                         	}
                         	
                         }
@@ -1108,14 +1166,21 @@ async function readTasks2(labels){
 				//json_task = JSON.stringify(json_task);
                // json_task = json_task.replace(/\\/g, ''); //Backschlasche entfernen!
                //Setzte den Status:
-               adapter.setState('Labels-HTML.'+labels.labes_names[j], {val: '<table><ul>' + HTMLstring + '</ul></table>', ack: true});
-               
+               if(adapter.config.html_objects){
+               adapter.setState('HTML.Labels-HTML.'+labels.labes_names[j], {val: '<table><ul>' + HTMLstring + '</ul></table>', ack: true});
+               }
                if(json_task === "[]"){
                 json_task = '[{"name":"no Todos"}]';
                }
-               adapter.setState('Labels-JSON.'+labels.labes_names[j], {val: json_task, ack: true});
-                
-            
+               if(adapter.config.json_objects){
+               adapter.setState('JSON.Labels-JSON.'+labels.labes_names[j], {val: json_task, ack: true});
+               }
+               if(text_task == ""){
+                text_task = "No Todos";
+                }
+                if(adapter.config.text_objects == true){
+                    adapter.setState('TEXT.Labels-TEXT.'+labels.labes_names[j], {val: text_task, ack: true});
+                }
             
             }
                
@@ -1180,8 +1245,8 @@ if (adapter.config.tasks == true){
     });
 }
  //Projekte HTML
-if (adapter.config.project == true){
-    adapter.getStates('Projects-HTML.*', function (err, states) {
+if (adapter.config.project == true && adapter.config.html_objects == true){
+    adapter.getStates('HTML.Projects-HTML.*', function (err, states) {
       if (debug)  adapter.log.info("...........Jetzt Projekte HTML prüfen ob etwas gelöscht werden soll..............");
         for (var id in states) {    
 
@@ -1205,7 +1270,7 @@ if (adapter.config.project == true){
              if (match != true){
  
                  adapter.log.warn("dieser state löschen: " + new_id);
-                 adapter.delObject("Projects-HTML." + new_id, function (err) {
+                 adapter.delObject("HTML.Projects-HTML." + new_id, function (err) {
  
                                  if (err) adapter.log.error('Cannot delete object: ' + err);
  
@@ -1219,8 +1284,8 @@ if (adapter.config.project == true){
     })
 }
     //Projekte JSON
-    if (adapter.config.project == true){
-    adapter.getStates('Projects-JSON.*', function (err, states) {
+    if (adapter.config.project == true && adapter.config.json_objects == true){
+    adapter.getStates('JSON.Projects-JSON.*', function (err, states) {
        if (debug) adapter.log.info("...........Jetzt Projekte JSON prüfen ob etwas gelöscht werden soll..............");
         for (var id in states) {    
 
@@ -1244,7 +1309,7 @@ if (adapter.config.project == true){
              if (match != true){
  
                  adapter.log.warn("dieser state löschen: " + new_id);
-                 adapter.delObject("Projects-JSON." + new_id, function (err) {
+                 adapter.delObject("JSON.Projects-JSON." + new_id, function (err) {
  
                                  if (err) adapter.log.error('Cannot delete object: ' + err);
  
@@ -1258,8 +1323,8 @@ if (adapter.config.project == true){
     })
 }
 //Labels HTML
-if (adapter.config.labels == true){
-adapter.getStates('Labels-HTML.*', function (err, states) {
+if (adapter.config.labels == true && adapter.config.html_objects == true){
+adapter.getStates('HTML.Labels-HTML.*', function (err, states) {
     if (debug) adapter.log.info("...........Jetzt Labels HTML prüfen ob etwas gelöscht werden soll..............");
     for (var id in states) {    
 
@@ -1283,7 +1348,7 @@ adapter.getStates('Labels-HTML.*', function (err, states) {
          if (match != true){
 
              adapter.log.warn("dieser state löschen: " + new_id);
-             adapter.delObject("Labels-HTML." + new_id, function (err) {
+             adapter.delObject("HTML.Labels-HTML." + new_id, function (err) {
 
                              if (err) adapter.log.error('Cannot delete object: ' + err);
 
@@ -1297,8 +1362,8 @@ adapter.getStates('Labels-HTML.*', function (err, states) {
 })
 }
 //Labels JSON
-if (adapter.config.labels == true){
-adapter.getStates('Labels-JSON.*', function (err, states) {
+if (adapter.config.labels == true && adapter.config.json_objects == true){
+adapter.getStates('JSON.Labels-JSON.*', function (err, states) {
     if(debug) adapter.log.info("...........Jetzt Labels JSON prüfen ob etwas gelöscht werden soll..............");
     for (var id in states) {    
 
@@ -1322,7 +1387,7 @@ adapter.getStates('Labels-JSON.*', function (err, states) {
          if (match != true){
 
              adapter.log.warn("dieser state löschen: " + new_id);
-             adapter.delObject("Labels-JSON." + new_id, function (err) {
+             adapter.delObject("JSON.Labels-JSON." + new_id, function (err) {
 
                              if (err) adapter.log.error('Cannot delete object: ' + err);
 

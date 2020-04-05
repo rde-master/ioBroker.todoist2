@@ -38,7 +38,7 @@
                 var $value = $('#' + key + '.value');
                 if ($value.attr('type') === 'checkbox') {
                     $value.prop('checked', settings[key]).on('change', function () {
-                        showHideSettings();
+                        //showHideSettings();
                         onChange();
                     });
                 } else {

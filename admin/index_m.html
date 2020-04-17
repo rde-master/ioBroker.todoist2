@@ -54,6 +54,9 @@
             onChange(false);
             if (M) M.updateTextFields();
 
+            values2table('blacklist', settings.blacklist, onChange);
+            
+
             $('#userdiv').on('click', 'a', function () {
                 const deleteID = $(this).attr("data-id");
                 sendTo(null, 'delUser ' + deleteID, null, function (obj) {
@@ -88,6 +91,9 @@
                     obj[$this.attr('id')] = $this.val();
                 }
             });
+
+            obj.blacklist = table2values();
+            
             callback(obj);
         }
 
@@ -115,6 +121,7 @@
             <div class="col s12">
                 <ul class="tabs">
                     <li class="tab col s3"><a href="#tab-main" class="translate active">Main settings</a></li>
+                    <li class="tab col s3"><a href="#tab-blackist" class="translate active">Blacklist</a></li>
                 </ul>
             </div>
             <div id="tab-main" class="col s12 page">
@@ -149,52 +156,75 @@
                         <input id="dublicate" type="checkbox" class="value" />
                         <span class="translate" for="dublicate">Dublikate</span>
                         <br><span class="translate">Bereits angelegte Tasks (Dublikate) nicht erneut anlegen</span>
-                </div>
+                    </div>
                 </div>
                 <div class="col s12 m12 l12">
-                    <h5>Auswahl Anlage Objekte</h5>
-                <div class="input-field col s12 m4 l4">
+                        <h5>Auswahl Anlage Objekte</h5>
+                    <div class="input-field col s12 m4 l4">
                         <input id="project" type="checkbox" class="value" />
                         <span class="translate" for="project">Project</span>
                         <br><span class="translate">Projekte als Objekte anlegen</span>
+                    </div>
+                    <div class="input-field col s12 m4 l4">
+                            <input id="section" type="checkbox" class="value" />
+                            <span class="translate" for="section">Section</span>
+                            <br><span class="translate">Section als Objekte anlegen</span>
+                    </div>
+                    <div class="input-field col s12 m4 l4">
+                            <input id="tasks" type="checkbox" class="value" />
+                            <span class="translate" for="tasks">Tasks</span>
+                            <br><span class="translate">Tasks als Objekte anlegen</span>
+                    </div>
+                    <div class="input-field col s12 m4 l4">
+                            <input id="labels" type="checkbox" class="value" />
+                            <span class="translate" for="labels">Tasks</span>
+                            <br><span class="translate">Labels als Objekte anlegen</span>
+                    </div>
                 </div>
-                <div class="input-field col s12 m4 l4">
-                        <input id="section" type="checkbox" class="value" />
-                        <span class="translate" for="section">Section</span>
-                        <br><span class="translate">Section als Objekte anlegen</span>
-                </div>
-                <div class="input-field col s12 m4 l4">
-                        <input id="tasks" type="checkbox" class="value" />
-                        <span class="translate" for="tasks">Tasks</span>
-                        <br><span class="translate">Tasks als Objekte anlegen</span>
-                </div>
-                <div class="input-field col s12 m4 l4">
-                        <input id="labels" type="checkbox" class="value" />
-                        <span class="translate" for="labels">Tasks</span>
-                        <br><span class="translate">Labels als Objekte anlegen</span>
+                <div class="col s12 m12 l12">
+                    <h5>Art der Objekte:</h5>
+                    <div class="input-field col s12 m4 l4">
+                        <input id="html_objects" type="checkbox" class="value" />
+                        <span class="translate" for="html_objects">HTML</span>
+                        <br><span class="translate">HTML Objekte anlegen</span>
+                    </div>
+                    <div class="input-field col s12 m4 l4">
+                        <input id="json_objects" type="checkbox" class="value" />
+                        <span class="translate" for="json_objects">JSON</span>
+                        <br><span class="translate">JSON Objekte anlegen</span>
+                    </div>
+                    <div class="input-field col s12 m4 l4">
+                        <input id="text_objects" type="checkbox" class="value" />
+                        <span class="translate" for="text_objects">Text</span>
+                        <br><span class="translate">Text Objekte anlegen</span>
+                    </div>
+                </div>    
+            </div>
+        
+        <div id="tab-blackist" class="col s12 page">    
+            Blacklist: Hier kannst du Blacklist für die einzelnen Bereiche anlegen.
+            <div class="col s12" id="blacklist">
+                
+                <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
+                <div class="table-values-div">
+                     <table id="blacklist" class="table-values" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th id="bl_activ" data-name="activ" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
+                                <th id="bl_id" data-name="id" style="width: 10%; background: #64b5f6" class="translate">Projekt ID</th>
+                                <th id="bl_art" data-name="art" style="width: 30%; background: #64b5f6"  class="translate" data-options="project/Projects;label/Labels;section/Secitons" data-type="select">Art</th>
+                                <th id="bl_comment" data-name="comment" style="width: 50%; background: #64b5f6" class="translate">Comment</th>
+                                <th data-buttons="delete" style="width: 100px; background: #64b5f6"></th>
+
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
-            <div class="col s12 m12 l12">
-                <h5>Art der Objekte:</h5>
-                <div class="input-field col s12 m4 l4">
-                    <input id="html_objects" type="checkbox" class="value" />
-                    <span class="translate" for="html_objects">HTML</span>
-                    <br><span class="translate">HTML Objekte anlegen</span>
-                </div>
-                <div class="input-field col s12 m4 l4">
-                    <input id="json_objects" type="checkbox" class="value" />
-                    <span class="translate" for="json_objects">JSON</span>
-                    <br><span class="translate">JSON Objekte anlegen</span>
-                 </div>
-                 <div class="input-field col s12 m4 l4">
-                     <input id="text_objects" type="checkbox" class="value" />
-                    <span class="translate" for="text_objects">Text</span>
-                     <br><span class="translate">Text Objekte anlegen</span>
-                 </div>
-            </div>    
-            </div>
+            
         </div>
     </div>
+</div>       
 </body>
 
 </html>

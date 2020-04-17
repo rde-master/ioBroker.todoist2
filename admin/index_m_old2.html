@@ -1,0 +1,615 @@
+<html>
+
+<head>
+
+    <!-- Load ioBroker scripts and styles-->
+    <link rel="stylesheet" type="text/css" href="../../lib/css/fancytree/ui.fancytree.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/adapter.css"/>
+    <link rel="stylesheet" type="text/css" href="../../lib/css/materialize.css">
+
+    <script type="text/javascript" src="../../lib/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../../socket.io/socket.io.js"></script>
+
+    <script type="text/javascript" src="../../lib/js/materialize.js"></script>
+    <script type="text/javascript" src="../../lib/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../../lib/js/jquery.fancytree-all.min.js"></script>
+
+    <script type="text/javascript" src="../../js/translate.js"></script>
+    <script type="text/javascript" src="../../lib/js/selectID.js"></script>
+    <script type="text/javascript" src="../../js/adapter-settings.js"></script>
+    <script type="text/javascript" src="actions.js"></script>
+
+    <!-- Load our own files -->
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script type="text/javascript" src="words.js"></script>
+
+    <style>
+       #dialog-list-edit {
+            max-height: 95% !important;
+            max-width: 85% !important;
+            width: 80% !important;
+            height: 90% !important;
+            overflow: visible !important;
+            top: 10px !important;
+        }
+
+        #dialog-select-member {
+            max-height: 95% !important;
+            max-width: 85% !important;
+            width: 80% !important;
+            height: 90% !important;
+            overflow: visible !important;
+            top: 10px !important;
+        }
+
+        redlabel { 
+            color: red; 
+        }
+
+        .marg {
+            margin-top: 2em;
+        }
+        .adapter-body {
+            overflow: hidden !important;
+        }
+        table.highlight > tbody > tr {
+            transition: background-color .25s ease !important;
+        }
+        table.highlight > tbody > tr:hover {
+            background-color: rgba(200, 200, 200, 0.5) !important;
+        }
+    </style>
+
+    <script type="text/javascript">
+
+    
+
+        // This will be called by the admin adapter when the settings page loads
+        function load(settings, onChange) {
+            // example: select elements with id=key and class=value and insert value
+            if (!settings) return;
+            $('.value').each(function () {
+                var $key = $(this);
+                var id = $key.attr('id');
+                if ($key.attr('type') === 'checkbox') {
+                    // do not call onChange direct, because onChange could expect some arguments
+                    $key.prop('checked', settings[id]).on('change', function () {
+                        showHideSettings();
+                        onChange();
+                    });
+                } else {
+                    // do not call onChange direct, because onChange could expect some arguments
+                    $key.val(settings[id])
+                        .on('change', () => onChange())
+                        .on('keyup', () => onChange())
+                        ;
+                }
+            });
+
+            //var events = [];
+            
+            events = settings.events    || [];
+            
+            showHideSettings();
+            
+            values2table('events', events, onChange, tableOnReady);
+            values2table('lists', events, onChange, tableOnReady);
+
+            $('#responseOIDDialog').on('click', function () {
+                var devices = table2values('events');
+                var id = 0;
+                for (var i = 0; i < devices.length; i++) {
+                id = id +1;
+                }
+                /*
+                setTimeout(function () {
+                    $('#events .values-input[data-name="triggerState"][data-index="' + id + '"]').val('true').trigger('change');
+                    $('#events .values-input[data-name="typeUp"][data-index="' + id + '"]').val('sunrise').trigger('change');
+                    $('#events .values-input[data-name="typeUp"][data-index="' + id + '"]').select();
+                    $('#events .values-input[data-name="typeDown"][data-index="' + id + '"]').val('sunset').trigger('change');
+                    $('#events .values-input[data-name="typeDown"][data-index="' + id + '"]').select();
+                    $('#events .values-input[data-name="heightUp"][data-index="' + id + '"]').val('100').trigger('change');
+                    $('#events .values-input[data-name="heightDown"][data-index="' + id + '"]').val('0').trigger('change');
+                    $('#events .values-input[data-name="triggerDrive"][data-index="' + id + '"]').val('100').trigger('change');
+                    $('#events .values-input[data-name="triggerChange"][data-index="' + id + '"]').val('off').trigger('change');
+                    $('#events .values-input[data-name="elevation"][data-index="' + id + '"]').val('8').trigger('change');
+                    $('#events .values-input[data-name="enabled"][data-index="' + id + '"]').prop('checked', true);
+                    $('#events .values-input[data-name="type"][data-index="' + id + '"]').val('in- & outside temperature and direction').trigger('change');
+                    $('#events .values-input[data-name="type"][data-index="' + id + '"]').select();
+                    $('#events .values-input[data-name="heightDownSun"][data-index="' + id + '"]').val('30').trigger('change');
+                    $('#events .values-input[data-name="direction"][data-index="' + id + '"]').val('120').trigger('change');
+                    $('#events .values-input[data-name="directionRange"][data-index="' + id + '"]').val('50').trigger('change');
+                    $('#events .values-input[data-name="tempInside"][data-index="' + id + '"]').val('23').trigger('change');
+                    $('#events .values-input[data-name="tempOutside"][data-index="' + id + '"]').val('23').trigger('change');
+                    $('#events .values-input[data-name="valueLight"][data-index="' + id + '"]').val('15').trigger('change');
+                    $('#events .values-input[data-name="autoDrive"][data-index="' + id + '"]').val('off').trigger('change');
+                    $('#events .values-input[data-name="hysteresisOutside"][data-index="' + id + '"]').val('5').trigger('change');
+                    $('#events .values-input[data-name="hysteresisInside"][data-index="' + id + '"]').val('5').trigger('change');
+                    $('#events .values-input[data-name="hysteresisLight"][data-index="' + id + '"]').val('5').trigger('change');
+                }, 1000);
+                */
+                /*
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#events .values-input[data-name="name"][data-index="' + id + '"]').val(), function (newId) {
+                        if (newId) {
+                            $('#events .values-input[data-name="name"][data-index="' + id + '"]').val(newId).trigger('change');
+                            socket.emit('getObject', newId, function (err, obj) {
+                                var name = getName(obj);
+                                $('#events .values-input[data-name="shutterName"][data-index="' + id + '"]').val(name).trigger('change');
+                            });
+                        }
+                    });
+                });
+                */
+            });
+            /*
+            $('#actualValueTempDialogPopUp').on('click', function () {
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#actualValueTemp').val(), function (newId) {
+                        if (newId) {
+                            $('#actualValueTemp').val(newId).trigger('change');
+                        }
+                    });
+                });
+            });
+            
+            $('#actualValueLightDialogPopUp').on('click', function () {
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#actualValueLight').val(), function (newId) {
+                        if (newId) {
+                            $('#actualValueLight').val(newId).trigger('change');
+                        }
+                    });
+                });
+            });
+            $('#actualValueTempInsideDialogPopUp').on('click', function () {
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#actualValueTempInside').val(), function (newId) {
+                        if (newId) {
+                            $('#actualValueTempInside').val(newId).trigger('change');
+                        }
+                    });
+                });
+            });
+            
+            $('#triggerAutoSleepDialog').on('click', function () {
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#triggerAutoSleep').val(), function (newId) {
+                        if (newId) {
+                            $('#triggerAutoSleep').val(newId).trigger('change');
+                        }
+                    });
+                });
+            });
+
+            $('#triggerAutoLivingDialog').on('click', function () {
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#triggerAutoLiving').val(), function (newId) {
+                        if (newId) {
+                            $('#triggerAutoLiving').val(newId).trigger('change');
+                        }
+                    });
+                });
+            });
+            $('#triggerIDPopUp').on('click', function () {
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#triggerID').val(), function (newId) {
+                        if (newId) {
+                            $('#triggerID').val(newId).trigger('change');
+                        }
+                    });
+                });
+            });
+            */
+            onChange(false);
+            // reinitialize all the Materialize labels on the page if you are dynamically adding inputs:
+            
+            if (M) M.updateTextFields();
+            
+            getAdapterInstances('feiertage', function (instances) {
+                fillInstances('publicHolInstance', instances, settings['publicHolInstance']);
+            });
+        }
+        function fillInstances(id, arr, val) {
+            var $sel = $('#' + id);
+            $sel.html('<option value="">' + _('none') + '</option>');
+            for (var i = 0; i < arr.length; i++) {
+                var _id = arr[i]._id.replace('system.adapter.', '');
+                $sel.append('<option value="' + _id + '"' + (_id === val ? ' selected' : '') + '>' + _id + '</option>');
+            }
+            $sel.select();
+        }
+        function tableOnReady() {
+            /*
+            $('#events .table-values-div .table-values .values-buttons[data-command="edit2"]').on('click', function () {
+                let id = $(this).data('index');
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#events .values-input[data-name="name"][data-index="' + id + '"]').val(), function (newId) {
+                        if (newId) {
+                            $('#events .values-input[data-name="name"][data-index="' + id + '"]').val(newId).trigger('change');
+                            socket.emit('getObject', newId, function (err, obj) {
+                                var name = getName(obj);
+                                $('#events .values-input[data-name="shutterName"][data-index="' + id + '"]').val(name).trigger('change');
+                            });
+                        }
+                    });
+                });
+            });
+            */
+            $('#events .table-values-div .table-values .values-buttons[data-command="edit"]').on('click', function () {
+                let id = $(this).data('index');
+                /*
+                $('#dialogDeviceEditShutter').html($('#events .values-input[data-name="shutterName"][data-index="' + id + '"]').val());
+                $('#heightUpShutter').val($('#events .values-input[data-name="heightUp"][data-index="' + id + '"]').val());
+                $('#heightDownShutter').val($('#events .values-input[data-name="heightDown"][data-index="' + id + '"]').val());
+                $('#triggerDriveShutter').val($('#events .values-input[data-name="triggerDrive"][data-index="' + id + '"]').val());
+                $('#elevationShutter').val(parseFloat($('#events .values-input[data-name="elevation"][data-index="' + id + '"]').val()));
+                $('#triggerChangeShutter').val($('#events .values-input[data-name="triggerChange"][data-index="' + id + '"]').val());
+                $('#triggerChangeShutter').select();
+                $('#triggerStateShutter').val($('#events .values-input[data-name="triggerState"][data-index="' + id + '"]').val());
+                $('#triggerStateShutter').select();
+                $('#typeDown').val($('#events .values-input[data-name="typeDown"][data-index="' + id + '"]').val());
+                $('#typeDown').select();
+                $('#typeUp').val($('#events .values-input[data-name="typeUp"][data-index="' + id + '"]').val());
+                $('#typeUp').select();
+                $('#type').val($('#events .values-input[data-name="type"][data-index="' + id + '"]').val());
+                $('#type').select();
+                $('#triggerID').val($('#events .values-input[data-name="triggerID"][data-index="' + id + '"]').val());
+                $('#tempInside').val($('#events .values-input[data-name="tempInside"][data-index="' + id + '"]').val());
+                $('#heightDownSun').val($('#events .values-input[data-name="heightDownSun"][data-index="' + id + '"]').val());
+                $('#direction').val($('#events .values-input[data-name="direction"][data-index="' + id + '"]').val());
+                $('#directionRange').val($('#events .values-input[data-name="directionRange"][data-index="' + id + '"]').val());
+                $('#actualValueTempInside').val($('#events .values-input[data-name="tempSensor"][data-index="' + id + '"]').val());
+                $('#actualValueTemp').val($('#events .values-input[data-name="outsideTempSensor"][data-index="' + id + '"]').val());
+                $('#setpointValue').val($('#events .values-input[data-name="tempOutside"][data-index="' + id + '"]').val());
+                $('#actualValueLight').val($('#events .values-input[data-name="lightSensor"][data-index="' + id + '"]').val());
+                $('#setpointValueLight').val($('#events .values-input[data-name="valueLight"][data-index="' + id + '"]').val());
+                $('#autoDriveShutter').val($('#events .values-input[data-name="autoDrive"][data-index="' + id + '"]').val());
+                $('#autoDriveShutter').select();
+                $('#hysteresisOutside').val($('#events .values-input[data-name="hysteresisOutside"][data-index="' + id + '"]').val());
+                $('#hysteresisInside').val($('#events .values-input[data-name="hysteresisInside"][data-index="' + id + '"]').val());
+                $('#hysteresisLight').val($('#events .values-input[data-name="hysteresisLight"][data-index="' + id + '"]').val());
+                */
+                setTimeout(function () {
+                    initDialogShutter(function (sid) {
+                        /*
+                        var newHeightUp = $('#heightUpShutter').val();
+                        var newHeightDown = $('#heightDownShutter').val();
+                        var newTriggerDrive = $('#triggerDriveShutter').val();
+                        var newElevation = $('#elevationShutter').val();
+                        var newTriggerState = $('#triggerStateShutter').val();
+                        var newTriggerChange = $('#triggerChangeShutter').val();
+                        var newTemInside = $('#tempInside').val();
+                        var newHeightDownSun = $('#heightDownSun').val();
+                        var newDirection = $('#direction').val();
+                        var newDirectionRange = $('#directionRange').val();
+                        var newTempSensor = $('#actualValueTempInside').val();
+                        var newOutsideTempSensor = $('#actualValueTemp').val();
+                        var newTempOutside = $('#setpointValue').val();
+                        var newLightSensor = $('#actualValueLight').val();
+                        var newValueLight = $('#setpointValueLight').val();
+                        var newTriggerID = $('#triggerID').val();
+                        var newTypeDown = $('#typeDown').val();
+                        var newTypeUp = $('#typeUp').val();
+                        var newType = $('#type').val();
+                        var hysteresisOutside = $('#hysteresisOutside').val();
+                        var hysteresisInside = $('#hysteresisInside').val();
+                        var hysteresisLight = $('#hysteresisLight').val();
+                        var autoDrive = $('#autoDriveShutter').val();
+
+                        $('#events .values-input[data-name="tempInside"][data-index="' + id + '"]').val(newTemInside).trigger('change');
+                        $('#events .values-input[data-name="heightDownSun"][data-index="' + id + '"]').val(newHeightDownSun).trigger('change');
+                        $('#events .values-input[data-name="direction"][data-index="' + id + '"]').val(newDirection).trigger('change');
+                        $('#events .values-input[data-name="directionRange"][data-index="' + id + '"]').val(newDirectionRange).trigger('change');
+                        $('#events .values-input[data-name="tempSensor"][data-index="' + id + '"]').val(newTempSensor).trigger('change');
+                        $('#events .values-input[data-name="outsideTempSensor"][data-index="' + id + '"]').val(newOutsideTempSensor).trigger('change');
+                        $('#events .values-input[data-name="tempOutside"][data-index="' + id + '"]').val(newTempOutside).trigger('change');
+                        $('#events .values-input[data-name="lightSensor"][data-index="' + id + '"]').val(newLightSensor).trigger('change');
+                        $('#events .values-input[data-name="valueLight"][data-index="' + id + '"]').val(newValueLight).trigger('change');
+                        $('#events .values-input[data-name="triggerID"][data-index="' + id + '"]').val(newTriggerID).trigger('change');
+                        $('#events .values-input[data-name="heightUp"][data-index="' + id + '"]').val(newHeightUp).trigger('change');
+                        $('#events .values-input[data-name="heightDown"][data-index="' + id + '"]').val(newHeightDown).trigger('change');
+                        $('#events .values-input[data-name="triggerDrive"][data-index="' + id + '"]').val(newTriggerDrive).trigger('change');
+                        $('#events .values-input[data-name="elevation"][data-index="' + id + '"]').val(newElevation).trigger('change');
+                        $('#events .values-input[data-name="triggerState"][data-index="' + id + '"]').val(newTriggerState).trigger('change');
+                        $('#events .values-input[data-name="triggerChange"][data-index="' + id + '"]').val(newTriggerChange).trigger('change');
+                        $('#events .values-input[data-name="typeDown"][data-index="' + id + '"]').val(newTypeDown).trigger('change');
+                        $('#events .values-input[data-name="typeUp"][data-index="' + id + '"]').val(newTypeUp).trigger('change');
+                        $('#events .values-input[data-name="type"][data-index="' + id + '"]').val(newType).trigger('change');
+                        $('#events .values-input[data-name="autoDrive"][data-index="' + id + '"]').val(autoDrive).trigger('change');
+                        $('#events .values-input[data-name="hysteresisOutside"][data-index="' + id + '"]').val(hysteresisOutside).trigger('change');
+                        $('#events .values-input[data-name="hysteresisInside"][data-index="' + id + '"]').val(hysteresisInside).trigger('change');
+                        $('#events .values-input[data-name="hysteresisLight"][data-index="' + id + '"]').val(hysteresisLight).trigger('change');
+                    */
+                    });
+                }, 20)
+            });
+        }
+        
+        // This will be called by the admin adapter when the user presses the save button
+        function save(callback) {
+            // example: select elements with class=value and build settings object
+            var obj = {};
+            $('.value').each(function () {
+                var $this = $(this);
+                if ($this.attr('type') === 'checkbox') {
+                    obj[$this.attr('id')] = $this.prop('checked');
+                } else {
+                    obj[$this.attr('id')] = $this.val();
+                }
+            });
+            
+            // Get edited table
+            obj.events    = table2values('events');
+
+
+            callback(obj);
+        }
+        function showHideSettings() {
+            
+            if ($('#publicHolidays').prop('checked')) {
+                $('.publicHol').show();
+            } else {
+                $('.publicHol').hide();
+            }
+        }
+
+        var selectId;
+        function initSelectId(callback) {
+            if (selectId) {
+                return callback(selectId);
+            }
+            socket.emit('getObjects', function (err, objs) {
+                selectId = $('#dialog-select-member').selectId('init',  {
+                    noMultiselect: true,
+                    objects: objs,
+                    imgPath:       '../../lib/css/fancytree/',
+                    filter:        {type: 'state'},
+                    name:          'scenes-select-state',
+                    texts: {
+                        select:          _('Select'),
+                        cancel:          _('Cancel'),
+                        all:             _('All'),
+                        id:              _('ID'),
+                        name:            _('Name'),
+                        role:            _('Role'),
+                        room:            _('Room'),
+                        value:           _('Value'),
+                        selectid:        _('Select ID'),
+                        from:            _('From'),
+                        lc:              _('Last changed'),
+                        ts:              _('Time stamp'),
+                        wait:            _('Processing...'),
+                        ack:             _('Acknowledged'),
+                        selectAll:       _('Select all'),
+                        unselectAll:     _('Deselect all'),
+                        invertSelection: _('Invert selection')
+                    },
+                    columns: ['image', 'name', 'role', 'room']
+                });
+                callback(selectId);
+            });
+        }
+        
+        function getName(obj) {
+            if (obj && obj.common && obj.common.name) {
+                var name = obj.common.name;
+                if (typeof name === 'object') {
+                    name = name[systemLang] || name.en;
+                }
+                return name;
+            } else if (obj && obj.name) {
+                var name = obj.name;
+                if (typeof name === 'object') {
+                    name = name[systemLang] || name.en;
+                }
+                return name;
+            } else {
+                var parts = obj.id.split('.');
+                var last = parts.pop();
+                return last[0].toUpperCase() + last.substring(1).toLowerCase();
+            }
+        }
+
+        function initDialogShutter(callback) {
+            var $editDialog = $('#dialog-shutter-edit');
+            if (!$editDialog.data('inited')) {
+                $editDialog.data('inited', true);
+                $editDialog.modal({
+                    dismissible: false
+                });
+                
+                $editDialog.find('.btn-set').on('click', function () {
+                    var $editDialog = $('#dialog-shutter-edit');
+                    var callback = $editDialog.data('callback');
+                    if (typeof callback === 'function') callback();
+                    $editDialog.data('callback', null);
+                });
+            }
+            $editDialog.data('callback', callback);
+            $editDialog.modal('open');
+        }
+    </script>
+
+</head>
+
+<body>
+
+    <div class="m adapter-container">
+        <div class="row" style="height: 100%;">
+            <div class="col s12">
+                <ul class="tabs">
+                    <li class="tab col s3"><a href="#tab-main" class="translate active">Main settings</a></li>
+                    <li class="tab col s3"><a href="#tab-lists" class="translate active">Lists</a></li>
+                </ul>
+            </div>
+            <div class="row">
+                <!-- main settings -->
+                <div id="tab-main" class="col s12 page">
+                    <div class="row">
+                        <div class="col s12 m4 l2">
+                            <img src="todoist.png" class="logo" alt="logo"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12 m8 l8 polling-settings">
+                           <input id="pollingInterval" type="text" class="value" />
+                           <label class="translate" for="pollingInterval">Polling interval (ms) use more than 60000 pls.</label>
+                           <span></span>
+                           
+                       </div>
+                   </div>
+                   <div class="row">
+                    <div class="input-field col s12 m8 l8">
+                        <input id="token" type="text" class="value" />
+                        <label class="translate" for="token">token</label>
+                        <span><a href="https://github.com/rde-master/ioBroker.todoist2" target="_blank" class="translate help">Read README.md how to get token</a></span>
+                    </div>
+                </div>
+                <div class="col s12 m12 l12">
+                    <h5>Einstellungen</h5>
+                    <div class="input-field col s12 m4 l4">
+                        <input id="debug" type="checkbox" class="value" />
+                        <span class="translate" for="debug">debug</span>
+                        <br><span class="translate">debug mode on</span>
+                    </div>
+                    <div class="input-field col s12 m4 l4">
+                        <input id="dublicate" type="checkbox" class="value" />
+                        <span class="translate" for="dublicate">Dublikate</span>
+                        <br><span class="translate">Bereits angelegte Tasks (Dublikate) nicht erneut anlegen</span>
+                </div>
+                </div>
+                <div class="col s12 m12 l12">
+                    <h5>Auswahl Anlage Objekte</h5>
+                <div class="input-field col s12 m4 l4">
+                        <input id="project" type="checkbox" class="value" />
+                        <span class="translate" for="project">Project</span>
+                        <br><span class="translate">Projekte als Objekte anlegen</span>
+                </div>
+                <div class="input-field col s12 m4 l4">
+                        <input id="section" type="checkbox" class="value" />
+                        <span class="translate" for="section">Section</span>
+                        <br><span class="translate">Section als Objekte anlegen</span>
+                </div>
+                <div class="input-field col s12 m4 l4">
+                        <input id="tasks" type="checkbox" class="value" />
+                        <span class="translate" for="tasks">Tasks</span>
+                        <br><span class="translate">Tasks als Objekte anlegen</span>
+                </div>
+                <div class="input-field col s12 m4 l4">
+                        <input id="labels" type="checkbox" class="value" />
+                        <span class="translate" for="labels">Tasks</span>
+                        <br><span class="translate">Labels als Objekte anlegen</span>
+                </div>
+            </div>
+            <div class="col s12 m12 l12">
+                <h5>Art der Objekte:</h5>
+                <div class="input-field col s12 m4 l4">
+                    <input id="html_objects" type="checkbox" class="value" />
+                    <span class="translate" for="html_objects">HTML</span>
+                    <br><span class="translate">HTML Objekte anlegen</span>
+                </div>
+                <div class="input-field col s12 m4 l4">
+                    <input id="json_objects" type="checkbox" class="value" />
+                    <span class="translate" for="json_objects">JSON</span>
+                    <br><span class="translate">JSON Objekte anlegen</span>
+                 </div>
+                 <div class="input-field col s12 m4 l4">
+                     <input id="text_objects" type="checkbox" class="value" />
+                    <span class="translate" for="text_objects">Text</span>
+                     <br><span class="translate">Text Objekte anlegen</span>
+                 </div>
+            </div>    
+            </div>
+    <div id="tab-lists" class="col s12 page">    
+                    <div class="row">
+                        <div class="col s12" id="events">
+                            <div class="row">
+                                <div class="col s2 m1 l1 left">
+                                    <a  id="responseOIDDialog" class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
+                                </div>
+                            </div>
+                            <div class="table-values-div">
+                                <table class="table-values">
+                                    <thead>
+                                    <tr>
+                                        <th data-name="_index" style="width: 80px; background: #64b5f6; text-align: center" data-style="text-align: center">Nr</th>
+                                        <th data-name="enabled"  style="width: 70px; background: #64b5f6" data-style="width: 70px" data-type="checkbox" class="translate">active</th>
+                                        <th data-name="list_name" data-type="text" style="width: 40%; background: #64b5f6" class="translate">Name</th>
+                                        <th data-name="list_project" data-type="text" style="width: 40%; background: #64b5f6" class="translate">Project ID</th>
+                                        <th data-buttons="edit up down delete" style="width: 100px; background: #64b5f6"></th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    <div class="m material-dialogs">
+        <div id="dialog-select-member" class="modal modal-fixed-footer">
+            <div class="modal-content">
+                <div class="row">
+                    <div class="col s12 title"></div>
+                </div>
+                <div class="row">
+                    <div class="col s12 dialog-content">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="modal-action modal-close waves-effect waves-green btn btn-set"><i class="large material-icons left">check</i><span class="translate">Select</span></a>
+                <a class="modal-action modal-close waves-effect waves-green btn btn-close"><i class="large material-icons left ">close</i><span class="translate">Cancel</span></a>
+            </div>
+        </div>
+        <div id="dialog-shutter-edit" class="modal modal-fixed-footer">
+            <div class="row">
+                <div class="modal-content">
+                    
+                    <div class="row">
+                        <div class="col s12">
+                            <h6 class="title"><span class="translate">Edit List:</span> <span id="dialogDeviceEditShutter"></span></h6>
+                        </div>
+                    </div>
+                    
+                    <div id="tab-content" class="col s12 page">
+                        <div class="col s12" id="lists">
+                            <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
+                            <div class="table-values-div">
+                                 <table id="table_lists" class="table-values" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th id="lists_col_0" data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
+                                            <th id="lists_col_1" data-name="name" style="width: 20%; background: #64b5f6 " class="translate">Todo Name</th>
+                                            <th id="lists_col_2" data-name="labels" style="width: 40%; background: #64b5f6" class="translate">Label ID</th>
+                                            <th id="lists_col_3" data-name="priority" style="width: 10%; background: #64b5f6" class="translate">priority</th>
+                                            <th id="lists_col_4" data-name="date" style="width: 30%; background: #64b5f6" class="translate">Date</th>
+                                            <th data-buttons="delete" style="width: 100px; background: #64b5f6"></th>
+            
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            Content Example:
+                            [{"name":"-name-", "labels":[-labelid1-,-labelid2-], "priority":"-0-", "date":"YYYY-MM-DD"}]
+            
+                            Name: please set the name
+                            Labels: 
+                            Priority:
+                            Date:
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="modal-action modal-close waves-effect waves-green btn btn-set"><i class="large material-icons left">check</i><span class="translate">Ok</span></a>
+                <a class="modal-action modal-close waves-effect waves-green btn btn-close"><i class="large material-icons left">close</i><span class="translate">Cancel</span></a>
+            </div>
+        </div>
+        </div>
+    </div>  
+</body>
+
+</html>

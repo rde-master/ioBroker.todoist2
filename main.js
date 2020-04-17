@@ -2,70 +2,6 @@
  Api erkärung:
  https://developer.todoist.com/rest/v1/
  Das ist ein test!
-
-// "Aufgabe" bzw Einkaufsgegenstand von todoist entfernen
-// ********************************************************************
-/*
-function deleteTask(){
-
-    // Array der IDs aufbereiten
-    
-    var idListIDsArray =[];
-    var idListIDs;
-    
-    idListIDs = getState(idEinkaufsIDS).val;
-    if(debug)log(idListIDs);
-    idListIDsArray = idListIDs.split("<br>");
-    idListIDsArray.pop();                                      // aufgrund meiner uneleganten Änderungen steht als letztes immer "<br>" in der Liste. Damit würde ein Element zuviel ausgegeben werden (leer). Pop kürzt den array ums letzte Element
-
-    // Array der Items aufbereiten
-
-    var idListArray =[];
-    var idList;
-    
-    idList = getState(idEinkaufsItems).val;
-    if(debug)log(idList);
-    idListArray = idList.split("<br>");
-    idListArray.pop();       
-
-    // Bestimmen der ID Position im Array
-    
-    var arrayPosition = idListArray.indexOf(purchItem);
-    
-    // Den Gegenstand über die gefundene ID löschen
-
-        var deleteURL = "https://beta.todoist.com/API/v8/tasks/"+idListIDsArray[arrayPosition]+"?token="+APItoken;
-        if(debug) log("Delete URL ist "+deleteURL);
- 
-        request({
-            uri: deleteURL,
-            method: "DELETE",
-            timeout: 5000,
-            }, 
-                function(error, response, body) {
-                if(debug) console.log(body);
-            });    
-}    
-
-*/
-// **************************************************************
-// Trigger und Wertübergabe
-// **************************************************************
-/*
-on({    id:regexTrigger,   change: 'ne'},                           // regex trigger, löst immer aus sobald etwas an- oder abgewählt wird
-            function(data) {
-                var temporary;
-                temporary = data.id;
-                purchItem = temporary.substring(33);                // Pfad bis zum Item ist 33 Stellen lang
-                
-                if(data.state.val) {                                // wenn das item auf der manuellen Liste hinzugefügt wurde (state ist true) dann...
-                    if (debug) log("Es wird hinzugefügt: "+purchItem);
-                    setTimeout(addTask, 500); }
-                else {                                              // sonst wenn wenn das item auf der manuellen Liste entfernt wurde dann...
-                    if (debug) log("Es wird entfernt: "+purchItem);
-                    setTimeout(deleteTask, 500); 
-                }    
-        });
 */
 
  
@@ -91,7 +27,10 @@ let debug;
 let all_task_objekts;
 let all_label_objekts;
 let all_project_objekts;
-
+let blacklist;
+let bl_projects = [];
+let bl_labels = [];
+let bl_sections = [];
 
 
 async function startAdapter(options) {
@@ -109,12 +48,44 @@ async function startAdapter(options) {
 
     adapter.on('ready', () => {
         adapter.config.server = adapter.config.server === 'true';
-		debug = adapter.config.debug;
+        //hole States aus den Einstellungen und mache den Text kürzer :-)
+        debug = adapter.config.debug;
+        blacklist = adapter.config.blacklist;
+
+        //adapter.log.warn("blacklist: " + blacklist.length);
         
+        //Hier leiten wir die Blacklist in 3 Arrays auf:
+        for(var i = 0; i < blacklist.length; i++){
+            if(blacklist[i].activ == true && blacklist[i].art == "project"){
+
+                if(debug) adapter.log.warn("Projects found mit id: " + blacklist[i].id);
+                bl_projects.push(blacklist[i]);
+                if(debug) adapter.log.info("bl projects" + bl_projects); 
+
+            }
+            if(blacklist[i].activ == true && blacklist[i].art == "label"){
+
+                if(debug) adapter.log.warn("label found mit id: " + blacklist[i].id);
+                bl_labels.push(blacklist[i]);
+                if(debug) adapter.log.info("bl label" + bl_labels); 
+
+            }
+
+            if(blacklist[i].activ == true && blacklist[i].art == "section"){
+
+                if(debug) adapter.log.warn("Section found mit id: " + blacklist[i].id);
+                bl_projects.push(blacklist[i]);
+                if(debug) adapter.log.info("bl Section" + bl_sections); 
+
+            }
+
+        }
+
         newstate();
         adapter.subscribeStates('New.Task');
 		check_online();
         main();
+
 
         //Regelmäßige ausführung wie eingestellt
         var poll = adapter.config.pollingInterval;
@@ -652,6 +623,19 @@ async function getProject(){
            
             for (k = 0; k < projects_json.length; k++) {
                 var projects = parseInt(projects_json[k].id);
+                var is_blacklist = false;
+                for (var w = 0; w < bl_projects.length; w++){               
+                    if(projects == bl_projects[w].id){
+                      //  adapter.log.info("projects: " + projects);
+                      //  adapter.log.info("liste: " +  JSON.stringify(bl_projects[w]));
+                        is_blacklist = true;
+                      //  adapter.log.warn("Blacklist erkannt: " + JSON.stringify(bl_projects[w]));
+                    }
+                }
+                if(is_blacklist == true){
+                    if(debug) adapter.log.info("überspringen project");
+                    continue;
+                }
                 var projects_name = JSON.stringify(projects_json[k].name);
                 projects_name = projects_name.replace(/\"/g, ''); //entfernt die Anfuehrungszeichen aus dem Quellstring
                 projects_name = projects_name.replace(/\./g, '-'); //entfent die PUnkte hoffentlich...
@@ -758,21 +742,40 @@ async function getLabels(){
             for (i = 0; i < labels_json.length; i++) {
                 
                 var labels1 = parseInt(labels_json[i].id);
+                
+                var is_blacklist = false;
+                for (var w = 0; w < bl_labels.length; w++){               
+                    if(labels1 == bl_labels[w].id){
+                      //  adapter.log.info("projects: " + labels1);
+                      //  adapter.log.info("liste: " +  JSON.stringify(bl_labels[w]));
+                        is_blacklist = true;
+                      //  adapter.log.warn("Blacklist erkannt: " + JSON.stringify(bl_labels[w]));
+                    }
+                }
+                if(is_blacklist == true){
+                     if(debug) adapter.log.info("überspringen label");
+                    continue;
+                }
+
+                 
+
                 var Labels1_names = JSON.stringify(labels_json[i].name);
                 Labels1_names = Labels1_names.replace(/\"/g, ''); //entfernt die Anfuehrungszeichen aus dem Quellstring
                 Labels1_names = Labels1_names.replace(/\./g, '-'); //entfent die PUnkte hoffentlich...
+                //für Return 
                 Labelsid[Labelsid.length] = labels1;
                 Labels_names[Labels_names.length] = Labels1_names;
-                
+                /*
                 var Labels2name = Labels_names[i];
                 var Labels2ID = Labelsid[i];
-                if (debug) adapter.log.info("labels anlegen....");
+                */
+                 if(debug) adapter.log.info("labels anlegen...." + Labels1_names);
                 
                 if(adapter.config.html_objects == true){
-                await adapter.setObjectNotExistsAsync("HTML.Labels-HTML." + Labels2name, {
+                await adapter.setObjectNotExistsAsync("HTML.Labels-HTML." + Labels1_names, {
                     type: 'state',
                     common: {
-                        name: 'ID ' + Labels2ID,
+                        name: 'ID ' + labels1,
                         type: 'string',
                         
                     },
@@ -780,10 +783,10 @@ async function getLabels(){
               		});
                 }
                 if(adapter.config.json_objects == true){	
-            	await adapter.setObjectNotExistsAsync("JSON.Labels-JSON." + Labels2name, {
+            	await adapter.setObjectNotExistsAsync("JSON.Labels-JSON." + Labels1_names, {
                     type: 'state',
                     common: {
-                        name: 'ID ' + Labels2ID,
+                        name: 'ID ' + labels1,
                         type: 'string',
                         
                     },
@@ -791,10 +794,10 @@ async function getLabels(){
                       });
                 }
                 if(adapter.config.text_objects == true){	
-                    await adapter.setObjectNotExistsAsync("TEXT.Labels-TEXT." + Labels2name, {
+                    await adapter.setObjectNotExistsAsync("TEXT.Labels-TEXT." + Labels1_names, {
                         type: 'state',
                         common: {
-                            name: 'ID ' + Labels2ID,
+                            name: 'ID ' + labels1,
                             type: 'string',
                             
                         },
@@ -802,7 +805,7 @@ async function getLabels(){
                           });
                     }
                       //Baut den Json auf für Json-Labels
-                      json_neu_parse.push({"name":Labels2name, "ID":Labels2ID});
+                      json_neu_parse.push({"name":Labels1_names, "ID":labels1});
             
                       json_neu = JSON.stringify(json_neu_parse);
                       if(debug) adapter.log.info("Aufbau Projekt Liste: " + json_neu)   
@@ -890,6 +893,23 @@ async function getSections(){
             for (i = 0; i < sections_json.length; i++) {
                 
                 var sections1 = parseInt(sections_json[i].id);
+
+                var is_blacklist = false;
+                for (var w = 0; w < bl_sections.length; w++){               
+                    if(sections1 == bl_sections[w].id){
+                       // adapter.log.info("projects: " + sections1);
+                       // adapter.log.info("liste: " +  JSON.stringify(bl_sections[w]));
+                        is_blacklist = true;
+                       // adapter.log.warn("Blacklist erkannt: " + JSON.stringify(bl_sections[w]));
+                    }
+                }
+                if(is_blacklist == true){
+                    if(debug)  adapter.log.info("überspringen section");
+                    continue;
+                }
+
+
+
                 var sections1_names = JSON.stringify(sections_json[i].name);
                 sections1_names = sections1_names.replace(/\"/g, ''); //entfernt die Anfuehrungszeichen aus dem Quellstring
                 Sectionsid[Sectionsid.length] = sections1;
@@ -972,8 +992,26 @@ async function readTasks(project){
                 all_task_objekts = json;
                 //Verarbeitung von Projekten
                 
-                
+                //Schleife zum Befüllen der Projekt Tasks in HTML, Texts und JSON.
                 for (j = 0; j < project.projects_id.length; j++) {
+
+
+                    var is_blacklist = false;
+                    for (var w = 0; w < bl_projects.length; w++){               
+                        if(project.projects_id[j] == bl_projects[w].id){
+                           // adapter.log.info("projects in Tasks: " + project.projects_id[j]);
+                           // adapter.log.info("liste: " +  JSON.stringify(bl_projects[w]));
+                            is_blacklist = true;
+                           // adapter.log.warn("Blacklist erkannt: " + JSON.stringify(bl_projects[w]));
+                        }
+                    }
+                    if(is_blacklist == true){
+                        if(debug) adapter.log.info("überspringen task");
+                        continue;
+                    }
+
+
+
                     
                     var HTMLstring = '';
                     //adapter.setState('Lists.' + project.projects_name[j], {ack: true, val: 'empty'});
@@ -997,7 +1035,7 @@ async function readTasks(project){
                         
                         
                         //Anlage für jeden Task in einen eigenen State:
-                        
+                        /*
                         var content2 = content.replace(/\./g, '-'); //ERstetzt die Punke - aus dem Quellstring weil, sonst ordner angelegt werden
                         if(adapter.config.tasks === true){
                         adapter.setObjectNotExists("Tasks." + content2, {
@@ -1009,6 +1047,7 @@ async function readTasks(project){
                     						native: {}
               							});
                         }
+                        */
                         //Zuordnung zu den Listen:
                         if (Liste === project.projects_id[j]) {
                             if(debug)adapter.log.info('[' + content + '] in ' + project.projects_names[j] + ' found');
@@ -1030,30 +1069,78 @@ async function readTasks(project){
                             if(debug) adapter.log.info("Aufbau Projekt Liste Text: " + text_task);
                         }
                     }
-               if(debug) adapter.log.info("schreibe in liste: " + 'Lists.'+project.projects_names[j]);
-               if(debug) adapter.log.info(HTMLstring);
-               
-               //json wandeln 
-				//json_task = JSON.stringify(json_task);
-               
-               //Setzte den Status:
-               if(adapter.config.html_objects == true){
-               adapter.setState('HTML.Projects-HTML.'+project.projects_names[j], {val: '<table><ul>' + HTMLstring + '</ul></table>', ack: true});
-               }
-               if(json_task === "[]"){
-                json_task = '[{"name":"no Todos"}]';
-               }
-               if(adapter.config.json_objects == true){
-               adapter.setState('JSON.Projects-JSON.'+project.projects_names[j], {val: json_task, ack: true});
-               }
-               if(text_task == ""){
-                   text_task = "No Todos";
-               }
-               if(adapter.config.text_objects == true){
-                adapter.setState('TEXT.Projects-TEXT.'+project.projects_names[j], {val: text_task, ack: true});
-               }
+                    if(debug) adapter.log.info("schreibe in liste: " + 'Lists.'+project.projects_names[j]);
+                    if(debug) adapter.log.info(HTMLstring);
+                    
+                    //json wandeln 
+                        //json_task = JSON.stringify(json_task);
+                    
+                    //Setzte den Status:
+                    if(adapter.config.html_objects == true){
+                    adapter.setState('HTML.Projects-HTML.'+project.projects_names[j], {val: '<table><ul>' + HTMLstring + '</ul></table>', ack: true});
+                    }
+                    if(json_task === "[]"){
+                        json_task = '[{"name":"no Todos"}]';
+                    }
+                    if(adapter.config.json_objects == true){
+                    adapter.setState('JSON.Projects-JSON.'+project.projects_names[j], {val: json_task, ack: true});
+                    }
+                    if(text_task == ""){
+                        text_task = "No Todos";
+                    }
+                    if(adapter.config.text_objects == true){
+                        adapter.setState('TEXT.Projects-TEXT.'+project.projects_names[j], {val: text_task, ack: true});
+                    }
             
-            }
+                }
+
+
+                //Schleife für Objekte unter Tasks:
+                for (i = 0; i < json.length; i++) {
+                        
+                    var Liste = parseInt(json[i].project_id);
+
+                    var is_blacklist = false;
+                    for (var w = 0; w < bl_projects.length; w++){               
+                        if(Liste == bl_projects[w].id){
+                           // adapter.log.info("projects in Tasks: " + Liste);
+                           // adapter.log.info("liste: " +  JSON.stringify(bl_projects[w]));
+                            is_blacklist = true;
+                           // adapter.log.warn("Blacklist erkannt: " + JSON.stringify(bl_projects[w]));
+                        }
+                    }
+                    if(is_blacklist == true){
+                         if(debug) adapter.log.info("überspringen task");
+                        continue;
+                    }
+
+
+                    var content = JSON.stringify(json[i].content);
+                    var id = JSON.stringify(json[i].id);
+                    content = content.replace(/\"/g, ''); //entfernt die Anfuehrungszeichen aus dem Quellstring
+                    //content = content[0].toUpperCase() + content.substring(1); // Macht den ersten Buchstaben des strings zu einem Grossbuchstaben
+                    var taskurl = JSON.stringify(json[i].url);
+                    taskurl = taskurl.replace(/\"/g, '');
+                    
+                    
+                    
+                    //Anlage für jeden Task in einen eigenen State:
+                    
+                    var content2 = content.replace(/\./g, '-'); //ERstetzt die Punke - aus dem Quellstring weil, sonst ordner angelegt werden
+                    if(adapter.config.tasks === true){
+                    adapter.setObjectNotExists("Tasks." + content2, {
+                            type: 'state',
+                                common: {
+                                    name: 'ID ' + id + " Project " + Liste,
+                                    type: 'string',
+                                    },
+                                        native: {}
+                                      });
+                    }
+
+                }
+
+
                if(adapter.config.tasks === true){
                await adapter.setObjectNotExistsAsync("ALL.JSON-Tasks", {
 					type: 'state',
@@ -1065,11 +1152,27 @@ async function readTasks(project){
                     native: {}
               		});
                }
+
             //hier gehen wir nochmals durch die Tasks für den Datenpunkt Json-Tasks
             var json_neu = "[]";
             var json_neu_parse = JSON.parse(json_neu);   
             
             for (i = 0; i < json.length; i++) {
+
+                    var is_blacklist = false;
+                    for (var w = 0; w < bl_projects.length; w++){               
+                        if(json[i].project_id== bl_projects[w].id){
+                          //  adapter.log.info("projects in Tasks: " + json[i].project_id);
+                          //  adapter.log.info("liste: " +  JSON.stringify(bl_projects[w]));
+                            is_blacklist = true;
+                          //  adapter.log.warn("Blacklist erkannt: " + JSON.stringify(bl_projects[w]));
+                        }
+                    }
+                    if(is_blacklist == true){
+                         if(debug) adapter.log.info("überspringen task");
+                        continue;
+                    }
+
 
                 json_neu_parse.push({"name":json[i].content, "ID":json[i].project_id});
             
@@ -1115,6 +1218,22 @@ async function readTasks2(labels){
                 
                 
                 for (j = 0; j < labels.labels_id.length; j++) {
+
+                    var is_blacklist = false;
+                    for (var w = 0; w < bl_labels.length; w++){               
+                        if(labels.labels_id[j] == bl_labels[w].id){
+                            //adapter.log.info("projects in Tasks: " + labels.labels_id[j]);
+                            //adapter.log.info("liste: " +  JSON.stringify(bl_labels[w]));
+                            is_blacklist = true;
+                            //adapter.log.warn("Blacklist erkannt: " + JSON.stringify(bl_labels[w]));
+                        }
+                    }
+                    if(is_blacklist == true){
+                         adapter.log.info("überspringen task2");
+                        continue;
+                    }
+
+
                     
                     var HTMLstring = '';
                     //adapter.setState('Lists.' + project.projects_name[j], {ack: true, val: 'empty'});
@@ -1215,11 +1334,30 @@ if (adapter.config.tasks == true){
             new_id = id.substr(pos, end_pos);
             
             
-
+            
             for(var i = 0; i < all_task_objekts.length; i++){
+                
+                //Prüfen ob etwas auf der Blacklist steht.
+                var bearbeitet13 = all_task_objekts[i].project_id;
+                var is_blacklist = false;
+                for (var w = 0; w < bl_projects.length; w++){  
+                 
+                    if(bearbeitet13 == bl_projects[w]){
+                        is_blacklist = true;
+                    }
+                }
+                if(is_blacklist == true){
+                    continue;
+                }
+                
+                
+                
                 //adapter.log.error("nummer: " + i + "content: " + all_task_objekts[i].content);
                 //adapter.log.info("überprüfung: " +  all_task_objekts[i].content + " mit " + new_id);
                 var bearbeitet12 = all_task_objekts[i].content.replace(/\./g, '-') // Punkte entfernden und mit - erseztten
+                
+                
+                //Prüfen ob etwas von der API gelöscht wurde
                 if (bearbeitet12 == new_id) {
                     //adapter.log.warn("länge: " + all_task_objekts.length);
                     //adapter.log.info("länge objekte  " + states.length);
@@ -1227,16 +1365,20 @@ if (adapter.config.tasks == true){
                     match = true;
 
                 } 
+
+                
+
+
             }
             
             if (match != true){
 
                 adapter.log.warn("dieser state löschen: " + new_id);
-               // adapter.delObject("Tasks." + new_id, function (err) {
+                adapter.delObject("Tasks." + new_id, function (err) {
 
-                //                if (err) adapter.log.error('Cannot delete object: ' + err);
+                               if (err) adapter.log.error('Cannot delete object: ' + err);
 
-               //             });
+                           });
 
             }
             
@@ -1257,7 +1399,26 @@ if (adapter.config.project == true && adapter.config.html_objects == true){
             new_id = id.substr(pos, end_pos);
             for(var i = 0; i < all_project_objekts.length; i++){
                 
+                //Prüfen ob etwas auf der Blacklist steht.
                 var bearbeitet12 = all_project_objekts[i].name.replace(/\./g, '-') // Punkte entfernden und mit - erseztten
+                var bearbeitet13 = all_project_objekts[i].id;
+                
+                var is_blacklist = false;
+                for (var w = 0; w < bl_projects.length; w++){  
+                 
+                    if(bearbeitet13 == bl_projects[w].id){
+                        if (bearbeitet12 == new_id) {
+                        //adapter.log.warn("id: " + bearbeitet13);
+                        is_blacklist = true;
+                        }
+                    }
+                }
+                if(is_blacklist == true){
+                    continue;
+                }
+
+
+                
                  if (bearbeitet12 == new_id) {
                     // adapter.log.warn("länge Projekte: " + all_project_objekts.length);
                     // adapter.log.info("länge objekte Projekte  " + states.length);
@@ -1296,7 +1457,25 @@ if (adapter.config.project == true && adapter.config.html_objects == true){
             new_id = id.substr(pos, end_pos);
             for(var i = 0; i < all_project_objekts.length; i++){
                 
-                var bearbeitet12 = all_project_objekts[i].name.replace(/\./g, '-') // Punkte entfernden und mit - erseztten
+
+                 //Prüfen ob etwas auf der Blacklist steht.
+                 var bearbeitet12 = all_project_objekts[i].name.replace(/\./g, '-') // Punkte entfernden und mit - erseztten
+                 var bearbeitet13 = all_project_objekts[i].id;
+                 var is_blacklist = false;
+                 for (var w = 0; w < bl_projects.length; w++){  
+                  
+                     if(bearbeitet13 == bl_projects[w].id){
+                        if (bearbeitet12 == new_id) {
+                        is_blacklist = true;
+                        }
+                     }
+                 }
+                 if(is_blacklist == true){
+                     continue;
+                 }
+
+
+                
                  if (bearbeitet12 == new_id) {
                      //adapter.log.warn("länge Projekte: " + all_project_objekts.length);
                      //adapter.log.info("länge objekte Projekte  " + states.length);
@@ -1333,21 +1512,47 @@ adapter.getStates('HTML.Labels-HTML.*', function (err, states) {
         pos = pos +1;
         end_pos = id.length;
         new_id = id.substr(pos, end_pos);
+
         for(var i = 0; i < all_label_objekts.length; i++){
             
+            //Prüfen ob etwas auf der Blacklist steht.
+            var bearbeitet13 = all_label_objekts[i].id;
             var bearbeitet12 = all_label_objekts[i].name.replace(/\./g, '-') // Punkte entfernden und mit - erseztten
+            var is_blacklist = false;
+            //adapter.log.warn("länge bl_labels " + bl_labels.length);
+            for (var w = 0; w < bl_labels.length; w++){  
+             //adapter.log.info("ich bin in der schleife");
+             //adapter.log.info("bl label id" + bl_labels[w].id);
+             //adapter.log.info("bearbeitet " + bearbeitet13);
+                if(bearbeitet13 == bl_labels[w].id){
+                    if(bearbeitet12 == new_id){
+                    
+                    is_blacklist = true;
+                    
+                    }
+                    }
+            
+            }        
+            if(is_blacklist == true){
+                continue;
+                }
+
+           
+
+            
+
              if (bearbeitet12 == new_id) {
-                // adapter.log.warn("länge Projekte: " + all_project_objekts.length);
+                 //adapter.log.warn("länge Projekte: " + all_project_objekts.length);
                  //adapter.log.info("länge objekte Projekte  " + states.length);
                  //adapter.log.info("NUM: " + i + " gefunden: " + new_id);
                  match = true;
 
              } 
          }
-         
+        // adapter.log.warn("vor löschung " + new_id + " match " + match);
          if (match != true){
 
-             adapter.log.warn("dieser state löschen: " + new_id);
+             adapter.log.warn("labels html dieser state löschen: " + new_id);
              adapter.delObject("HTML.Labels-HTML." + new_id, function (err) {
 
                              if (err) adapter.log.error('Cannot delete object: ' + err);
@@ -1372,9 +1577,28 @@ adapter.getStates('JSON.Labels-JSON.*', function (err, states) {
         pos = pos +1;
         end_pos = id.length;
         new_id = id.substr(pos, end_pos);
+
+    
+
         for(var i = 0; i < all_label_objekts.length; i++){
             
             var bearbeitet12 = all_label_objekts[i].name.replace(/\./g, '-') // Punkte entfernden und mit - erseztten
+            var bearbeitet13 = all_label_objekts[i].id;
+            var is_blacklist = false;
+            for (var w = 0; w < bl_labels.length; w++){  
+             
+                if(bearbeitet13 == bl_labels[w].id){
+                    if (bearbeitet12 == new_id) {
+                    is_blacklist = true;
+                    }
+                }
+            }
+            if(is_blacklist == true){
+                continue;
+            }
+
+
+            
              if (bearbeitet12 == new_id) {
                 // adapter.log.warn("länge Projekte: " + all_project_objekts.length);
                  //adapter.log.info("länge objekte Projekte  " + states.length);
@@ -1386,7 +1610,7 @@ adapter.getStates('JSON.Labels-JSON.*', function (err, states) {
          
          if (match != true){
 
-             adapter.log.warn("dieser state löschen: " + new_id);
+             adapter.log.warn("json html dieser state löschen: " + new_id);
              adapter.delObject("JSON.Labels-JSON." + new_id, function (err) {
 
                              if (err) adapter.log.error('Cannot delete object: ' + err);

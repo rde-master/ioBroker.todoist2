@@ -65,7 +65,8 @@
     "dublicate": true,
     "text_objects": true,
     "json_objects": true,
-    "html_objects": true
+    "html_objects": true,
+    "blacklist": []
   },
   "objects": [
     {

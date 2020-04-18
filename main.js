@@ -1501,6 +1501,70 @@ if (adapter.config.project == true && adapter.config.html_objects == true){
         }
     })
 }
+
+//Projekte TEXT
+if (adapter.config.project == true && adapter.config.text_objects == true){
+    adapter.getStates('TEXT.Projects-TEXT.*', function (err, states) {
+       if (debug) adapter.log.info("...........Jetzt Projekte TEXT prüfen ob etwas gelöscht werden soll..............");
+        for (var id in states) {    
+
+            //Aus der ID den Namen extrahieren:
+            pos = id.lastIndexOf('.');
+            pos = pos +1;
+            end_pos = id.length;
+            new_id = id.substr(pos, end_pos);
+            for(var i = 0; i < all_project_objekts.length; i++){
+                
+
+                 //Prüfen ob etwas auf der Blacklist steht.
+                 var bearbeitet12 = all_project_objekts[i].name.replace(/\./g, '-') // Punkte entfernden und mit - erseztten
+                 var bearbeitet13 = all_project_objekts[i].id;
+                 var is_blacklist = false;
+                 for (var w = 0; w < bl_projects.length; w++){  
+                  
+                     if(bearbeitet13 == bl_projects[w].id){
+                        if (bearbeitet12 == new_id) {
+                        is_blacklist = true;
+                        }
+                     }
+                 }
+                 if(is_blacklist == true){
+                     continue;
+                 }
+
+
+                
+                 if (bearbeitet12 == new_id) {
+                     //adapter.log.warn("länge Projekte: " + all_project_objekts.length);
+                     //adapter.log.info("länge objekte Projekte  " + states.length);
+                     //adapter.log.info("NUM: " + i + " gefunden: " + new_id);
+                     match = true;
+ 
+                 } 
+             }
+             
+             if (match != true){
+ 
+                 adapter.log.warn("Projekte Text dieser state löschen: " + new_id);
+                 adapter.delObject("TEXT.Projects-TEXT." + new_id, function (err) {
+ 
+                                 if (err) adapter.log.error('Cannot delete object: ' + err);
+ 
+                             });
+ 
+             }
+             
+         match = false;   
+
+        }
+    })
+}
+
+
+
+
+
+
 //Labels HTML
 if (adapter.config.labels == true && adapter.config.html_objects == true){
 adapter.getStates('HTML.Labels-HTML.*', function (err, states) {
@@ -1624,12 +1688,75 @@ adapter.getStates('JSON.Labels-JSON.*', function (err, states) {
     }
 })
 }
+
+//Labels TEXT
+if (adapter.config.labels == true && adapter.config.text_objects == true){
+    adapter.getStates('TEXT.Labels-TEXT.*', function (err, states) {
+        if(debug) adapter.log.info("...........Jetzt Labels Text prüfen ob etwas gelöscht werden soll..............");
+        for (var id in states) {    
+    
+            //Aus der ID den Namen extrahieren:
+            pos = id.lastIndexOf('.');
+            pos = pos +1;
+            end_pos = id.length;
+            new_id = id.substr(pos, end_pos);
+    
+        
+    
+            for(var i = 0; i < all_label_objekts.length; i++){
+                
+                var bearbeitet12 = all_label_objekts[i].name.replace(/\./g, '-') // Punkte entfernden und mit - erseztten
+                var bearbeitet13 = all_label_objekts[i].id;
+                var is_blacklist = false;
+                for (var w = 0; w < bl_labels.length; w++){  
+                 
+                    if(bearbeitet13 == bl_labels[w].id){
+                        if (bearbeitet12 == new_id) {
+                        is_blacklist = true;
+                        }
+                    }
+                }
+                if(is_blacklist == true){
+                    continue;
+                }
+    
+    
+                
+                 if (bearbeitet12 == new_id) {
+                    // adapter.log.warn("länge Projekte: " + all_project_objekts.length);
+                     //adapter.log.info("länge objekte Projekte  " + states.length);
+                     //adapter.log.info("NUM: " + i + " gefunden: " + new_id);
+                     match = true;
+    
+                 } 
+             }
+             
+             if (match != true){
+    
+                 adapter.log.warn("Text Labels dieser state löschen: " + new_id);
+                 adapter.delObject("TEXT.Labels-TEXT." + new_id, function (err) {
+    
+                                 if (err) adapter.log.error('Cannot delete object: ' + err);
+    
+                             });
+    
+             }
+             
+         match = false;   
+    
+        }
+    })
+    }
+
+
+
+
 }
 
 
 async function main() {
     if (!adapter.config.token) {
-        adapter.log.warn('Token tosoist is not set!');
+        adapter.log.warn('Token todoist is not set!');
         return;
     }
     

@@ -70,6 +70,7 @@
     "text_objects": true,
     "json_objects": true,
     "html_objects": true,
+    "rm_old_objects": false,
     "blacklist": []
   },
   "objects": [

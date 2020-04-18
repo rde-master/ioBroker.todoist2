@@ -1427,6 +1427,8 @@ if (adapter.config.tasks == true){
         }      
     });
 }
+
+
  //Projekte HTML
 if (adapter.config.project == true && adapter.config.html_objects == true){
     adapter.getStates('HTML.Projects-HTML.*', function (err, states) {
@@ -1840,11 +1842,14 @@ async function main() {
     
     }
     
+
+    if (adapter.config.rm_old_objects == true){
     setTimeout(function(){
     
        remove_old_objects();
             
         }, 7000);
+    }
     
 }
 

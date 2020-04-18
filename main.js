@@ -82,8 +82,17 @@ async function startAdapter(options) {
         }
 
         newstate();
+        //subskribe um neue Stats anlegen zu können
         adapter.subscribeStates('New.Task');
-		check_online();
+
+        //Subscribe wenn Task aktiv sind alle Tasks um dessen Änderung zu bearbeiten
+        if(adapter.config.tasks == true){
+        adapter.subscribeStates('Tasks.*');
+        }
+        //Grüner Punkt
+        check_online();
+        
+        //Main Sequenze
         main();
 
 
@@ -111,9 +120,24 @@ async function startAdapter(options) {
     // is called if a subscribed state changes
     adapter.on('stateChange', (id, state) => {
         
+        //adapter.log.info("state: " + JSON.stringify(id));
+
+        //Nur den Names des States nehmen.
+        var pos = id.lastIndexOf('.');
+        pos = pos +1;
+        var end_pos = id.length;
+        var new_id = id.substr(pos, end_pos);
+
+
+        //adapter.log.info("state: " + JSON.stringify(new_id));
+
         //addTask(item, proejct_id, section_id, parent, order, label_id, priority, date)
-        newwithstate(id, state);
-        
+        if(new_id == "Task"){
+            new_with_state(id, state);
+        }else{
+            state_task_delete(new_id, state);
+        }
+
     });
 
     adapter.on('objectChange', (id, obj) => {
@@ -128,8 +152,24 @@ async function startAdapter(options) {
 }
 
 
+//Lösche einen Taks wenn der Butten gedrückt wird in der Objekte übersicht
+async function state_task_delete(new_id, state){
+if(state.val == true){
+    for(var i = 0; i < all_task_objekts.length; i++){
+        if(all_task_objekts[i].content == new_id){
+            //adapter.log.info("task aus der liste gefunden " + JSON.stringify(state));
+            closeTask(all_task_objekts[i].id);
+            adapter.delObject("Tasks." + new_id, function (err) {
+                if (err) adapter.log.error('Cannot delete object: ' + err);
+            });
+        }
+    }
+}
+}
+
+
 //Erstelle neuen Task wenn der Objekt New.Task geänderd wird.
-async function newwithstate(id, state){
+async function new_with_state(id, state){
 
     var new_project = await adapter.getStateAsync('New.Project');
     var new_priority = await adapter.getStateAsync('New.Priority');
@@ -1132,7 +1172,8 @@ async function readTasks(project){
                             type: 'state',
                                 common: {
                                     name: 'ID ' + id + " Project " + Liste,
-                                    type: 'string',
+                                    type: "boolean",
+                                    role: "button"
                                     },
                                         native: {}
                                       });

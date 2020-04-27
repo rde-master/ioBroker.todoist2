@@ -28,6 +28,7 @@ let all_task_objekts;
 let all_label_objekts;
 let all_project_objekts;
 let blacklist;
+let sync;
 let bl_projects = [];
 let bl_labels = [];
 let bl_sections = [];
@@ -51,6 +52,7 @@ async function startAdapter(options) {
         //hole States aus den Einstellungen und mache den Text kürzer :-)
         debug = adapter.config.debug;
         blacklist = adapter.config.blacklist;
+        sync = adapter.config.sync;
 
         //adapter.log.warn("blacklist: " + blacklist.length);
         
@@ -131,7 +133,7 @@ async function startAdapter(options) {
 
         //adapter.log.info("state: " + JSON.stringify(new_id));
 
-        //addTask(item, proejct_id, section_id, parent, order, label_id, priority, date)
+        //addTask(item, proejct_id, section_id, parent, order, label_id, priority, date, dupli)
         if(new_id == "Task"){
             new_with_state(id, state);
         }else{
@@ -192,7 +194,7 @@ async function new_with_state(id, state){
 
 
     
-    await addTask(state.val, new_project.val, "", "", "", new_label.val, new_priority.val, new_date.val);
+    await addTask(state.val, new_project.val, "", "", "", new_label.val, new_priority.val, new_date.val, true);
 }
 
 //Baue neue States
@@ -261,7 +263,7 @@ function processMessages(obj) {
     if(obj.message.task !== undefined){
     	
     	if(debug)adapter.log.info("funktion add task ausführen");
-    	addTask(obj.message.task, obj.message.project_id, obj.message.section_id, obj.message.parent, obj.message.order, obj.message.label_id, obj.message.priority, obj.message.date);
+    	addTask(obj.message.task, obj.message.project_id, obj.message.section_id, obj.message.parent, obj.message.order, obj.message.label_id, obj.message.priority, obj.message.date ,true);
     }else{
     	
     	adapter.log.warn("Please use the needed fields!!!");
@@ -376,6 +378,59 @@ function processMessages(obj) {
     
 }
 
+async function syncronisation(){
+
+    for(var i = 0; i < all_task_objekts.length; i++){
+
+    var sync_project_id = all_task_objekts[i].project_id;
+    var sync_task_id = all_task_objekts[i].id;
+
+
+        for(var j = 0; j < sync.length; j++){
+            
+            var sync_quelle = sync[j].sync_id_q;
+            var sync_ziel = sync[j].sync_id_z;
+            var sync_activ = sync[j].sync_activ;
+            var sync_delete = sync[j].sync_delete;
+
+
+            if(sync_project_id == sync_quelle && sync_activ == true){
+                
+                var APItoken = adapter.config.token;
+                var TasksApi = { method: 'GET',
+                url: 'https://api.todoist.com/rest/v1/tasks/' + sync_task_id,
+                headers: 
+                { Authorization: 'Bearer ' + APItoken}
+                 };
+            
+	
+                    request(TasksApi, async function (error, response, body) {
+                            try {
+                                
+                                var json = JSON.parse(body);
+
+                                addTask(json.content, sync_ziel, "", "", "", "", "", "", false);
+                                
+                            } catch (err) {
+                                adapter.log.error('Error by read of task: ' + err);
+                            }
+                        });
+
+            if(sync_delete == true){
+
+                closeTask(sync_task_id);
+
+            }
+
+
+            }
+
+    
+        }
+    }
+}
+
+
 
 
 
@@ -422,23 +477,29 @@ function createUUID(){
     return uuid;
 }
 
-
-function addTask(item, proejct_id, section_id, parent, order, label_id, priority, date){
+//dupli ist zur aktivierung der duplikatserkennung in der funktion
+//wurde eingebaut um die Synconistations funktion die duplikateserkenng zu umgehen.
+// false --> deaktiviert
+//true --> aktiviert (sollte standard sein)
+function addTask(item, proejct_id, section_id, parent, order, label_id, priority, date, dupli){
     if(debug) adapter.log.info("neuen Task anlegen starten....");
     var dublicate_sperre = false;
     
     if(adapter.config.dublicate == true){
 
-        //if(debug)adapter.log.warn("Starte Prüfung Duplikate");
+        if(debug)adapter.log.warn("Starte Prüfung Duplikate");
         if(debug)adapter.log.warn("Object liste: " + all_task_objekts);
         if(debug)adapter.log.warn("Object liste: " + all_task_objekts.length);
 
         for (var ik = 0; ik < all_task_objekts.length; ik++){
             // look for the entry with a matching `code` value
-            if (all_task_objekts[ik].content == item){
+            if (all_task_objekts[ik].content == item && dupli == true){
                
-                adapter.log.info("Objekt besteht schon und wird deshalb geplockt");
-                return;
+                //prüfe ab ob ein Projekt synconisiert werden soll, dieses Projekt soll von der Dublikatserkennung ausgenommen werden, da diese Contents mehrmals existieren dürfen
+               
+                    adapter.log.info("Objekt besteht schon und wird deshalb geplockt");
+                    return;
+                
             }
           }
 
@@ -462,22 +523,22 @@ function addTask(item, proejct_id, section_id, parent, order, label_id, priority
              },
           json: true };
         if(proejct_id != ""){
-        options.body.project_id = proejct_id;
+        options.body.project_id = parseInt(proejct_id);
         }
         if(section_id != ""){
-        options.body.section_id = section_id;
+        options.body.section_id = parseInt(section_id);
         }
         if(parent != ""){
         options.body.parent = parent;
         }
         if(order != ""){
-            options.body.order = order;
+            options.body.order = parseInt(order);
         }
         if(label_id != ""){
         options.body.label_ids = label_id;
         }
         if(priority != ""){
-        options.body.priority = priority;
+        options.body.priority = parseInt(priority);
         }
         if(date != ""){
         options.body.due_date = date;
@@ -487,7 +548,7 @@ function addTask(item, proejct_id, section_id, parent, order, label_id, priority
         if(dublicate_sperre == false) request(options, function (error, response, body) {
           if (error) throw new Error(error);
         
-          if(debug) adapter.log.info(JSON.stringify(body));
+           if(debug)adapter.log.info(JSON.stringify(body));
         });
 }
 
@@ -1797,6 +1858,8 @@ if (adapter.config.labels == true && adapter.config.text_objects == true){
 }
 
 
+
+
 async function main() {
     if (!adapter.config.token) {
         adapter.log.warn('Token todoist is not set!');
@@ -1851,6 +1914,16 @@ async function main() {
         }, 7000);
     }
     
+
+    //sync ausführen
+    setTimeout(function(){
+    
+        syncronisation();
+             
+         }, 6000);
+     
+    
+
 }
 
 // If started as allInOne/compact mode => return function to create instance

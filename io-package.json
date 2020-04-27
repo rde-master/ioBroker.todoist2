@@ -4,8 +4,12 @@
     "require": {
       "js-controller": ">0.6.6"
     },
-    "version": "0.1.5",
+    "version": "0.2.0",
     "news": {
+      "0.2.0": {
+        "en": "add new Sync Options",
+        "de": "Neue Sync Option eingebaut um Projekte zu Kopieren"
+      },
       "0.1.5": {
         "en": "add new Tasks, and remove Old Objekts Beta",
         "de": "Neue Tasks eingebaut, und Löschen alter Objekte als Beta eingebaut"
@@ -75,7 +79,8 @@
     "json_objects": true,
     "html_objects": true,
     "rm_old_objects": false,
-    "blacklist": []
+    "blacklist": [],
+    "sync": []
   },
   "objects": [
     {

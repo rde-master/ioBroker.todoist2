@@ -72,6 +72,10 @@ Dieser Adapter fürgt ein Blockly todoist in den Bereich sendTo hinzu:
 
 ## Changelog
 
+### 0.2.0
+* (rde-master) added new Sync Projekt option
+
+
 ### 0.1.5
 * (rde-master) added new Tasks option
 * (rde-master) added beta of remove olt Objects

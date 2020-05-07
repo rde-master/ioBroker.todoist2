@@ -33,6 +33,15 @@ let bl_projects = [];
 let bl_labels = [];
 let bl_sections = [];
 
+//Timeouts:
+let timeoutreadtasks =  null;
+let timeoutreadtasks2 = null;
+let timoutremove_old_obj = null;
+let timeoutsyncron = null;
+
+// intervall:
+let mainintval = null;
+
 
 async function startAdapter(options) {
     options = options || {};
@@ -108,17 +117,23 @@ async function startAdapter(options) {
             adapter.log.warn("It is recomended to use a intervall over 60 Seconds");
         }
         if(poll > 10000){
-        setInterval(function(){main();}, 60000);
+        mainintval = setInterval(function(){main();}, 60000);
         }
     });
 
     adapter.on('unload', () => {
        
         if (adapter && adapter.setState) adapter.setState('info.connection', false, true);
-        clearInterval;
-        clearTimeout;
+        clearInterval(mainintval);
+        
+        
+        clearTimeout(timeoutreadtasks);
+        clearTimeout(timeoutreadtasks2);
+        clearTimeout(timoutremove_old_obj);
+        clearTimeout(timeoutsyncron);
     });
 
+    
     
     
     // is called if a subscribed state changes
@@ -1886,7 +1901,7 @@ async function main() {
      
      setTimeout(function(){
     
-    readTasks(projects);	
+    timeoutreadtasks = readTasks(projects);	
     	
     }, 5000);
     
@@ -1899,7 +1914,7 @@ async function main() {
     if(adapter.config.labels === true){
     var labels = await getLabels();
     
-    setTimeout(function(){
+    timeoutreadtasks2 = setTimeout(function(){
     
     readTasks2(labels);	
     	
@@ -1909,7 +1924,7 @@ async function main() {
     
 
     if (adapter.config.rm_old_objects == true){
-    setTimeout(function(){
+    timoutremove_old_obj = setTimeout(function(){
     
        remove_old_objects();
             
@@ -1918,7 +1933,7 @@ async function main() {
     
 
     //sync ausführen
-    setTimeout(function(){
+    timeoutsyncron = setTimeout(function(){
     
         syncronisation();
              

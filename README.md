@@ -93,8 +93,9 @@ Dieser Adapter fürgt ein Blockly todoist in den Bereich sendTo hinzu:
 * (rde-master) initial release
 
 ## License
-Copyright (c) 2020 rde-master <info@rde-master.de>
-MIT License
+The MIT License (MIT)
+Copyright (c) 2020, rde-master <info@rde-master.de>
+
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

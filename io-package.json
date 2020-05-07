@@ -63,8 +63,8 @@
       "minWidth": 800,
       "width": 1224,
       "height": 600
-    },
-    "installedFrom": "https://github.com/rde-master/ioBroker.todoist2/tarball/76c1037f18679af8e6b8bce994225a780351fad3"
+    }
+    
   },
   "native": {
     "token": "",

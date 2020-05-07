@@ -121,7 +121,7 @@ async function startAdapter(options) {
         }
     });
 
-    adapter.on('unload', () => {
+    adapter.on('unload', (callback) => {
        
         if (adapter && adapter.setState) adapter.setState('info.connection', false, true);
         clearInterval(mainintval);

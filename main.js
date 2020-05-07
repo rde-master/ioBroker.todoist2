@@ -122,15 +122,22 @@ async function startAdapter(options) {
     });
 
     adapter.on('unload', (callback) => {
-       
-        if (adapter && adapter.setState) adapter.setState('info.connection', false, true);
-        clearInterval(mainintval);
+        try {
+            adapter.log.info('cleaned everything up...');
+                if (adapter && adapter.setState) adapter.setState('info.connection', false, true);
+                clearInterval(mainintval);
+            
+            
+                clearTimeout(timeoutreadtasks);
+                clearTimeout(timeoutreadtasks2);
+                clearTimeout(timoutremove_old_obj);
+                clearTimeout(timeoutsyncron);
+            callback();
+        } catch (e) {
+            callback();
+        }
+
         
-        
-        clearTimeout(timeoutreadtasks);
-        clearTimeout(timeoutreadtasks2);
-        clearTimeout(timoutremove_old_obj);
-        clearTimeout(timeoutsyncron);
     });
 
     

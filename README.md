@@ -10,7 +10,7 @@
 
 [![NPM](https://nodei.co/npm/iobroker.todoist2.png?downloads=true)](https://nodei.co/npm/iobroker.todoist2/)
 
-**Tests:**: [![Travis-CI](http://img.shields.io/travis/rde-master/ioBroker.todoist2/master.svg)](https://travis-ci.org/rde-master/ioBroker.todoist2)
+**Tests:**: [![Travis-CI](http://img.shields.io/travis/rde-master/ioBroker.todoist2/master.svg)](https://travis-ci.org/rde-master/ioBroker.todoist2.svg?branch=master)
 
 ## ioBroker.Todoist
 

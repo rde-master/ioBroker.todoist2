@@ -28,7 +28,8 @@
     "url": "https://github.com/rde-master/ioBroker.todoist2/issues"
   },
   "dependencies": {
-    "@iobroker/adapter-core": "^2.3.1"
+    "@iobroker/adapter-core": "^2.3.1",
+    "request": "^2.0.0"
   },
   "deprecated": false,
   "description": "The adapter allows to send and receive telegram messages from ioBroker and to be a broker.",

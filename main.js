@@ -115,6 +115,8 @@ async function startAdapter(options) {
     adapter.on('unload', () => {
        
         if (adapter && adapter.setState) adapter.setState('info.connection', false, true);
+        clearInterval;
+        clearTimeout;
     });
 
     

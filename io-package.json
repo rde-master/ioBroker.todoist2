@@ -4,8 +4,12 @@
     "require": {
       "js-controller": ">0.6.6"
     },
-    "version": "0.2.0",
+    "version": "0.3.0",
     "news": {
+      "0.3.0": {
+        "en": "new backend structur",
+        "de": "Neue Hintergrundaktionen"
+      },
       "0.2.0": {
         "en": "add new Sync Options",
         "de": "Neue Sync Option eingebaut um Projekte zu Kopieren"

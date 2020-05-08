@@ -27,6 +27,7 @@ let debug;
 let all_task_objekts;
 let all_label_objekts;
 let all_project_objekts;
+let all_sections_objects;
 let blacklist;
 let sync;
 let bl_projects = [];
@@ -34,8 +35,7 @@ let bl_labels = [];
 let bl_sections = [];
 
 //Timeouts:
-let timeoutreadtasks =  null;
-let timeoutreadtasks2 = null;
+let timeoutdata =  null;
 let timoutremove_old_obj = null;
 let timeoutsyncron = null;
 
@@ -128,8 +128,7 @@ async function startAdapter(options) {
                 clearInterval(mainintval);
             
             
-                clearTimeout(timeoutreadtasks);
-                clearTimeout(timeoutreadtasks2);
+                clearTimeout(timeoutdata);
                 clearTimeout(timoutremove_old_obj);
                 clearTimeout(timeoutsyncron);
             callback();
@@ -420,6 +419,7 @@ async function syncronisation(){
 
             if(sync_project_id == sync_quelle && sync_activ == true){
                 
+                // eigene Abfrage nötig, da nur dieser eine Tasks abgefragt wird:
                 var APItoken = adapter.config.token;
                 var TasksApi = { method: 'GET',
                 url: 'https://api.todoist.com/rest/v1/tasks/' + sync_task_id,
@@ -726,25 +726,120 @@ function delSection(section_id){
 
 
 
+async function getData(){
+    
+    if(debug) adapter.log.info("Funktion get Data");
 
-async function getProject(){
-	if(debug) adapter.log.info("getproject");
 	var APItoken = adapter.config.token;
-	var project = { method: 'GET',
+    
+    //Projekte einlesen:
+    if(adapter.config.project === true){
+    if(debug) adapter.log.info("get Projects");
+    var project = { method: 'GET',
           url: 'https://api.todoist.com/rest/v1/projects',
           headers: 
            { Authorization: 'Bearer ' + APItoken}
 	};
+    await request(project, async function (error, response, body) {
+        try {
+            var projects_json = JSON.parse(body);
+            all_project_objekts = projects_json;
+        }catch (err) {
+            adapter.log.error("Error bei Get Projekte: " + err);
+            adapter.log.error("Data an Api: " + project);
+            adapter.log.error("Response: " + JSON.stringify(response));
+            adapter.log.error("Body: " + JSON.stringify(body));
+            adapter.log.error("Error: " + error);
+        }
+    });
+    }
+
+
+    //Labels einlesen:
+    if(adapter.config.labels === true){
+        if(debug) adapter.log.info("get Labels");
+        var labels = { method: 'GET',
+              url: 'https://api.todoist.com/rest/v1/labels',
+              headers: 
+               { Authorization: 'Bearer ' + APItoken}
+        };
+        await request(labels, async function (error, response, body) {
+            try {
+                var labels_json = JSON.parse(body);
+                all_label_objekts = labels_json;
+            }catch (err) {
+                adapter.log.error("Error bei Get Projekte: " + err);
+                adapter.log.error("Data an Api: " + labels);
+                adapter.log.error("Response: " + JSON.stringify(response));
+                adapter.log.error("Body: " + JSON.stringify(body));
+                adapter.log.error("Error: " + error);
+            }
+        });
+    }
+
+    //Sections einlesen:
+    if(adapter.config.section === true){
+        if(debug) adapter.log.info("get Sections");
+        var sections = { method: 'GET',
+              url: 'https://api.todoist.com/rest/v1/sections',
+              headers: 
+               { Authorization: 'Bearer ' + APItoken}
+        };
+        await request(sections, async function (error, response, body) {
+            try {
+                var sections_json = JSON.parse(body);
+                all_sections_objects = sections_json;
+            }catch (err) {
+                adapter.log.error("Error bei Get Projekte: " + err);
+                adapter.log.error("Data an Api: " + sections);
+                adapter.log.error("Response: " + JSON.stringify(response));
+                adapter.log.error("Body: " + JSON.stringify(body));
+                adapter.log.error("Error: " + error);
+            }
+        });
+    }
+
+    //Tasks einlesen:
+    
+        if(debug) adapter.log.info("get Tasks");
+        var tasks = { method: 'GET',
+              url: 'https://api.todoist.com/rest/v1/tasks',
+              headers: 
+               { Authorization: 'Bearer ' + APItoken}
+        };
+        await request(tasks, async function (error, response, body) {
+            try {
+                var tasks_json = JSON.parse(body);
+                all_task_objekts = tasks_json;
+            }catch (err) {
+                adapter.log.error("Error bei Get Projekte: " + err);
+                adapter.log.error("Data an Api: " + tasks);
+                adapter.log.error("Response: " + JSON.stringify(response));
+                adapter.log.error("Body: " + JSON.stringify(body));
+                adapter.log.error("Error: " + error);
+            }
+        });
+    
+
+
+
+
+}
+
+
+
+
+
+async function getProject(){
+	if(debug) adapter.log.info("Funktion get Project");
 	var ToDoListen = []; // wird mit IDs der TO-DO Listen befuellt
     var Projects_names = []; // wird mit Namen der TO-DO Listen befuellt
     
     var json_neu = "[]";
     var json_neu_parse = JSON.parse(json_neu);
-	await request(project, async function (error, response, body) {
-        try {
-            var projects_json = JSON.parse(body);
+	      
             var k;
-            all_project_objekts = projects_json; // Alle Projekte in die globelae Variable schreiben
+            var projects_json = all_project_objekts; // Alle Projekte in die globelae Variable lesen
            
             for (k = 0; k < projects_json.length; k++) {
                 var projects = parseInt(projects_json[k].id);
@@ -832,11 +927,11 @@ async function getProject(){
              await adapter.setStateAsync("ALL.JSON-Projects", {val: json_neu, ack: true});
             }
             
-        } catch (err) {
-            adapter.log.error("Error bei Get Projekte: " + err);
-        }
+       
+           
+        
          
-    });
+  
 
 	return {
 		projects_id: ToDoListen,
@@ -846,24 +941,19 @@ async function getProject(){
 
 
 async function getLabels(){
-	
-	
-	var APItoken = adapter.config.token;
-	var labels = { method: 'GET',
-          url: 'https://api.todoist.com/rest/v1/labels',
-          headers: 
-           { Authorization: 'Bearer ' + APItoken}
-	};
+    
+    if(debug) adapter.log.info("Funktion get labels");
+		
 	var Labelsid = []; 
     var Labels_names = []; 
 
     var json_neu = "[]";
     var json_neu_parse = JSON.parse(json_neu);
-    	await request(labels, async function (error, response, body) {
-        try {
-            var labels_json = JSON.parse(body);
+    	
+            
             var i;
-            all_label_objekts = labels_json //Labels in globale Variable schreiben
+            var labels_json = all_label_objekts;  //Labels in globale Variable lesen
+
             for (i = 0; i < labels_json.length; i++) {
                 
                 var labels1 = parseInt(labels_json[i].id);
@@ -952,13 +1042,8 @@ async function getLabels(){
              await adapter.setStateAsync("ALL.JSON-Labels", {val: json_neu, ack: true});
             }
 
-        } catch (err) {
-            adapter.log.error(err); 
-        }
-        
-		});
-
-		//jetzt noch die alten Labels löschen, die es nicht mehr gibt:
+    
+        //jetzt noch die alten Labels löschen, die es nicht mehr gibt:
         /*
         setTimeout(function(){
     
@@ -994,22 +1079,16 @@ async function getLabels(){
 async function getSections(){
 	
 	
+	if(debug) adapter.log.info("Funktion get Sections");
 	
-	var APItoken = adapter.config.token;
-	var sections = { method: 'GET',
-          url: 'https://api.todoist.com/rest/v1/sections',
-          headers: 
-           { Authorization: 'Bearer ' + APItoken}
-	};
 	var Sectionsid = []; 
     var Sections_names = [];
     
     var json_neu = "[]";
     var json_neu_parse = JSON.parse(json_neu);
 
-	await request(sections, async function (error, response, body) {
-        try {
-            var sections_json = JSON.parse(body);
+	
+            var sections_json = all_sections_objects;
             var i;
             
             
@@ -1082,12 +1161,7 @@ async function getSections(){
              await adapter.setStateAsync("ALL.JSON-Sections", {val: json_neu, ack: true});
         }
         
-        } catch (err) {
-            adapter.log.error(err); 
-        }
         
-		});
-
 	return {
 		sections_id: Sectionsid,
 		sections_names: Sections_names
@@ -1095,26 +1169,103 @@ async function getSections(){
 	
 }
 
+async function tasktotask(){
+                           
+    var i;
+    if(debug) adapter.log.info("Funktion taskt to task");
+    if(debug) adapter.log.warn("anzahl task: " + json.length);
+    var json = all_task_objekts;
+
+    var json_neu = "[]";
+    var json_neu_parse = JSON.parse(json_neu);  
+
+    //Schleife für Objekte unter Tasks:
+    for (i = 0; i < json.length; i++) {
+                        
+        var Liste = parseInt(json[i].project_id);
+
+        var is_blacklist = false;
+        for (var w = 0; w < bl_projects.length; w++){               
+            if(Liste == bl_projects[w].id){
+               // adapter.log.info("projects in Tasks: " + Liste);
+               // adapter.log.info("liste: " +  JSON.stringify(bl_projects[w]));
+                is_blacklist = true;
+               // adapter.log.warn("Blacklist erkannt: " + JSON.stringify(bl_projects[w]));
+            }
+        }
+        if(is_blacklist == true){
+             if(debug) adapter.log.info("überspringen task");
+            continue;
+        }
+
+        json_neu_parse.push({"name":json[i].content, "ID":json[i].project_id});
+
+        json_neu = JSON.stringify(json_neu_parse);
+        if(debug) adapter.log.info("Aufbau Projekt Liste: " + json_neu);
+
+
+        var content = JSON.stringify(json[i].content);
+        var id = JSON.stringify(json[i].id);
+        content = content.replace(/\"/g, ''); //entfernt die Anfuehrungszeichen aus dem Quellstring
+        //content = content[0].toUpperCase() + content.substring(1); // Macht den ersten Buchstaben des strings zu einem Grossbuchstaben
+        var taskurl = JSON.stringify(json[i].url);
+        taskurl = taskurl.replace(/\"/g, '');
+        
+        
+        
+        //Anlage für jeden Task in einen eigenen State:
+        
+        var content2 = content.replace(/\./g, '-'); //ERstetzt die Punke - aus dem Quellstring weil, sonst ordner angelegt werden
+        
+        adapter.setObjectNotExists("Tasks." + content2, {
+                type: 'state',
+                    common: {
+                        name: 'ID ' + id + " Project " + Liste,
+                        type: "boolean",
+                        role: "button"
+                        },
+                            native: {}
+                          });
+        
+
+    }
+
+// Wenn JSON Objekte angelegt werden sollen denn heir das all JSON Tasks objekten anlegen:
+   
+if(adapter.config.json_objects === true){	
+
+    await adapter.setObjectNotExistsAsync("ALL.JSON-Tasks", {
+        type: 'state',
+        common: {
+            name: 'JSON Objekt of all Tasks',
+            type: 'string',
+            
+        },
+        native: {}
+          });
+
+
+
+
+ await adapter.setStateAsync("ALL.JSON-Tasks", {val: json_neu, ack: true});
+}
+
+
+}
+
+
+
+
+
 //zur Verarbeitung von den Objekten in den Projekten und den einzelnen Tasks
-async function readTasks(project){
-	
-	var APItoken = adapter.config.token;
-	var TasksApi = { method: 'GET',
-          url: 'https://api.todoist.com/rest/v1/tasks',
-          headers: 
-           { Authorization: 'Bearer ' + APItoken}
-	};
-	
-	
-	request(TasksApi, async function (error, response, body) {
-            try {
-                if(debug) adapter.log.info(JSON.stringify(body));
+async function tasktoproject(project){
+    
+            if(debug) adapter.log.info("Funktion taskt to project");
                 if(debug) adapter.log.info("länge: " + project.projects_id.length);
-                
-                var json = JSON.parse(body);
+                                
                 var j;
                 if(debug) adapter.log.warn("anzahl task: " + json.length);
-                all_task_objekts = json;
+                var json = all_task_objekts;
                 //Verarbeitung von Projekten
                 
                 //Schleife zum Befüllen der Projekt Tasks in HTML, Texts und JSON.
@@ -1220,123 +1371,16 @@ async function readTasks(project){
                 }
 
 
-                //Schleife für Objekte unter Tasks:
-                for (i = 0; i < json.length; i++) {
-                        
-                    var Liste = parseInt(json[i].project_id);
-
-                    var is_blacklist = false;
-                    for (var w = 0; w < bl_projects.length; w++){               
-                        if(Liste == bl_projects[w].id){
-                           // adapter.log.info("projects in Tasks: " + Liste);
-                           // adapter.log.info("liste: " +  JSON.stringify(bl_projects[w]));
-                            is_blacklist = true;
-                           // adapter.log.warn("Blacklist erkannt: " + JSON.stringify(bl_projects[w]));
-                        }
-                    }
-                    if(is_blacklist == true){
-                         if(debug) adapter.log.info("überspringen task");
-                        continue;
-                    }
-
-
-                    var content = JSON.stringify(json[i].content);
-                    var id = JSON.stringify(json[i].id);
-                    content = content.replace(/\"/g, ''); //entfernt die Anfuehrungszeichen aus dem Quellstring
-                    //content = content[0].toUpperCase() + content.substring(1); // Macht den ersten Buchstaben des strings zu einem Grossbuchstaben
-                    var taskurl = JSON.stringify(json[i].url);
-                    taskurl = taskurl.replace(/\"/g, '');
-                    
-                    
-                    
-                    //Anlage für jeden Task in einen eigenen State:
-                    
-                    var content2 = content.replace(/\./g, '-'); //ERstetzt die Punke - aus dem Quellstring weil, sonst ordner angelegt werden
-                    if(adapter.config.tasks === true){
-                    adapter.setObjectNotExists("Tasks." + content2, {
-                            type: 'state',
-                                common: {
-                                    name: 'ID ' + id + " Project " + Liste,
-                                    type: "boolean",
-                                    role: "button"
-                                    },
-                                        native: {}
-                                      });
-                    }
-
-                }
-
-
-               if(adapter.config.tasks === true){
-               await adapter.setObjectNotExistsAsync("ALL.JSON-Tasks", {
-					type: 'state',
-                    common: {
-                        name: 'JSON Objekt of all Tasks',
-                        type: 'string',
-                        
-                    },
-                    native: {}
-              		});
-               }
-
-            //hier gehen wir nochmals durch die Tasks für den Datenpunkt Json-Tasks
-            var json_neu = "[]";
-            var json_neu_parse = JSON.parse(json_neu);   
-            
-            for (i = 0; i < json.length; i++) {
-
-                    var is_blacklist = false;
-                    for (var w = 0; w < bl_projects.length; w++){               
-                        if(json[i].project_id== bl_projects[w].id){
-                          //  adapter.log.info("projects in Tasks: " + json[i].project_id);
-                          //  adapter.log.info("liste: " +  JSON.stringify(bl_projects[w]));
-                            is_blacklist = true;
-                          //  adapter.log.warn("Blacklist erkannt: " + JSON.stringify(bl_projects[w]));
-                        }
-                    }
-                    if(is_blacklist == true){
-                         if(debug) adapter.log.info("überspringen task");
-                        continue;
-                    }
-
-
-                json_neu_parse.push({"name":json[i].content, "ID":json[i].project_id});
-            
-                 json_neu = JSON.stringify(json_neu_parse);
-                    if(debug) adapter.log.info("Aufbau Projekt Liste: " + json_neu);
-
-               }
-
-
-               
-            if(adapter.config.json_objects === true){	
-             await adapter.setStateAsync("ALL.JSON-Tasks", {val: json_neu, ack: true});
-            }
-               
-            } catch (err) {
-                adapter.log.error('Error by read of task: ' + err);
-            }
-        });
+                
 	
 }
 
 //zur Verarbeitung der Tasks in den Labels:
 
-async function readTasks2(labels){
+async function tasktolabels(labels){
 	
-	var APItoken = adapter.config.token;
-	var TasksApi = { method: 'GET',
-          url: 'https://api.todoist.com/rest/v1/tasks',
-          headers: 
-           { Authorization: 'Bearer ' + APItoken}
-	};
-	
-	
-	request(TasksApi, async function (error, response, body) {
-            try {
-                if(debug) adapter.log.info(JSON.stringify(body));
-                
-                var json = JSON.parse(body);
+                if(debug) adapter.log.info("Funktion taskt to labels");        
+                var json = all_task_objekts;
                 var j;
                 if(debug) adapter.log.info("anzahl task: " + json.length);
                 
@@ -1429,21 +1473,13 @@ async function readTasks2(labels){
             
             }
                
-               
-            
-            	
-           //  await adapter.setStateAsync("JSON-Tasks", {val: json, ack: true});
-              
-              
-            } catch (err) {
-                adapter.log.error('Error by read of task: ' + err);
-            }
-        });
-        
+             
+       
 }
 
 
 async function remove_old_objects(){
+    if(debug) adapter.log.info("Funktion remove old objects");
 var new_id;
 var pos;
 var end_pos;
@@ -1896,39 +1932,41 @@ async function main() {
     if (debug) adapter.log.info("Debug mode: " + adapter.config.debug);
     if (debug) adapter.log.warn("Dublikate Modus: " + adapter.config.dublicate);
    
-    
+    // lese die daten ein:
+    getData();
 
+    // 5 Sekunden später bfülle alle:
 
-    if(adapter.config.project === true){
-    	var projects = await getProject();
-     //Schreibe die Tasks erst nach 5 Sekunden in die States, damit auch alle daten da sind!
-    
-   
-    
+    timeoutdata = setTimeout(async function(){
+        
+        if(adapter.config.project === true){
+            var projects = await getProject();
+
+            tasktoproject(projects);	
+        }
+        
+        if(adapter.config.section === true){
+            var sections = await getSections();	
+                
+        }
+
+        if(adapter.config.labels === true){
+            var labels = await getLabels();
+            
+            tasktolabels(labels);	
+            
+        }
+        
+        if(adapter.config.tasks === true){
+
+            tasktotask();
+
+        }
+
      
-     setTimeout(function(){
+       }, 5000);
     
-    timeoutreadtasks = readTasks(projects);	
-    	
-    }, 5000);
-    
-    }
-    
-    if(adapter.config.section === true){
-    var sections = await getSections();	
-    	
-    }
-    if(adapter.config.labels === true){
-    var labels = await getLabels();
-    
-    timeoutreadtasks2 = setTimeout(function(){
-    
-    readTasks2(labels);	
-    	
-    }, 5000);
-    
-    }
-    
+
 
     if (adapter.config.rm_old_objects == true){
     timoutremove_old_obj = setTimeout(function(){

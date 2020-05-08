@@ -72,6 +72,9 @@ Dieser Adapter fürgt ein Blockly todoist in den Bereich sendTo hinzu:
 
 ## Changelog
 
+### 0.3.0
+* (rde-master) new Backend Structur
+
 ### 0.2.0
 * (rde-master) added new Sync Projekt option
 
@@ -94,7 +97,7 @@ Dieser Adapter fürgt ein Blockly todoist in den Bereich sendTo hinzu:
 
 ## License
 The MIT License (MIT)
-Copyright (c) 2020-2020, rde-master <info@rde-master.de>
+Copyright (c) 2020 rde-master <info@rde-master.de>
 
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

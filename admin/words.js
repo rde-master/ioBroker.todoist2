@@ -1,153 +1,456 @@
 /*global systemDictionary:true */
+/*
+
+*/
+
+
+
 'use strict';
 
 systemDictionary = {
     'Main settings': {
-        'en': 'Main settings',
-        'de': 'Haupteinstellungen'  
+        "en": "Main settings",
+    "de": "Haupteinstellungen",
+    "ru": "Основные настройки",
+    "pt": "Configurações principais",
+    "nl": "Belangrijkste instellingen",
+    "fr": "Réglages principaux",
+    "it": "Impostazioni principali",
+    "es": "Ajustes principales",
+    "pl": "Ustawienia główne",
+    "zh-cn": "主要设定"  
     },
     'Blacklist': {
-        'en': 'Blacklist',
-        'de': 'Blacklist' 
+        "en": "Blacklist",
+    "de": "Schwarze Liste",
+    "ru": "Черный список",
+    "pt": "Lista negra",
+    "nl": "Zwarte lijst",
+    "fr": "Liste noire",
+    "it": "Lista nera",
+    "es": "Lista negra",
+    "pl": "Czarna lista",
+    "zh-cn": "黑名单" 
     },
     'Syncronisation': {
-        'en': 'Syncronisation',
-        'de': 'Synkronisation'
+        "en": "Syncronisation",
+    "de": "Synchronisation",
+    "ru": "Syncronisation",
+    "pt": "Sincronização",
+    "nl": "Syncronisatie",
+    "fr": "Syncronisation",
+    "it": "syncronisation",
+    "es": "Sincronización",
+    "pl": "Synchronizacja",
+    "zh-cn": "同步化"
     },
     'Polling interval (ms) use more than 60000 pls.': {
-        'en': 'Polling interval (ms) use more than 60.000 pls.',
-        'de': 'Pull Intervall in Millisekunden. Bitte nicht weniger als 60.000 verwenden.'
+        "en": "Polling interval (ms) use more than 60.000 pls.",
+    "de": "Das Abfrageintervall (ms) verwendet mehr als 60.000 bitte.",
+    "ru": "Интервал опроса (мс) использовать более 60.000 PLS.",
+    "pt": "O intervalo de pesquisa (ms) usa mais de 60.000 pls.",
+    "nl": "Polling-interval (ms) gebruikt meer dan 60.000 pls.",
+    "fr": "L'intervalle d'interrogation (ms) utilise plus de 60 000 pls.",
+    "it": "L'intervallo di polling (ms) utilizza più di 60.000 pls.",
+    "es": "El intervalo de sondeo (ms) usa más de 60,000 pls.",
+    "pl": "Interwał sondowania (ms) użyj ponad 60 000 wiadomości.",
+    "zh-cn": "轮询间隔（ms）使用超过60.000 pls。"
     },
     'token': {
-        'en': 'token for Api from Todoist',
-        'de': 'token für die Todoist Api'
+        "en": "token for Api from Todoist",
+    "de": "Token für Api von Todoist",
+    "ru": "токен для Api от Todoist",
+    "pt": "token para Api de Todoist",
+    "nl": "token voor Api van Todoist",
+    "fr": "jeton pour Api de Todoist",
+    "it": "token per Api di Todoist",
+    "es": "ficha para Api de Todoist",
+    "pl": "token dla Api z Todoist",
+    "zh-cn": "Todoist的Api代币"
     },
     'Read README.md how to get token': {
-        'en': 'click here to get token',
-        'de': 'Hier klicken für einen token'
+        "en": "click here to get token",
+    "de": "Klicken Sie hier, um den Token zu erhalten",
+    "ru": "нажмите здесь, чтобы получить токен",
+    "pt": "clique aqui para obter o token",
+    "nl": "klik hier om een token te krijgen",
+    "fr": "cliquez ici pour obtenir un jeton",
+    "it": "fai clic qui per ottenere il token",
+    "es": "haga clic aquí para obtener el token",
+    "pl": "kliknij tutaj, aby uzyskać token",
+    "zh-cn": "单击此处获取令牌"
     },
     'Einstellungen': {
-        'en': 'Settings',
-        'de': 'Einstellungen'
+        "en": "Settings",
+    "de": "Einstellungen",
+    "ru": "настройки",
+    "pt": "Definições",
+    "nl": "Instellingen",
+    "fr": "Réglages",
+    "it": "impostazioni",
+    "es": "Configuraciones",
+    "pl": "Ustawienia",
+    "zh-cn": "设定值"
     },
     'debug': {
-        'en': 'debug',
-        'de': 'debug'
+        "en": "debug",
+    "de": "debuggen",
+    "ru": "отлаживать",
+    "pt": "depurar",
+    "nl": "debuggen",
+    "fr": "déboguer",
+    "it": "mettere a punto",
+    "es": "depurar",
+    "pl": "odpluskwić",
+    "zh-cn": "调试"
     },
     'debug mode on': {
-        'en': 'debug mode on',
-        'de': 'debug mode an'
+        "en": "debug mode on",
+    "de": "Debug-Modus ein",
+    "ru": "режим отладки включен",
+    "pt": "modo de depuração ativado",
+    "nl": "debug-modus aan",
+    "fr": "mode débogage activé",
+    "it": "modalità di debug attivata",
+    "es": "modo de depuración en",
+    "pl": "włączony tryb debugowania",
+    "zh-cn": "打开调试模式"
     },
     'Dublikate': {
-        'en': 'Duplicates',
-        'de': 'Dublikate'
+        "en": "Duplicates",
+    "de": "Duplikate",
+    "ru": "Дубликаты",
+    "pt": "Duplicatas",
+    "nl": "Duplicaten",
+    "fr": "Doublons",
+    "it": "duplicati",
+    "es": "Duplicados",
+    "pl": "Duplikaty",
+    "zh-cn": "重复项"
     },
     'Bereits angelegte Tasks (Dublikate) nicht erneut anlegen': {
-        'en': 'Do not re-create tasks (duplicates) that have already been created',
-        'de': 'Bereits angelegte Tasks (Dublikate) nicht erneut anlegen'
+        "en": "Do not re-create tasks (duplicates) that have already been created",
+        "de": "Bereits angelegte Tasks (Dublikate) nicht erneut anlegen",
+        "ru": "Не создавать заново задачи (дубликаты), которые уже были созданы",
+        "pt": "Não recrie tarefas (duplicatas) que já foram criadas",
+        "nl": "Maak geen taken (duplicaten) opnieuw die al zijn gemaakt",
+        "fr": "Ne recréez pas les tâches (doublons) qui ont déjà été créées",
+        "it": "Non ricreare attività (duplicati) che sono già state create",
+        "es": "No vuelva a crear tareas (duplicados) que ya se hayan creado.",
+        "pl": "Nie twórz ponownie zadań (duplikatów), które zostały już utworzone",
+        "zh-cn": "不要重新创建已经创建的任务（重复项）"
     },
     'Remove old Objekts': {
-        'en': 'Remove old Objects',
-        'de': 'Lösche alte Objekte'
+        "en": "Remove old Objects",
+    "de": "Alte Objekte entfernen",
+    "ru": "Удалить старые объекты",
+    "pt": "Remover objetos antigos",
+    "nl": "Verwijder oude objecten",
+    "fr": "Supprimer les anciens objets",
+    "it": "Rimuovi vecchi oggetti",
+    "es": "Eliminar objetos viejos",
+    "pl": "Usuń stare obiekty",
+    "zh-cn": "删除旧对象"
     },
     'Alte Objekte werden automatisch, ja nach Intravall, gelöscht. (BETA!!!)': {
-        'en': 'Old objects are deleted automatically, depending on the intravall. (BETA!!!)',
-        'de': 'Alte Objekte werden automatisch, ja nach Intravall, gelöscht. (BETA!!!)'
+        "en": "Old objects are deleted automatically, depending on the intravall. (BETA!!!)",
+    "de": "Alte Objekte werden je nach Intravall automatisch gelöscht. (BETA!!!)",
+    "ru": "Старые объекты удаляются автоматически, в зависимости от интравалла. (БЕТА!!!)",
+    "pt": "Objetos antigos são excluídos automaticamente, dependendo do intravall. (BETA!!!)",
+    "nl": "Oude objecten worden automatisch verwijderd, afhankelijk van de intravall. (BÈTA !!!)",
+    "fr": "Les anciens objets sont supprimés automatiquement, selon l'intravall. (BÊTA!!!)",
+    "it": "I vecchi oggetti vengono eliminati automaticamente, a seconda dell'intravall. (BETA!!!)",
+    "es": "Los objetos antiguos se eliminan automáticamente, según la intravall. (¡¡¡BETA!!!)",
+    "pl": "Stare obiekty są usuwane automatycznie, w zależności od instalacji wewnętrznej. (BETA !!!)",
+    "zh-cn": "旧对象会自动删除，具体取决于时间间隔。 （BETA !!!）"
     },
     'Auswahl Anlage Objekte': {
-        'en': 'Selection of objects',
-        'de': 'Auswahl Anlage Objekte'
+        "en": "Selection of objects",
+    "de": "Auswahl von Objekten",
+    "ru": "Подбор объектов",
+    "pt": "Seleção de objetos",
+    "nl": "Selectie van objecten",
+    "fr": "Sélection d'objets",
+    "it": "Selezione di oggetti",
+    "es": "Selección de objetos.",
+    "pl": "Wybór obiektów",
+    "zh-cn": "选择对象"
     },
     'Project': {
-        'en': 'Project',
-        'de': 'Projekte'
+        "en": "Project",
+    "de": "Projekte",
+    "ru": "проект",
+    "pt": "Projeto",
+    "nl": "Project",
+    "fr": "Projet",
+    "it": "Progetto",
+    "es": "Proyecto",
+    "pl": "Projekt",
+    "zh-cn": "项目"
     },
     'Projekte als Objekte anlegen': {
-        'en': 'Create projects as objects',
-        'de': 'Projekte als Objekte anlegen'
+        "en": "Create projects as objects",
+    "de": "Erstellen Sie Projekte als Objekte",
+    "ru": "Создавайте проекты как объекты",
+    "pt": "Crie projetos como objetos",
+    "nl": "Maak projecten als objecten",
+    "fr": "Créer des projets en tant qu'objets",
+    "it": "Crea progetti come oggetti",
+    "es": "Crea proyectos como objetos",
+    "pl": "Twórz projekty jako obiekty",
+    "zh-cn": "将项目创建为对象"
     },
     'Section': {
-        'en': 'Section',
-        'de': 'Section'
+        "en": "Section",
+        "de": "Sektion",
+        "ru": "Раздел",
+        "pt": "Seção",
+        "nl": "Sectie",
+        "fr": "Section",
+        "it": "Sezione",
+        "es": "Sección",
+        "pl": "Sekcja",
+        "zh-cn": "部分"
     },
     'Section als Objekte anlegen': {
-        'en': 'Create section as objects',
-        'de': 'Section als Objekte anlegen'
+        "en": "Create section as objects",
+    "de": "Abschnitt als Objekte erstellen",
+    "ru": "Создать раздел как объекты",
+    "pt": "Criar seção como objetos",
+    "nl": "Maak sectie als objecten",
+    "fr": "Créer une section en tant qu'objets",
+    "it": "Crea sezione come oggetti",
+    "es": "Crear sección como objetos",
+    "pl": "Utwórz sekcję jako obiekty",
+    "zh-cn": "将节创建为对象"
     },
     'Tasks': {
-        'en': 'Tasks',
-        'de': 'Tasks'
+        "en": "Tasks",
+    "de": "Aufgaben",
+    "ru": "Задания",
+    "pt": "Tarefas",
+    "nl": "Taken",
+    "fr": "Tâches",
+    "it": "Compiti",
+    "es": "Tareas",
+    "pl": "Zadania",
+    "zh-cn": "任务"
     },
     'Tasks als Objekte anlegen': {
-        'en': 'Create tasks as objects',
-        'de': 'Tasks als Objekte anlegen'
+        "en": "Create tasks as objects",
+    "de": "Erstellen Sie Aufgaben als Objekte",
+    "ru": "Создавайте задачи как объекты",
+    "pt": "Criar tarefas como objetos",
+    "nl": "Maak taken als objecten",
+    "fr": "Créer des tâches en tant qu'objets",
+    "it": "Crea attività come oggetti",
+    "es": "Crea tareas como objetos",
+    "pl": "Twórz zadania jako obiekty",
+    "zh-cn": "将任务创建为对象"
     },
     'Labels': {
-        'en': 'Labels',
-        'de': 'Labels'
+        "en": "Labels",
+    "de": "Labels",
+    "ru": "Этикетки",
+    "pt": "Etiquetas",
+    "nl": "Etiketten",
+    "fr": "Étiquettes",
+    "it": "etichette",
+    "es": "Etiquetas",
+    "pl": "Etykiety",
+    "zh-cn": "标签"
     },
     'Labels als Objekte anlegen': {
-        'en': 'Create labels as objects',
-        'de': 'Labels als Objekte anlegen'
+        "en": "Create labels as objects",
+    "de": "Erstellen Sie Beschriftungen als Objekte",
+    "ru": "Создать ярлыки как объекты",
+    "pt": "Crie etiquetas como objetos",
+    "nl": "Maak labels als objecten",
+    "fr": "Créer des étiquettes en tant qu'objets",
+    "it": "Crea etichette come oggetti",
+    "es": "Crea etiquetas como objetos",
+    "pl": "Twórz etykiety jako obiekty",
+    "zh-cn": "将标签创建为对象"
     },
     'Art der Objekte': {
-        'en': 'Type of objects',
-        'de': 'Art der Objekte:'
+        "en": "Type of objects",
+        "de": "Art der Objekte",
+        "ru": "Тип объектов",
+        "pt": "Tipo de objetos",
+        "nl": "Type objecten",
+        "fr": "Type d'objets",
+        "it": "Tipo di oggetti",
+        "es": "Tipo de objetos",
+        "pl": "Rodzaj obiektów",
+        "zh-cn": "对象类型"
     },
     'HTML': {
-        'en': 'HTML',
-        'de': 'HTML'
+        "en": "HTML",
+    "de": "HTML",
+    "ru": "HTML",
+    "pt": "HTML",
+    "nl": "HTML",
+    "fr": "HTML",
+    "it": "HTML",
+    "es": "HTML",
+    "pl": "HTML",
+    "zh-cn": "的HTML"
     },
     'HTML Objekte anlegen': {
-        'en': 'Create HTML objects',
-        'de': 'HTML Objekte anlegen'
+        "en": "Create HTML objects",
+    "de": "Erstellen Sie HTML-Objekte",
+    "ru": "Создать HTML-объекты",
+    "pt": "Crie objetos HTML",
+    "nl": "Maak HTML-objecten",
+    "fr": "Créer des objets HTML",
+    "it": "Crea oggetti HTML",
+    "es": "Crea objetos HTML",
+    "pl": "Twórz obiekty HTML",
+    "zh-cn": "创建HTML对象"
     },
     'JSON': {
-        'en': 'JSON',
-        'de': 'JSON'
+        "en": "JSON",
+    "de": "JSON",
+    "ru": "JSON",
+    "pt": "JSON",
+    "nl": "JSON",
+    "fr": "JSON",
+    "it": "JSON",
+    "es": "JSON",
+    "pl": "JSON",
+    "zh-cn": "JSON格式"
     },
     'JSON Objekte anlegen': {
-        'en': 'Create JSON objects',
-        'de': 'JSON Objekte anlegen'
+        "en": "Create JSON objects",
+    "de": "Erstellen Sie JSON-Objekte",
+    "ru": "Создать объекты JSON",
+    "pt": "Criar objetos JSON",
+    "nl": "Maak JSON-objecten",
+    "fr": "Créer des objets JSON",
+    "it": "Crea oggetti JSON",
+    "es": "Crear objetos JSON",
+    "pl": "Utwórz obiekty JSON",
+    "zh-cn": "创建JSON对象"
     },
     'Text': {
-        'en': 'Text',
-        'de': 'Text'
+        "en": "Text",
+    "de": "Text",
+    "ru": "Текст",
+    "pt": "Texto",
+    "nl": "Tekst",
+    "fr": "Texte",
+    "it": "Testo",
+    "es": "Texto",
+    "pl": "Tekst",
+    "zh-cn": "文本"
     },
     'Text Objekte anlegen': {
-        'en': 'Create text objects',
-        'de': 'Text Objekte anlegen'
+        "en": "Create text objects",
+    "de": "Erstellen Sie Textobjekte",
+    "ru": "Создать текстовые объекты",
+    "pt": "Crie objetos de texto",
+    "nl": "Maak tekstobjecten",
+    "fr": "Créer des objets texte",
+    "it": "Crea oggetti di testo",
+    "es": "Crea objetos de texto",
+    "pl": "Twórz obiekty tekstowe",
+    "zh-cn": "创建文本对象"
     },
     'Blacklist: Hier kannst du Blacklist für die einzelnen Bereiche anlegen.': {
-        'en': 'Blacklist: Here you can create a blacklist for the individual objects.',
-        'de': 'Blacklist: Hier kannst du Blacklist für die einzelnen Objekte anlegen.'
+        "en": "Blacklist: Here you can create a blacklist for the individual objects.",
+    "de": "Blacklist: Hier können Sie eine Blacklist für die einzelnen Objekte erstellen.",
+    "ru": "Черный список: здесь вы можете создать черный список для отдельных объектов.",
+    "pt": "Lista negra: aqui você pode criar uma lista negra para os objetos individuais.",
+    "nl": "Zwarte lijst: hier kunt u een zwarte lijst maken voor de afzonderlijke objecten.",
+    "fr": "Liste noire: Ici, vous pouvez créer une liste noire pour les objets individuels.",
+    "it": "Lista nera: qui puoi creare una lista nera per i singoli oggetti.",
+    "es": "Lista negra: aquí puede crear una lista negra para los objetos individuales.",
+    "pl": "Czarna lista: tutaj możesz utworzyć czarną listę dla poszczególnych obiektów.",
+    "zh-cn": "黑名单：您可以在此处为单个对象创建黑名单。"
     },
     'Syncronisation: Hier kannst du Projekte miteinander Syncornisieren.': {
-        'en': 'Synchronization: Here you can synchronize projects with each other',
-        'de': 'Syncronisation: Hier kannst du Projekte miteinander Syncornisieren '
+        "en": "Synchronization: Here you can synchronize projects with each other",
+    "de": "Synchronisation: Hier können Sie Projekte miteinander synchronisieren",
+    "ru": "Синхронизация: здесь вы можете синхронизировать проекты друг с другом",
+    "pt": "Sincronização: aqui você pode sincronizar projetos entre si",
+    "nl": "Synchronisatie: Hier kunt u projecten met elkaar synchroniseren",
+    "fr": "Synchronisation: ici, vous pouvez synchroniser des projets entre eux",
+    "it": "Sincronizzazione: qui è possibile sincronizzare i progetti tra loro",
+    "es": "Sincronización: aquí puede sincronizar proyectos entre sí",
+    "pl": "Synchronizacja: tutaj możesz synchronizować projekty ze sobą",
+    "zh-cn": "同步：在这里您可以彼此同步项目"
     },
     'Dublikate können nicht erkannt werden! Bitte Auto delete nutzen, sonst werden ganz viele Todos angelegt.': {
-        'en': 'Duplicates cannot be recognized! Please use Auto delete, otherwise a lot of todos will be created.',
-        'de': 'Dublikate können nicht erkannt werden! Bitte Auto delete nutzen, sonst werden ganz viele Todos angelegt.'
+        "en": "Duplicates cannot be recognized! Please use Auto delete, otherwise a lot of todos will be created.",
+        "de": "Duplikate können nicht erkannt werden! Bitte verwenden Sie Automatisch löschen, da sonst viele Aufgaben erstellt werden.",
+        "ru": "Дубликаты не могут быть распознаны! Пожалуйста, используйте Автоудаление, в противном случае будет создано много задач.",
+        "pt": "Duplicatas não podem ser reconhecidas! Por favor, use Exclusão automática, caso contrário, muitos serão criados.",
+        "nl": "Duplicaten worden niet herkend! Gebruik a.u.b.Automatisch verwijderen, anders worden er veel taken gemaakt.",
+        "fr": "Les doublons ne peuvent pas être reconnus! Veuillez utiliser la suppression automatique, sinon beaucoup de tâches seront créées.",
+        "it": "I duplicati non possono essere riconosciuti! Utilizza l'eliminazione automatica, altrimenti verranno creati molti todos.",
+        "es": "¡Los duplicados no se pueden reconocer! Utilice la eliminación automática, de lo contrario se crearán muchos todos.",
+        "pl": "Duplikatów nie można rozpoznać! Skorzystaj z automatycznego usuwania, w przeciwnym razie powstanie wiele rzeczy do zrobienia.",
+        "zh-cn": "无法识别重复项！请使用自动删除，否则将创建很多待办事项。"
     },
     'Projekt ID Quelle': {
-        'en': 'Project ID source',
-        'de': 'Projekt ID Quelle'
+        "en": "Project ID source",
+    "de": "Projekt-ID-Quelle",
+    "ru": "Источник идентификатора проекта",
+    "pt": "Origem do ID do projeto",
+    "nl": "Bron van project-ID",
+    "fr": "Source d'ID de projet",
+    "it": "Origine ID progetto",
+    "es": "Fuente de identificación del proyecto",
+    "pl": "Źródło identyfikatora projektu",
+    "zh-cn": "项目ID来源"
     },
     'Projekt ID Ziel': {
-        'en': 'Project ID target',
-        'de': 'Projekt ID Ziel'
+        "en": "Project ID target",
+    "de": "Projekt-ID-Ziel",
+    "ru": "ID проекта",
+    "pt": "Destino do ID do projeto",
+    "nl": "Doel van project-ID",
+    "fr": "Cible d'ID de projet",
+    "it": "Target ID progetto",
+    "es": "ID del proyecto objetivo",
+    "pl": "Docelowy identyfikator projektu",
+    "zh-cn": "项目ID目标"
     },
     'Comment': {
-        'en': 'comment',
-        'de': 'Bemerkung'
+        "en": "comment",
+    "de": "Kommentar",
+    "ru": "комментарий",
+    "pt": "Comente",
+    "nl": "commentaar",
+    "fr": "commentaire",
+    "it": "commento",
+    "es": "comentario",
+    "pl": "komentarz",
+    "zh-cn": "评论"
     },
     'Projekt ID': {
-        'en': 'Project ID',
-        'de': 'Projekt ID'
+        "en": "Project ID",
+    "de": "Projekt-ID",
+    "ru": "Идентификатор проекта",
+    "pt": "ID do projeto",
+    "nl": "Project-ID",
+    "fr": "ID du projet",
+    "it": "ID progetto",
+    "es": "Projecto ID",
+    "pl": "ID projektu",
+    "zh-cn": "专案编号"
+  
     },
     'Art': {
-        'en': 'type',
-        'de': 'Art'
+        "en": "type",
+    "de": "Art",
+    "ru": "тип",
+    "pt": "tipo",
+    "nl": "type",
+    "fr": "type",
+    "it": "genere",
+    "es": "tipo",
+    "pl": "rodzaj",
+    "zh-cn": "类型"
     }
 }    

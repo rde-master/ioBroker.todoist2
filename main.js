@@ -480,7 +480,7 @@ async function check_online(){
             }else{
             	
             	adapter.setState('info.connection', false, true);
-            	adapter.log.warn("No Connection to todoist possible!!! Please Check your Internet Connection.")
+            	adapter.log.error("No Connection to todoist possible!!! Please Check your Internet Connection.")
             }
             
         } catch (err) {
@@ -748,7 +748,7 @@ async function getData(){
             adapter.log.error("Error bei Get Projekte: " + err);
             adapter.log.error("Data an Api: " + project);
             adapter.log.error("Response: " + JSON.stringify(response));
-            adapter.log.error("Body: " + JSON.stringify(body));
+            adapter.log.error("Body: " + JSON.stringify(projects_json));
             adapter.log.error("Error: " + error);
         }
     });
@@ -771,7 +771,7 @@ async function getData(){
                 adapter.log.error("Error bei Get Projekte: " + err);
                 adapter.log.error("Data an Api: " + labels);
                 adapter.log.error("Response: " + JSON.stringify(response));
-                adapter.log.error("Body: " + JSON.stringify(body));
+                adapter.log.error("Body: " + JSON.stringify(labels_json));
                 adapter.log.error("Error: " + error);
             }
         });
@@ -793,7 +793,7 @@ async function getData(){
                 adapter.log.error("Error bei Get Projekte: " + err);
                 adapter.log.error("Data an Api: " + sections);
                 adapter.log.error("Response: " + JSON.stringify(response));
-                adapter.log.error("Body: " + JSON.stringify(body));
+                adapter.log.error("Body: " + JSON.stringify(sections_json));
                 adapter.log.error("Error: " + error);
             }
         });
@@ -815,7 +815,7 @@ async function getData(){
                 adapter.log.error("Error bei Get Projekte: " + err);
                 adapter.log.error("Data an Api: " + tasks);
                 adapter.log.error("Response: " + JSON.stringify(response));
-                adapter.log.error("Body: " + JSON.stringify(body));
+                adapter.log.error("Body: " + JSON.stringify(tasks_json));
                 adapter.log.error("Error: " + error);
             }
         });

@@ -14,14 +14,27 @@
 
 ## ioBroker.Todoist
 
-This Adapater is for integrating todoist
+This Adapater is for integrating todoist.
+He uses the REST API
+https://developer.todoist.com/rest/v1/#overview
 
-Dieser Adaber dient zur zur Integration von todoist
+Dieser Adaber dient zur zur Integration von todoist.
+Er verwendet die Rest API
+https://developer.todoist.com/rest/v1/#overview
 
 ## Beschreibung
 
 * Adapter liest alle Todolisten aus und legt diese als States an, sodass diese in VIS angezeigt werden können
+* Anlage als Text, JSON oder HTML möglich
+* Anlage von Projekten, Labels und Sections möglich
+* Anlage ist frei Konfigurierbar
 * ein "send to" Blockly wurde eingefügt um neue Aufgaben anzulegen
+* eine Blacklist steht zur Verfügung
+* eine Syncronisierung von Projekten ist möglich
+* Todos können per Blockly, sendto, oder per Objekte im Objektbaum angelegt werden
+* Alle Funktionen der akutellen Rest API werden unterstützt
+
+* Automatisches Löschen alter Objekte (Beta)
 
 
 # sendTo
@@ -71,6 +84,8 @@ Dieser Adapter fürgt ein Blockly todoist in den Bereich sendTo hinzu:
 
 
 ## Changelog
+### 0.3.5
+* (rde-master) Translation added
 
 ### 0.3.0
 * (rde-master) new Backend Structur

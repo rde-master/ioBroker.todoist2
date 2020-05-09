@@ -745,11 +745,15 @@ async function getData(){
             var projects_json = JSON.parse(body);
             all_project_objekts = projects_json;
         }catch (err) {
+            if(response.statusCode > 499){
+                adapter.log.info("Todoist Api does not answer correctly. That's a problem from Toodist")
+            }else{
             adapter.log.error("Error bei Get Projekte: " + err);
-            adapter.log.error("Data an Api: " + project);
+            adapter.log.error("Data an Api: " + JSON.stringify(project));
             adapter.log.error("Response: " + JSON.stringify(response));
             adapter.log.error("Body: " + JSON.stringify(projects_json));
             adapter.log.error("Error: " + error);
+            }
         }
     });
     }
@@ -768,11 +772,15 @@ async function getData(){
                 var labels_json = JSON.parse(body);
                 all_label_objekts = labels_json;
             }catch (err) {
-                adapter.log.error("Error bei Get Projekte: " + err);
-                adapter.log.error("Data an Api: " + labels);
+                if(response.statusCode > 499){
+                    adapter.log.info("Todoist Api does not answer correctly. That's a problem from Toodist")
+                }else{
+                adapter.log.error("Error bei Get labels: " + err);
+                adapter.log.error("Data an Api: " + JSON.stringify(labels));
                 adapter.log.error("Response: " + JSON.stringify(response));
                 adapter.log.error("Body: " + JSON.stringify(labels_json));
                 adapter.log.error("Error: " + error);
+                }
             }
         });
     }
@@ -790,11 +798,15 @@ async function getData(){
                 var sections_json = JSON.parse(body);
                 all_sections_objects = sections_json;
             }catch (err) {
-                adapter.log.error("Error bei Get Projekte: " + err);
-                adapter.log.error("Data an Api: " + sections);
+                if(response.statusCode > 499){
+                    adapter.log.info("Todoist Api does not answer correctly. That's a problem from Toodist")
+                }else{
+                adapter.log.error("Error bei Get sections: " + err);
+                adapter.log.error("Data an Api: " + JSON.stringify(sections));
                 adapter.log.error("Response: " + JSON.stringify(response));
                 adapter.log.error("Body: " + JSON.stringify(sections_json));
                 adapter.log.error("Error: " + error);
+                }
             }
         });
     }
@@ -812,11 +824,15 @@ async function getData(){
                 var tasks_json = JSON.parse(body);
                 all_task_objekts = tasks_json;
             }catch (err) {
-                adapter.log.error("Error bei Get Projekte: " + err);
-                adapter.log.error("Data an Api: " + tasks);
+                if(response.statusCode > 499){
+                    adapter.log.info("Todoist Api does not answer correctly. That's a problem from Toodist")
+                }else{
+                adapter.log.error("Error bei Get tasks: " + err);
+                adapter.log.error("Data an Api: " + JSON.stringify(tasks));
                 adapter.log.error("Response: " + JSON.stringify(response));
                 adapter.log.error("Body: " + JSON.stringify(tasks_json));
                 adapter.log.error("Error: " + error);
+                }
             }
         });
     

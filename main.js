@@ -1949,7 +1949,7 @@ async function main() {
     if (debug) adapter.log.warn("Dublikate Modus: " + adapter.config.dublicate);
    
     // lese die daten ein:
-    getData();
+    await getData();
 
     // 5 Sekunden später bfülle alle:
 

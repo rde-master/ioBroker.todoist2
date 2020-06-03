@@ -1189,7 +1189,7 @@ async function tasktotask(){
                            
     var i;
     if(debug) adapter.log.info("Funktion taskt to task");
-    if(debug) adapter.log.warn("anzahl task: " + json.length);
+    //if(debug) adapter.log.warn("anzahl task: " + json.length);
     var json = all_task_objekts;
 
     var json_neu = "[]";
@@ -1280,7 +1280,7 @@ async function tasktoproject(project){
                 if(debug) adapter.log.info("länge: " + project.projects_id.length);
                                 
                 var j;
-                if(debug) adapter.log.warn("anzahl task: " + json.length);
+                //if(debug) adapter.log.warn("anzahl task: " + json.length);
                 var json = all_task_objekts;
                 //Verarbeitung von Projekten
                 

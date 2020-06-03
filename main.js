@@ -1943,7 +1943,7 @@ async function main() {
     }
     
     if (debug) adapter.log.warn("Debug Mode for todoist is online: Many Logs are generated!");
-    if (debug) adapter.log.info("Token: " + adapter.config.token);
+    //if (debug) adapter.log.info("Token: " + adapter.config.token);
 	if (debug) adapter.log.info("Polling: " + adapter.config.pollingInterval);
     if (debug) adapter.log.info("Debug mode: " + adapter.config.debug);
     if (debug) adapter.log.warn("Dublikate Modus: " + adapter.config.dublicate);

@@ -4,8 +4,12 @@
     "require": {
       "js-controller": ">0.6.6"
     },
-    "version": "0.3.5",
+    "version": "0.4",
     "news": {
+      "0.4": {
+        "en": "Code Cleanup",
+        "de": "Code wurde überarbeitet"
+      },
       "0.3.5": {
         "en": "translation added",
         "de": "Übersetzung hinzugefügt"

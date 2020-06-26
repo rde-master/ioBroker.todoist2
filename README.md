@@ -84,6 +84,9 @@ Dieser Adapter fürgt ein Blockly todoist in den Bereich sendTo hinzu:
 
 
 ## Changelog
+### 0.4
+* (rde-master) Code Cleanup
+
 ### 0.3.5
 * (rde-master) Translation added
 

@@ -131,7 +131,7 @@ async function startAdapter(options) {
                 
                 
             callback();
-        } catch (e) {
+        } catch (err) {
             callback();
         }
 

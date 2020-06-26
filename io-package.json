@@ -81,7 +81,7 @@
   "native": {
     "token": "",
     "pollingInterval": 60000,
-    "debug": true,
+    "debug": false,
     "project": true,
     "section": false,
     "tasks": true,

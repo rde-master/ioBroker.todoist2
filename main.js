@@ -19,8 +19,8 @@ const utils = require('@iobroker/adapter-core'); // Get common adapter utils
 const adapterName = require('./package.json').name.split('.').pop();
 const request = require("request");
 
-
-
+let online_net = false;
+let poll;
 let uuid;
 let adapter;
 let debug;
@@ -101,14 +101,14 @@ async function startAdapter(options) {
         adapter.subscribeStates('Tasks.*');
         }
         //Grüner Punkt
-        check_online();
+        //check_online();
         
         //Main Sequenze
-        main();
+        //main();
 
 
         //Regelmäßige ausführung wie eingestellt
-        var poll = adapter.config.pollingInterval;
+        poll = adapter.config.pollingInterval;
         
         if(poll < 10000){
             adapter.log.error("Polling under 10 Seconds, this is not supported and not working!");
@@ -117,7 +117,8 @@ async function startAdapter(options) {
             adapter.log.warn("It is recomended to use a intervall over 60 Seconds");
         }
         if(poll > 10000){
-        mainintval = setInterval(function(){main();}, 60000);
+        //mainintval = setInterval(function(){main();}, 60000);
+        main();
         }
     });
 
@@ -125,12 +126,10 @@ async function startAdapter(options) {
         try {
             adapter.log.info('cleaned everything up...');
                 if (adapter && adapter.setState) adapter.setState('info.connection', false, true);
-                clearInterval(mainintval);
-            
-            
-                clearTimeout(timeoutdata);
-                clearTimeout(timoutremove_old_obj);
-                clearTimeout(timeoutsyncron);
+                //adapter.log.info(JSON.stringify(mainintval));
+                clearTimeout(mainintval);
+                
+                
             callback();
         } catch (e) {
             callback();
@@ -154,12 +153,15 @@ async function startAdapter(options) {
         var new_id = id.substr(pos, end_pos);
 
 
-        //adapter.log.info("state: " + JSON.stringify(new_id));
+        //adapter.log.info("state: " + JSON.stringify(state));
 
         //addTask(item, proejct_id, section_id, parent, order, label_id, priority, date, dupli)
+        
         if(new_id == "Task"){
+            //neuer Task über Objekte
             new_with_state(id, state);
         }else{
+            //wenn ein Butten gedrückt wird in der Objekt liste.....
             state_task_delete(new_id, state);
         }
 
@@ -183,6 +185,7 @@ if(state.val == true){
     for(var i = 0; i < all_task_objekts.length; i++){
         if(all_task_objekts[i].content == new_id){
             //adapter.log.info("task aus der liste gefunden " + JSON.stringify(state));
+            
             closeTask(all_task_objekts[i].id);
             adapter.delObject("Tasks." + new_id, function (err) {
                 if (err) adapter.log.error('Cannot delete object: ' + err);
@@ -215,9 +218,12 @@ async function new_with_state(id, state){
     if(debug) adapter.log.info("Date: " + new_date.val);
     if(debug) adapter.log.info("Label: " + new_label.val);
 
-
-    
+    if(state.ack == false){
+        adapter.log.warn("Please use Ack, only then the Task go to added");
+    }
+    if(state.akk){
     await addTask(state.val, new_project.val, "", "", "", new_label.val, new_priority.val, new_date.val, true);
+    }
 }
 
 //Baue neue States
@@ -226,6 +232,7 @@ async function newstate(){
     await adapter.setObjectNotExistsAsync("New.Task", {
         type: 'state',
         common: {
+            role: 'text',
             name: 'Task Name',
             type: 'string'
             
@@ -235,6 +242,7 @@ async function newstate(){
     await adapter.setObjectNotExistsAsync("New.Project", {
             type: 'state',
             common: {
+                role: 'state',
                 name: 'Project ID',
                 type: 'number'
                 
@@ -245,6 +253,7 @@ async function newstate(){
     await adapter.setObjectNotExistsAsync("New.Label", {
                 type: 'state',
                 common: {
+                    role: 'state',
                     name: 'Label ID',
                     type: 'number'
                     
@@ -255,6 +264,7 @@ async function newstate(){
     await adapter.setObjectNotExistsAsync("New.Priority", {
                     type: 'state',
                     common: {
+                        role: 'value',
                         name: 'Priority',
                         type: 'number'
                         
@@ -265,6 +275,7 @@ async function newstate(){
     await adapter.setObjectNotExistsAsync("New.Date", {
                         type: 'state',
                         common: {
+                            role: 'date',
                             name: 'Date',
                             type: 'string'
                             
@@ -401,7 +412,7 @@ function processMessages(obj) {
     
 }
 
-async function syncronisation(){
+function syncronisation(){
 
     for(var i = 0; i < all_task_objekts.length; i++){
 
@@ -428,24 +439,25 @@ async function syncronisation(){
                  };
             
 	
-                    request(TasksApi, async function (error, response, body) {
+                    request(TasksApi, function (error, response, body) {
+                        if(error){adapter.log.error(error);}
                             try {
                                 
                                 var json = JSON.parse(body);
 
                                 addTask(json.content, sync_ziel, "", "", "", "", "", "", false);
+
+                                if(sync_delete == true){
+
+                                    closeTask(sync_task_id);
+                    
+                                }
                                 
                             } catch (err) {
                                 adapter.log.error('Error by read of task: ' + err);
                             }
                         });
-
-            if(sync_delete == true){
-
-                closeTask(sync_task_id);
-
-            }
-
+     
 
             }
 
@@ -459,7 +471,7 @@ async function syncronisation(){
 
 
 async function check_online(){
-	
+	return new Promise(function (resolve, reject) {
 	var APItoken = adapter.config.token;
 	var online = { method: 'GET',
           url: 'https://api.todoist.com/rest/v1/projects',
@@ -467,28 +479,37 @@ async function check_online(){
            { Authorization: 'Bearer ' + APItoken}
 	};
 	
-	await request(online, async function (error, response, body) {
+	request(online, async function (error, response, body) {
         try {
-            var projects_json = JSON.parse(body);
+            //var projects_json = JSON.parse(body);
             
              
-             if(debug) adapter.log.warn("check online: " + JSON.stringify(response.statusCode));
             
-            if(response.statusCode == 200){
-            	
-            	adapter.setState('info.connection', true, true);
+            
+            if(typeof response === 'object' && response.statusCode == 200){
+            	if(debug) adapter.log.warn("check online: " + JSON.stringify(response.statusCode));
+                adapter.setState('info.connection', true, true);
+                online_net = true;
+                resolve("ok");
+                
             }else{
             	
             	adapter.setState('info.connection', false, true);
-            	adapter.log.error("No Connection to todoist possible!!! Please Check your Internet Connection.")
+                adapter.log.error("No Connection to todoist possible!!! Please Check your Internet Connection.")
+                online_net = false;
+                resolve("ok");
             }
             
         } catch (err) {
             adapter.log.warn("error: " + err);
         }
-	
-	});
-
+       
+        //if (error) throw new Error(error);
+        if(error){adapter.log.error(error);}
+    });
+    
+});
+    
 }
 
 function createUUID(){
@@ -570,7 +591,8 @@ function addTask(item, proejct_id, section_id, parent, order, label_id, priority
 
         if(debug)adapter.log.info("Daten welche an die API gesendet wird: " + JSON.stringify(options));
         if(dublicate_sperre == false) request(options, function (error, response, body) {
-          if (error) throw new Error(error);
+          //if (error) throw new Error(error);
+          if(error){adapter.log.error(error);}
         
            if(debug)adapter.log.info(JSON.stringify(body));
         });
@@ -586,7 +608,8 @@ function delTask(task_id){
           headers: {Authorization: 'Bearer ' + APItoken,}};
 		
 		request(del_task, function (error, response, body) {
-          if (error) throw new Error(error);
+          //if (error) throw new Error(error);
+          if(error){adapter.log.error(error);}
         
           if(debug) adapter.log.info(JSON.stringify("Task wurde geslöscht...." + body));
         });
@@ -613,7 +636,8 @@ function addProject(project, parent){
           json: true };
         
         request(options, function (error, response, body) {
-          if (error) throw new Error(error);
+          //if (error) throw new Error(error);
+          if(error){adapter.log.error(error);}
         
           if(debug) adapter.log.info(JSON.stringify(body));
         });
@@ -630,7 +654,8 @@ function dellProject(project_id){
           headers: {Authorization: 'Bearer ' + APItoken,}};
 		
 		request(del_task, function (error, response, body) {
-          if (error) throw new Error(error);
+          //if (error) throw new Error(error);
+          if(error){adapter.log.error(error);}
         
           if(debug) adapter.log.info(JSON.stringify("Project wurde geslöscht...." + body));
         });
@@ -650,7 +675,8 @@ function closeTask(task_id){
 		
 		if(debug)adapter.log.info(JSON.stringify(del_task));
 		request(del_task, function (error, response, body) {
-          if (error) throw new Error(error);
+          //if (error) throw new Error(error);
+          if(error){adapter.log.error(error);}
         
           if(debug) adapter.log.info(JSON.stringify("Task wurde geschlossen...." + body));
         });
@@ -669,7 +695,8 @@ function reopenTask(task_id){
           headers: {Authorization: 'Bearer ' + APItoken,}};
 		
 		request(del_task, function (error, response, body) {
-          if (error) throw new Error(error);
+          //if (error) throw new Error(error);
+          if(error){adapter.log.error(error);}
         
           if(debug) adapter.log.info(JSON.stringify("Task wurde wieder geöffnet...." + body));
         });
@@ -697,7 +724,8 @@ function addSection(section, project_id){
           json: true };
         
         request(options, function (error, response, body) {
-          if (error) throw new Error(error);
+          //if (error) throw new Error(error);
+          if(error){adapter.log.error(error);}
         
           if(debug) adapter.log.info(JSON.stringify(body));
         });
@@ -717,7 +745,8 @@ function delSection(section_id){
           headers: {Authorization: 'Bearer ' + APItoken,}};
 		
 		request(del_task, function (error, response, body) {
-          if (error) throw new Error(error);
+          //if (error) throw new Error(error);
+          if(error){adapter.log.error(error);}
         
           if(debug) adapter.log.info(JSON.stringify("Section wurde geslöscht...." + body));
         });
@@ -727,6 +756,8 @@ function delSection(section_id){
 
 
 async function getData(){
+
+    return new Promise(function (resolve, reject) {
     
     if(debug) adapter.log.info("Funktion get Data");
 
@@ -739,13 +770,17 @@ async function getData(){
           url: 'https://api.todoist.com/rest/v1/projects',
           headers: 
            { Authorization: 'Bearer ' + APItoken}
-	};
-    await request(project, async function (error, response, body) {
+    };
+    
+    request(project, async function (error, response, body) {
+        if(error){adapter.log.error(error);}
+        
+        
         try {
             var projects_json = JSON.parse(body);
             all_project_objekts = projects_json;
         }catch (err) {
-            if(response.statusCode > 499){
+            if(typeof response === 'object' && response.statusCode > 499){
                 adapter.log.info("Todoist Api does not answer correctly. That's a problem from Toodist")
             }else{
             adapter.log.error("Error bei Get Projekte: " + err);
@@ -767,12 +802,13 @@ async function getData(){
               headers: 
                { Authorization: 'Bearer ' + APItoken}
         };
-        await request(labels, async function (error, response, body) {
+        request(labels, async function (error, response, body) {
+            if(error){adapter.log.error(error);}
             try {
                 var labels_json = JSON.parse(body);
                 all_label_objekts = labels_json;
             }catch (err) {
-                if(response.statusCode > 499){
+                if(typeof response === 'object' && response.statusCode > 499){
                     adapter.log.info("Todoist Api does not answer correctly. That's a problem from Toodist")
                 }else{
                 adapter.log.error("Error bei Get labels: " + err);
@@ -793,12 +829,13 @@ async function getData(){
               headers: 
                { Authorization: 'Bearer ' + APItoken}
         };
-        await request(sections, async function (error, response, body) {
+        request(sections, async function (error, response, body) {
+            if(error){adapter.log.error(error);}
             try {
                 var sections_json = JSON.parse(body);
                 all_sections_objects = sections_json;
             }catch (err) {
-                if(response.statusCode > 499){
+                if(typeof response === 'object' && response.statusCode > 499){
                     adapter.log.info("Todoist Api does not answer correctly. That's a problem from Toodist")
                 }else{
                 adapter.log.error("Error bei Get sections: " + err);
@@ -812,6 +849,8 @@ async function getData(){
     }
 
     //Tasks einlesen:
+    //wird immer gemacht
+    // wenn das fertig ist, OK ausgeben
     
         if(debug) adapter.log.info("get Tasks");
         var tasks = { method: 'GET',
@@ -819,12 +858,14 @@ async function getData(){
               headers: 
                { Authorization: 'Bearer ' + APItoken}
         };
-        await request(tasks, async function (error, response, body) {
+        request(tasks, async function (error, response, body) {
+            if(error){adapter.log.error(error);}
             try {
                 var tasks_json = JSON.parse(body);
                 all_task_objekts = tasks_json;
+                resolve("ok");
             }catch (err) {
-                if(response.statusCode > 499){
+                if(typeof response === 'object' && response.statusCode > 499){
                     adapter.log.info("Todoist Api does not answer correctly. That's a problem from Toodist")
                 }else{
                 adapter.log.error("Error bei Get tasks: " + err);
@@ -837,7 +878,7 @@ async function getData(){
         });
     
 
-
+    });
 
 
 }
@@ -888,6 +929,7 @@ async function getProject(){
                 await adapter.setObjectNotExistsAsync("HTML.Projects-HTML." + Listenname, {
                     type: 'state',
                     common: {
+                        role: 'html',
                         name: 'ID ' + listenID,
                         type: 'string',
                         
@@ -899,6 +941,7 @@ async function getProject(){
               	await adapter.setObjectNotExistsAsync("JSON.Projects-JSON." + Listenname, {
                     type: 'state',
                     common: {
+                        role: 'json',
                         name: 'ID ' + listenID,
                         type: 'string',
                         
@@ -910,6 +953,7 @@ async function getProject(){
                     await adapter.setObjectNotExistsAsync("TEXT.Projects-TEXT." + Listenname, {
                       type: 'state',
                       common: {
+                        role: 'text',
                           name: 'ID ' + listenID,
                           type: 'string',
                           
@@ -932,6 +976,7 @@ async function getProject(){
             await adapter.setObjectNotExistsAsync("ALL.JSON-Projects", {
 					type: 'state',
                     common: {
+                        role: 'json',
                         name: 'JSON Objekt of all Projects',
                         type: 'string',
                         
@@ -1006,6 +1051,7 @@ async function getLabels(){
                 await adapter.setObjectNotExistsAsync("HTML.Labels-HTML." + Labels1_names, {
                     type: 'state',
                     common: {
+                        role: 'html',
                         name: 'ID ' + labels1,
                         type: 'string',
                         
@@ -1017,6 +1063,7 @@ async function getLabels(){
             	await adapter.setObjectNotExistsAsync("JSON.Labels-JSON." + Labels1_names, {
                     type: 'state',
                     common: {
+                        role: 'json',
                         name: 'ID ' + labels1,
                         type: 'string',
                         
@@ -1028,6 +1075,7 @@ async function getLabels(){
                     await adapter.setObjectNotExistsAsync("TEXT.Labels-TEXT." + Labels1_names, {
                         type: 'state',
                         common: {
+                            role: 'text',
                             name: 'ID ' + labels1,
                             type: 'string',
                             
@@ -1047,6 +1095,7 @@ async function getLabels(){
             await adapter.setObjectNotExistsAsync("ALL.JSON-Labels", {
 					type: 'state',
                     common: {
+                        role: 'json',
                         name: 'JSON Objekt of all Labels',
                         type: 'string',
                         
@@ -1142,6 +1191,7 @@ async function getSections(){
                 await adapter.setObjectNotExistsAsync("Sections." + Sections2name, {
                     type: 'state',
                     common: {
+                        role: 'text',
                         name: 'ID ' + Sections2ID,
                         type: 'string'
                         
@@ -1166,6 +1216,7 @@ async function getSections(){
         await adapter.setObjectNotExistsAsync("ALL.JSON-Sections", {
 					type: 'state',
                     common: {
+                        role: 'json',
                         name: 'JSON Objekt of all Sections',
                         type: 'string',
                         
@@ -1333,6 +1384,7 @@ async function tasktoproject(project){
                         adapter.setObjectNotExists("Tasks." + content2, {
                     			type: 'state',
                     				common: {
+                                        role: 'text',
                         				name: 'ID ' + id,
                         				type: 'string',
                     					},
@@ -1551,7 +1603,7 @@ if (adapter.config.tasks == true){
             
             if (match != true){
 
-                adapter.log.warn("dieser state löschen: " + new_id);
+                adapter.log.info("dieser state löschen: " + new_id);
                 adapter.delObject("Tasks." + new_id, function (err) {
 
                                if (err) adapter.log.error('Cannot delete object: ' + err);
@@ -1610,7 +1662,7 @@ if (adapter.config.project == true && adapter.config.html_objects == true){
              
              if (match != true){
  
-                 adapter.log.warn("dieser state löschen: " + new_id);
+                 adapter.log.info("dieser state löschen: " + new_id);
                  adapter.delObject("HTML.Projects-HTML." + new_id, function (err) {
  
                                  if (err) adapter.log.error('Cannot delete object: ' + err);
@@ -1667,7 +1719,7 @@ if (adapter.config.project == true && adapter.config.html_objects == true){
              
              if (match != true){
  
-                 adapter.log.warn("dieser state löschen: " + new_id);
+                 adapter.log.info("dieser state löschen: " + new_id);
                  adapter.delObject("JSON.Projects-JSON." + new_id, function (err) {
  
                                  if (err) adapter.log.error('Cannot delete object: ' + err);
@@ -1725,7 +1777,7 @@ if (adapter.config.project == true && adapter.config.text_objects == true){
              
              if (match != true){
  
-                 adapter.log.warn("Projekte Text dieser state löschen: " + new_id);
+                 adapter.log.info("Projekte Text dieser state löschen: " + new_id);
                  adapter.delObject("TEXT.Projects-TEXT." + new_id, function (err) {
  
                                  if (err) adapter.log.error('Cannot delete object: ' + err);
@@ -1796,7 +1848,7 @@ adapter.getStates('HTML.Labels-HTML.*', function (err, states) {
         // adapter.log.warn("vor löschung " + new_id + " match " + match);
          if (match != true){
 
-             adapter.log.warn("labels html dieser state löschen: " + new_id);
+             adapter.log.info("labels html dieser state löschen: " + new_id);
              adapter.delObject("HTML.Labels-HTML." + new_id, function (err) {
 
                              if (err) adapter.log.error('Cannot delete object: ' + err);
@@ -1854,7 +1906,7 @@ adapter.getStates('JSON.Labels-JSON.*', function (err, states) {
          
          if (match != true){
 
-             adapter.log.warn("json html dieser state löschen: " + new_id);
+             adapter.log.info("json html dieser state löschen: " + new_id);
              adapter.delObject("JSON.Labels-JSON." + new_id, function (err) {
 
                              if (err) adapter.log.error('Cannot delete object: ' + err);
@@ -1913,7 +1965,7 @@ if (adapter.config.labels == true && adapter.config.text_objects == true){
              
              if (match != true){
     
-                 adapter.log.warn("Text Labels dieser state löschen: " + new_id);
+                 adapter.log.info("Text Labels dieser state löschen: " + new_id);
                  adapter.delObject("TEXT.Labels-TEXT." + new_id, function (err) {
     
                                  if (err) adapter.log.error('Cannot delete object: ' + err);
@@ -1941,6 +1993,23 @@ async function main() {
         adapter.log.warn('Token todoist is not set!');
         return;
     }
+
+
+    // Check Verbindung
+    // wenn false, dann beenden.
+    // es erfolgt dann auch kein neuer check mehr, adapter muss dann wohl erst neu gestatet werden??
+   var status = await check_online();
+
+   
+    if (online_net == false){
+        
+        return
+        
+    };
+
+    
+
+    poll = adapter.config.pollingInterval;
     
     if (debug) adapter.log.warn("Debug Mode for todoist is online: Many Logs are generated!");
     //if (debug) adapter.log.info("Token: " + adapter.config.token);
@@ -1949,25 +2018,23 @@ async function main() {
     if (debug) adapter.log.warn("Dublikate Modus: " + adapter.config.dublicate);
    
     // lese die daten ein:
-    await getData();
+    status = await getData();
 
-    // 5 Sekunden später bfülle alle:
-
-    timeoutdata = setTimeout(async function(){
+    // wenn daten da sind weiter:
         
         if(adapter.config.project === true){
-            var projects = await getProject();
+            var projects =  await getProject();
 
             tasktoproject(projects);	
         }
         
         if(adapter.config.section === true){
-            var sections = await getSections();	
+            var sections =  await getSections();	
                 
         }
 
         if(adapter.config.labels === true){
-            var labels = await getLabels();
+            var labels =  await getLabels();
             
             tasktolabels(labels);	
             
@@ -1980,27 +2047,26 @@ async function main() {
         }
 
      
-       }, 5000);
+        syncronisation();
     
-
 
     if (adapter.config.rm_old_objects == true){
-    timoutremove_old_obj = setTimeout(function(){
-    
-       remove_old_objects();
-            
-        }, 7000);
+
+        remove_old_objects();
+
     }
     
 
-    //sync ausführen
-    timeoutsyncron = setTimeout(function(){
     
-        syncronisation();
-             
-         }, 6000);
      
     
+
+//wenn fertig  funktion nach ablauf poll neu starten:
+//mainintval = setInterval(function(){main();}, 60000);
+
+mainintval = setTimeout(function(){
+    main();
+}, poll);
 
 }
 

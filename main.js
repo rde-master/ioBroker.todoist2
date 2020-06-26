@@ -2062,7 +2062,7 @@ async function main() {
     
 
 //wenn fertig  funktion nach ablauf poll neu starten:
-//mainintval = setInterval(function(){main();}, 60000);
+//mainintval = (function(){main();}, 60000);
 
 mainintval = setTimeout(function(){
     main();

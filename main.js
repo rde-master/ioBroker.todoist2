@@ -117,7 +117,7 @@ async function startAdapter(options) {
             adapter.log.warn("It is recomended to use a intervall over 60 Seconds");
         }
         if(poll > 10000){
-        //mainintval = setInterval(function(){main();}, 60000);
+        //mainintval = (function(){main();}, 60000);
         main();
         }
     });
@@ -131,7 +131,7 @@ async function startAdapter(options) {
                 
                 
             callback();
-        } catch (err) {
+        } catch (e) {
             callback();
         }
 

@@ -2107,8 +2107,128 @@ if (adapter.config.labels == true && adapter.config.text_objects == true){
 
 // Filter HTML
 if(adapter.config.html_objects == true){
+    adapter.getStates('HTML.Filter-HTML.*', function (err, states) {
+        if(debug) adapter.log.info("...........Jetzt Filter HTML prüfen ob etwas gelöscht werden soll..............");
+        for (var id in states) { 
 
+            //Aus der ID den Namen extrahieren:
+            pos = id.lastIndexOf('.');
+            pos = pos +1;
+            end_pos = id.length;
+            new_id = id.substr(pos, end_pos);
+
+            for(var i = 0; i < filter_list.length; i++){
+
+                if(filter_list[i].filterlist_filter_name == new_id && filter_list[i].filterlist_aktiv == true){
+
+                    match = true;
+                }
+
+            }
+
+            if (match != true){
     
+                adapter.log.info("Filter Html löschen: " + new_id);
+                adapter.delObject("HTML.Filter-HTML." + new_id, function (err) {
+   
+                                if (err) adapter.log.error('Cannot delete object: ' + err);
+   
+                            });
+   
+            }
+            
+        match = false;  
+
+        }
+
+
+
+    });
+
+}
+
+// Filter JSON
+if(adapter.config.html_objects == true){
+    adapter.getStates('JSON.Filter-JSON.*', function (err, states) {
+        if(debug) adapter.log.info("...........Jetzt Filter JSON prüfen ob etwas gelöscht werden soll..............");
+        for (var id in states) { 
+
+            //Aus der ID den Namen extrahieren:
+            pos = id.lastIndexOf('.');
+            pos = pos +1;
+            end_pos = id.length;
+            new_id = id.substr(pos, end_pos);
+
+            for(var i = 0; i < filter_list.length; i++){
+
+                if(filter_list[i].filterlist_filter_name == new_id && filter_list[i].filterlist_aktiv == true){
+
+                    match = true;
+                }
+
+            }
+
+            if (match != true){
+    
+                adapter.log.info("Filter JSON löschen: " + new_id);
+                adapter.delObject("JSON.Filter-JSON." + new_id, function (err) {
+   
+                                if (err) adapter.log.error('Cannot delete object: ' + err);
+   
+                            });
+   
+            }
+            
+        match = false;  
+
+        }
+
+
+
+    });
+
+}
+
+// Filter TEXT
+if(adapter.config.html_objects == true){
+    adapter.getStates('TEXT.Filter-TEXT.*', function (err, states) {
+        if(debug) adapter.log.info("...........Jetzt Filter TEXT prüfen ob etwas gelöscht werden soll..............");
+        for (var id in states) { 
+
+            //Aus der ID den Namen extrahieren:
+            pos = id.lastIndexOf('.');
+            pos = pos +1;
+            end_pos = id.length;
+            new_id = id.substr(pos, end_pos);
+
+            for(var i = 0; i < filter_list.length; i++){
+
+                if(filter_list[i].filterlist_filter_name == new_id && filter_list[i].filterlist_aktiv == true){
+
+                    match = true;
+                }
+
+            }
+
+            if (match != true){
+    
+                adapter.log.info("Filter TEXT löschen: " + new_id);
+                adapter.delObject("TEXT.Filter-TEXT." + new_id, function (err) {
+   
+                                if (err) adapter.log.error('Cannot delete object: ' + err);
+   
+                            });
+   
+            }
+            
+        match = false;  
+
+        }
+
+
+
+    });
+
 }
 
 

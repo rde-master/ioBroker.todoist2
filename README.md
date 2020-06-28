@@ -83,7 +83,19 @@ Dieser Adapter fürgt ein Blockly todoist in den Bereich sendTo hinzu:
 
 
 
+# Filter
+Sie können über die Filter Funktion von Todoist ganz einfach eigene Listen erstellen.
+z.B. Filter: "today" gibt alle heute fälligen Todos aus usw...
+
+Wichtig: für diese Funktion ist ein Premium Account bei Todoist nötig! 
+Aktiviere diese Funktion nur wenn du einen Premium Account hast.
+
+
+
 ## Changelog
+### 0.5.0
+* (rde-master) Filter Option added (Premium Todoist needed!!)
+
 ### 0.4.0
 * (rde-master) Code Cleanup
 

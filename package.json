@@ -1,6 +1,6 @@
 {
   "_from": "https://github.com/rde-master/ioBroker.todoist2/tarball/76c1037f18679af8e6b8bce994225a780351fad3",
-  "_id": "iobroker.todoist2@0.4.0",
+  "_id": "iobroker.todoist2@0.5.0",
   "_inBundle": false,
   "_integrity": "sha512-rfXdSoZNz2tLMOF4qbEQ2yHx3MyfEnRagqVZESJk5DUWSp22ob4okCVE4Fge+CZUjEWcawyR6vjTZeAYy8UvRg==",
   "_location": "/iobroker.todoist2",
@@ -63,7 +63,7 @@
   "license": "MIT",
   "main": "main.js",
   "name": "iobroker.todoist2",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "readmeFilename": "README.md",
   "repository": {
     "type": "git",

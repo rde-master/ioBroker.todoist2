@@ -24,10 +24,10 @@ let poll;
 let uuid;
 let adapter;
 let debug;
-let all_task_objekts;
-let all_label_objekts;
-let all_project_objekts;
-let all_sections_objects;
+let all_task_objekts = [];
+let all_label_objekts = [];
+let all_project_objekts = [];
+let all_sections_objects = [];
 let blacklist;
 let sync;
 let bl_projects = [];
@@ -495,7 +495,7 @@ async function check_online(){
             }else{
             	
             	adapter.setState('info.connection', false, true);
-                adapter.log.error("No Connection to todoist possible!!! Please Check your Internet Connection.")
+                adapter.log.error("No Connection to todoist possible!!! Please Check your Internet Connection.You need to restart the Adapter!")
                 online_net = false;
                 resolve("ok");
             }
@@ -1987,6 +1987,49 @@ if (adapter.config.labels == true && adapter.config.text_objects == true){
 
 
 
+async function filterlist(){
+
+    adapter.log.info("Starte filterliste");
+
+    var APItoken = adapter.config.token;
+    var tasks = { method: 'GET',
+    url: 'https://api.todoist.com/rest/v1/tasks?filter=morgen', 
+    
+    headers: 
+     { Authorization: 'Bearer ' + APItoken}
+     
+};
+
+    adapter.log.info(JSON.stringify(tasks));
+request(tasks, async function (error, response, body) {
+  if(error){adapter.log.error(error);}
+  try {
+      var tasks_json = JSON.parse(body);
+      
+      adapter.log.info(JSON.stringify(tasks_json));
+      adapter.log.info(JSON.stringify(response));
+      
+  }catch (err) {
+      if(typeof response === 'object' && response.statusCode > 499){
+          adapter.log.info("Todoist Api does not answer correctly. That's a problem from Toodist")
+      }else{
+      adapter.log.error("Error bei Filter: " + err);
+      adapter.log.error("Data an Api: " + JSON.stringify(tasks));
+      adapter.log.error("Response: " + JSON.stringify(response));
+      adapter.log.error("Body: " + JSON.stringify(tasks_json));
+      adapter.log.error("Error: " + error);
+      }
+  }
+});
+
+
+
+}
+
+
+
+
+
 
 async function main() {
     if (!adapter.config.token) {
@@ -2056,6 +2099,8 @@ async function main() {
 
     }
     
+
+    filterlist();
 
     
      

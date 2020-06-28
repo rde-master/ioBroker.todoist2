@@ -18,7 +18,6 @@
 const utils = require('@iobroker/adapter-core'); // Get common adapter utils
 const adapterName = require('./package.json').name.split('.').pop();
 const request = require("request");
-const axios = require("axios").default;
 
 let online_net = false;
 let poll;

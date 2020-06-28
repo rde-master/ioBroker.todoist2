@@ -18,6 +18,7 @@
 const utils = require('@iobroker/adapter-core'); // Get common adapter utils
 const adapterName = require('./package.json').name.split('.').pop();
 const request = require("request");
+const axios = require("axios").default;
 
 let online_net = false;
 let poll;
@@ -30,6 +31,7 @@ let all_project_objekts = [];
 let all_sections_objects = [];
 let blacklist;
 let sync;
+let filter_list;
 let bl_projects = [];
 let bl_labels = [];
 let bl_sections = [];
@@ -62,6 +64,7 @@ async function startAdapter(options) {
         debug = adapter.config.debug;
         blacklist = adapter.config.blacklist;
         sync = adapter.config.sync;
+        filter_list = adapter.config.filterlist;
 
         //adapter.log.warn("blacklist: " + blacklist.length);
         
@@ -1306,6 +1309,7 @@ if(adapter.config.json_objects === true){
         common: {
             name: 'JSON Objekt of all Tasks',
             type: 'string',
+            role: "json"
             
         },
         native: {}
@@ -1543,6 +1547,126 @@ async function tasktolabels(labels){
                
              
        
+}
+
+
+async function tasktofilter(filter_json, filter_name){
+    return new Promise(function (resolve, reject) {
+    if(debug) adapter.log.info("Funktion task to filter mit name: " + filter_name);
+    if(debug) adapter.log.info("länge: " + filter_json.length);
+    if(debug) adapter.log.info("daten: "+ JSON.stringify(filter_json));
+                        
+        var j;
+        //if(debug) adapter.log.warn("anzahl task: " + json.length);
+        var json = filter_json;
+        //Verarbeitung von Filter
+        //wenn filter leer:
+        if(filter_json.length == 0){
+            if(adapter.config.html_objects == true){
+                var HTMLstring_filter = "";
+                adapter.setState('HTML.Filter-HTML.'+filter_name, {val: '<table><ul>' + HTMLstring_filter + '</ul></table>', ack: true});
+            }
+            
+            var json_filter = '[{"name":"no Todos"}]';
+            
+            if(adapter.config.json_objects == true){
+                adapter.setState('JSON.Filter-JSON.'+filter_name, {val: json_filter, ack: true});
+            }
+               
+            var text_filter = "No Todos";
+                
+            if(adapter.config.text_objects == true){
+                adapter.setState('TEXT.Filter-TEXT.'+filter_name, {val: text_filter, ack: true});
+            }
+        }
+    
+        
+        //Schleife zum Befüllen der Filter Tasks in HTML, Texts und JSON.
+        for (j = 0; j < filter_json.length; j++) {
+
+
+            var is_blacklist = false;
+            for (var w = 0; w < bl_projects.length; w++){               
+                if(filter_json[j].projects_id == bl_projects[w].id){
+                   // adapter.log.info("projects in Tasks: " + project.projects_id[j]);
+                   // adapter.log.info("liste: " +  JSON.stringify(bl_projects[w]));
+                    is_blacklist = true;
+                   // adapter.log.warn("Blacklist erkannt: " + JSON.stringify(bl_projects[w]));
+                }
+            }
+            if(is_blacklist == true){
+                if(debug) adapter.log.info("überspringen task");
+                continue;
+            }
+
+            var HTMLstring = '';
+            //adapter.setState('Lists.' + project.projects_name[j], {ack: true, val: 'empty'});
+            var i = 0;
+
+            var json_task = "[]";
+            var json_task_parse = JSON.parse(json_task);
+
+            var text_task = "";
+
+            for (i = 0; i < json.length; i++) {
+                
+                var Liste = parseInt(json[i].project_id);
+                var content = JSON.stringify(json[i].content);
+                var id = JSON.stringify(json[i].id);
+                content = content.replace(/\"/g, ''); //entfernt die Anfuehrungszeichen aus dem Quellstring
+                //content = content[0].toUpperCase() + content.substring(1); // Macht den ersten Buchstaben des strings zu einem Grossbuchstaben
+                var taskurl = JSON.stringify(json[i].url);
+                taskurl = taskurl.replace(/\"/g, '');
+                
+                
+                //Zuordnung zu den Listen:
+  
+                    //HTML
+                    HTMLstring = HTMLstring + '<tr><td><li><a href="' + taskurl + '" target="_blank">' + content + ' ID: ' + id + '</a></li></td></tr>';
+                    //var json_zwischen = JSON.stringify(json[i]);
+                    //json_task = json_task + json_zwischen;
+                    if(debug) adapter.log.info("Aufbau Filter Liste HTML: " + HTMLstring);
+                    
+                    //JSON
+                    json_task_parse.push({"name":content, "ID":id});
+    
+                    json_task = JSON.stringify(json_task_parse);
+                    if(debug) adapter.log.info("Aufbau Filter Liste JSON: " + json_task)
+
+                    //TEXT
+                    text_task = text_task + content + ", ";
+                    if(debug) adapter.log.info("Aufbau Filter Liste Text: " + text_task);
+                
+            }
+            if(debug) adapter.log.info("schreibe in filterliste: " +filter_name);
+            if(debug) adapter.log.info(HTMLstring);
+            
+            //json wandeln 
+                //json_task = JSON.stringify(json_task);
+            
+            //Setzte den Status:
+            if(adapter.config.html_objects == true){
+            adapter.setState('HTML.Filter-HTML.'+filter_name, {val: '<table><ul>' + HTMLstring + '</ul></table>', ack: true});
+            }
+            if(json_task === "[]"){
+                json_task = '[{"name":"no Todos"}]';
+            }
+            if(adapter.config.json_objects == true){
+            adapter.setState('JSON.Filter-JSON.'+filter_name, {val: json_task, ack: true});
+            }
+            if(text_task == ""){
+                text_task = "No Todos";
+            }
+            if(adapter.config.text_objects == true){
+                adapter.setState('TEXT.Filter-TEXT.'+filter_name, {val: text_task, ack: true});
+            }
+    
+        }
+
+
+        resolve("ok");      
+
+});
 }
 
 
@@ -1981,6 +2105,11 @@ if (adapter.config.labels == true && adapter.config.text_objects == true){
     }
 
 
+// Filter HTML
+if(adapter.config.html_objects == true){
+
+    
+}
 
 
 }
@@ -1988,45 +2117,112 @@ if (adapter.config.labels == true && adapter.config.text_objects == true){
 
 
 async function filterlist(){
+    if(debug)  adapter.log.info("Starte filterliste");
+    for (var i = 0; i < filter_list.length; i++) {
 
-    adapter.log.info("Starte filterliste");
+    var filter_aktiv = filter_list[i].filterlist_aktiv;
+    var filter_name = filter_list[i].filterlist_filter_name;
+    var filter_query = filter_list[i].filterlist_query;
 
-    var APItoken = adapter.config.token;
-    var tasks = { method: 'GET',
-    url: 'https://api.todoist.com/rest/v1/tasks?filter=morgen', 
-    
-    headers: 
-     { Authorization: 'Bearer ' + APItoken}
-     
-};
+    if(filter_aktiv != true){
+        continue; 
+    }
 
-    adapter.log.info(JSON.stringify(tasks));
-request(tasks, async function (error, response, body) {
-  if(error){adapter.log.error(error);}
-  try {
-      var tasks_json = JSON.parse(body);
-      
-      adapter.log.info(JSON.stringify(tasks_json));
-      adapter.log.info(JSON.stringify(response));
-      
-  }catch (err) {
-      if(typeof response === 'object' && response.statusCode > 499){
-          adapter.log.info("Todoist Api does not answer correctly. That's a problem from Toodist")
-      }else{
-      adapter.log.error("Error bei Filter: " + err);
-      adapter.log.error("Data an Api: " + JSON.stringify(tasks));
-      adapter.log.error("Response: " + JSON.stringify(response));
-      adapter.log.error("Body: " + JSON.stringify(tasks_json));
-      adapter.log.error("Error: " + error);
-      }
-  }
-});
+    //adapter.log.info(filter_aktiv);
+    if(debug) adapter.log.info("name: " +filter_name);
+    if(debug) adapter.log.info("querry: " + filter_query);
 
 
+    if(adapter.config.html_objects == true){
+    await adapter.setObjectNotExistsAsync("HTML.Filter-HTML." + filter_name, {
+        type: 'state',
+        common: {
+            role: 'html',
+            name: 'Query ' + filter_query,
+            type: 'string',
+            
+        },
+        native: {}
+          });
+    }
+    if(adapter.config.json_objects == true){	
+      await adapter.setObjectNotExistsAsync("JSON.Filter-JSON." + filter_name, {
+        type: 'state',
+        common: {
+            role: 'json',
+            name: 'Query ' + filter_query,
+            type: 'string',
+            
+        },
+        native: {}
+          });
+    }
+    if(adapter.config.text_objects == true){	
+        await adapter.setObjectNotExistsAsync("TEXT.Filter-TEXT." + filter_name, {
+          type: 'state',
+          common: {
+            role: 'text',
+              name: 'Query ' + filter_query,
+              type: 'string',
+              
+          },
+          native: {}
+            });
+    }
+
+    //frage die daten an:
+    var antwort = await getDate_filter(filter_query);
+
+    if(debug) adapter.log.info(JSON.stringify(filter_name));
+
+    //füllte die states mit den jeweiligen daten:
+    var status = await tasktofilter(antwort, filter_name);
+    if(debug)  adapter.log.info("Status filter: " + status);
+
+    }
 
 }
 
-
+async function getDate_filter(filter_query){
+	return new Promise(function (resolve, reject) {
+	var APItoken = adapter.config.token;
+    var filter = { method: 'GET',
+    url: 'https://api.todoist.com/rest/v1/tasks?filter=' + filter_query, 
+    headers: 
+     { Authorization: 'Bearer ' + APItoken}
+	};
+	
+	request(filter, async function (error, response, body) {
+        try {
+            if(typeof response === 'object' && response.statusCode == 402){
+                adapter.log.warn("Todoist Api say you don't have a premium account. Pleasy bye one or deaktivate this feature!")
+            }else{
+            var filter_json = JSON.parse(body);
+            
+             
+                resolve(filter_json);
+            }   
+            
+            
+        } catch (err) {
+            if(typeof response === 'object' && response.statusCode == 402){
+                adapter.log.warn("Todoist Api say you don't have a premium account. Pleasy bye one or deaktivate this feature!")
+            }else{
+            adapter.log.error("Error bei Filter: " + err);
+            adapter.log.error("Data an Api: " + JSON.stringify(filter));
+            adapter.log.error("Response: " + JSON.stringify(response));
+            adapter.log.error("Body: " + JSON.stringify(filter_json));
+            adapter.log.error("Error: " + error);
+        }
+       
+        //if (error) throw new Error(error);
+        if(error){adapter.log.error(error);}
+    
+        }
+    });
+});
+    
+}
 
 
 
@@ -2099,9 +2295,11 @@ async function main() {
 
     }
     
+    if (adapter.config.filter_aktiv == true){
+    
+        filterlist();
 
-    filterlist();
-
+    }
     
      
     

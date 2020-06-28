@@ -452,5 +452,77 @@ systemDictionary = {
     "es": "tipo",
     "pl": "rodzaj",
     "zh-cn": "类型"
-    }
+    },
+    "Filter List: Das ist ein Premium Feature von Todoist. Du musst Todoist Premium kaufen um diesen nutzen zu können.": {
+        "en": "Filter List: This is a premium feature from Todoist. You have to buy Todoist Premium to use it.",
+        "de": "Filterliste: Dies ist eine Premium-Funktion von Todoist. Sie müssen Todoist Premium kaufen, um es zu verwenden.",
+        "ru": "Список фильтров: это премиум-функция от Todoist. Вы должны купить Todoist Premium, чтобы использовать его.",
+        "pt": "Lista de filtros: esse é um recurso premium do Todoist. Você precisa comprar Todoist Premium para usá-lo.",
+        "nl": "Filterlijst: dit is een premiumfunctie van Todoist. Je moet Todoist Premium kopen om het te gebruiken.",
+        "fr": "Liste de filtres: il s'agit d'une fonctionnalité premium de Todoist. Vous devez acheter Todoist Premium pour l'utiliser.",
+        "it": "Elenco filtri: questa è una funzionalità premium di Todoist. Devi acquistare Todoist Premium per usarlo.",
+        "es": "Lista de filtros: esta es una característica premium de Todoist. Tienes que comprar Todoist Premium para usarlo.",
+        "pl": "Filtruj listę: Jest to funkcja premium od Todoist. Aby go użyć, musisz kupić Todoist Premium.",
+        "zh-cn": "筛选器列表：这是Todoist的一项高级功能。您必须购买Todoist Premium才能使用。"
+      },
+      "Filter aktivieren": {
+        "en": "Activate filter",
+        "de": "Filter aktivieren",
+        "ru": "Активировать фильтр",
+        "pt": "Ativar filtro",
+        "nl": "Activeer filter",
+        "fr": "Activer le filtre",
+        "it": "Attiva il filtro",
+        "es": "Activar filtro",
+        "pl": "Aktywuj filtr",
+        "zh-cn": "激活过滤器"
+      },
+      "Erklärung zu Filter": {
+        "en": "Explanation of filters",
+        "de": "Erklärung der Filter",
+        "ru": "Объяснение фильтров",
+        "pt": "Explicação dos filtros",
+        "nl": "Uitleg van filters",
+        "fr": "Explication des filtres",
+        "it": "Spiegazione dei filtri",
+        "es": "Explicación de los filtros.",
+        "pl": "Objaśnienie filtrów",
+        "zh-cn": "过滤器说明"
+      },
+      "Die Filter Liste erlaubt es eigene Listen zu erstellen. Beispiel: heute, morgen, letze 7 Tage, usw.": {
+        "en": "The filter list allows you to create your own lists. Example: today, tomorrow, last 7 days, etc.",
+        "de": "Mit der Filterliste können Sie Ihre eigenen Listen erstellen. Beispiel: heute, morgen, letzte 7 Tage usw.",
+        "ru": "Список фильтров позволяет создавать свои собственные списки. Пример: сегодня, завтра, последние 7 дней и т. Д.",
+        "pt": "A lista de filtros permite que você crie suas próprias listas. Exemplo: hoje, amanhã, últimos 7 dias, etc.",
+        "nl": "Met de filterlijst kunt u uw eigen lijsten maken. Voorbeeld: vandaag, morgen, laatste 7 dagen, etc.",
+        "fr": "La liste de filtres vous permet de créer vos propres listes. Exemple: aujourd'hui, demain, 7 derniers jours, etc.",
+        "it": "L'elenco filtri consente di creare elenchi personalizzati. Esempio: oggi, domani, ultimi 7 giorni, ecc.",
+        "es": "La lista de filtros le permite crear sus propias listas. Ejemplo: hoy, mañana, últimos 7 días, etc.",
+        "pl": "Lista filtrów pozwala tworzyć własne listy. Przykład: dzisiaj, jutro, ostatnie 7 dni itp.",
+        "zh-cn": "过滤器列表允许您创建自己的列表。例如：今天，明天，过去7天，等等。"
+      },
+      "Filter Name": {
+        "en": "Filter name",
+        "de": "Filtername",
+        "ru": "Название фильтра",
+        "pt": "Nome do filtro",
+        "nl": "Filternaam",
+        "fr": "Nom du filtre",
+        "it": "Nome del filtro",
+        "es": "Nombre del filtro",
+        "pl": "Nazwa filtra",
+        "zh-cn": "筛选器名称"
+      },
+      "Filter Query": {
+        "en": "Filter query",
+        "de": "Filterabfrage",
+        "ru": "Фильтр запроса",
+        "pt": "Filtrar consulta",
+        "nl": "Filterquery",
+        "fr": "Filtrer la requête",
+        "it": "Filtro query",
+        "es": "Consulta de filtro",
+        "pl": "Filtruj zapytanie",
+        "zh-cn": "筛选查询"
+      }
 }    

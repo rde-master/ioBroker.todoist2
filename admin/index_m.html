@@ -52,12 +52,14 @@
 
             blacklist = settings.blacklist || [];
             sync    = settings.sync    || [];
+            filterlist    = settings.filterlist    || [];
 
             onChange(false);
             if (M) M.updateTextFields();
 
             values2table('blacklist', blacklist, onChange);
             values2table('sync', sync, onChange);
+            values2table('filterlist', filterlist, onChange);
             
 
             $('#userdiv').on('click', 'a', function () {
@@ -97,6 +99,7 @@
 
             obj.blacklist = table2values('blacklist');
             obj.sync = table2values('sync');
+            obj.filterlist = table2values('filterlist');
             
             callback(obj);
         }
@@ -127,6 +130,7 @@
                     <li class="tab col s3"><a href="#tab-main" class="translate active">Main settings</a></li>
                     <li class="tab col s3"><a href="#tab-blackist" class="translate active">Blacklist</a></li>
                     <li class="tab col s3"><a href="#tab-sync" class="translate active">Syncronisation</a></li>
+                    <li class="tab col s3"><a href="#tab-filterlist" class="translate active">Filter List</a></li>
                 </ul>
             </div>
             <div id="tab-main" class="col s12 page">
@@ -263,6 +267,41 @@
             </div>
             
         </div>
+
+        <div id="tab-filterlist" class="col s12 page">    
+            <p></p>
+            <span class="translate">Filter List: Das ist ein Premium Feature von Todoist. Du musst Todoist Premium kaufen um diesen nutzen zu können.</span>
+            <p></p>
+            <div class="col s12 m12 l12">
+                <div class="input-field col s12 m4 l4">
+                    <input id="filter_aktiv" type="checkbox" class="value" />
+                    <span class="translate" for="filter_aktiv">Filter aktivieren</span>
+                    <span><a href="https://get.todoist.help/hc/en-us/articles/205248842" target="_blank" class="translate">Erklärung zu Filter</a></span>
+                </div>
+            </div>
+            <span class="translate">Die Filter Liste erlaubt es eigene Listen zu erstellen. Beispiel: heute, morgen, letze 7 Tage, usw.</span>
+            <p></p>
+            <div class="col s12" id="filterlist">
+                
+                <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
+                <div class="table-values-div">
+                     <table class="table-values" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th id="filterlist_aktiv" data-name="filterlist_aktiv" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
+                                <th id="filterlist_filter_name" data-name="filterlist_filter_name" style="width: 20%; background: #64b5f6" class="translate">Filter Name</th>
+                                <th id="filterlist_query" data-name="filterlist_query" style="width: 20%; background: #64b5f6" class="translate">Filter Query</th>
+                                <th id="filterlist_comment" data-name="filterlist_comment" style="width: 40%; background: #64b5f6" class="translate">Comment</th>
+                                <th data-buttons="delete" style="width: 100px; background: #64b5f6"></th>
+
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+
     </div>
 </div>       
 </body>

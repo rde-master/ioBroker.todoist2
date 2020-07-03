@@ -74,7 +74,6 @@
       "todoist",
       "message"
     ],
-    "restartSchedule": "4 4 * * *",
     "extIcon": "https://raw.githubusercontent.com/rde-master/ioBroker.todoist2/master/admin/todoist.png",
     "type": "messaging",
     "stopBeforeUpdate": true,

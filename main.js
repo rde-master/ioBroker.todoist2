@@ -22,6 +22,7 @@ const request = require("request");
 
 let online_net = false;
 let poll;
+let rechnen;
 let uuid;
 let adapter;
 let debug;
@@ -65,6 +66,7 @@ async function startAdapter(options) {
         blacklist = adapter.config.blacklist;
         sync = adapter.config.sync;
         filter_list = adapter.config.filterlist;
+        rechnen = poll/2;
 
         //adapter.log.warn("blacklist: " + blacklist.length);
         
@@ -498,7 +500,7 @@ async function check_online(){
             }else{
             	
             	adapter.setState('info.connection', false, true);
-                adapter.log.error("No Connection to todoist possible!!! Please Check your Internet Connection.You need to restart the Adapter!")
+                adapter.log.error("No Connection to todoist possible!!! Please Check your Internet Connection.")
                 online_net = false;
                 resolve("ok");
             }
@@ -1703,6 +1705,11 @@ async function tasktofilter(filter_json, filter_name){
         var j;
         //if(debug) adapter.log.warn("anzahl task: " + json.length);
         var json = filter_json;
+
+        var json_task = "[]";
+        var json_task_parse = JSON.parse(json_task);
+
+        
         //Verarbeitung von Filter
         var css = JSON.stringify(adapter.config.html_css_table);
         css = css.replace(/\\n/g, '');
@@ -1753,10 +1760,15 @@ async function tasktofilter(filter_json, filter_name){
                             
                             baue_json = baue_json.replace(/\\/g, '');
                             baue_json = baue_json.replace(/\\/g, '');
-                            var json_filter = json_filter.push(baue_json);
+                            json_task_parse.push(baue_json);
+            
+                            json_task = JSON.stringify(json_task_parse);
             
             if(adapter.config.json_objects == true){
-                adapter.setState('JSON.Filter-JSON.'+filter_name, {val: json_filter, ack: true});
+                json_task = json_task.replace(/\\n/g, '');
+            json_task = json_task.replace(/\\/g, '');
+            json_task = json_task.replace(/\""/g, '');
+                adapter.setState('JSON.Filter-JSON.'+filter_name, {val: json_task, ack: true});
             }
                
             var text_filter = "No Todos";
@@ -1789,8 +1801,8 @@ async function tasktofilter(filter_json, filter_name){
             //adapter.setState('Lists.' + project.projects_name[j], {ack: true, val: 'empty'});
             var i = 0;
 
-            var json_task = "[]";
-            var json_task_parse = JSON.parse(json_task);
+            json_task = "[]";
+            json_task_parse = JSON.parse(json_task);
 
             var text_task = "";
 
@@ -2574,9 +2586,14 @@ async function main() {
     // es erfolgt dann auch kein neuer check mehr, adapter muss dann wohl erst neu gestatet werden??
    var status = await check_online();
 
+    
    
     if (online_net == false){
-        
+        rechnen = rechnen * 2;
+        mainintval = setTimeout(function(){
+            main();
+        }, rechnen);
+        adapter.log.warn("Recheck in " + rechnen + "seconds!");
         return
         
     };

@@ -67,7 +67,6 @@
     "loglevel": "info",
     "icon": "todoist.png",
     "materialize": true,
-    "supportCustoms": true,
     "compact": true,
     "keywords": [
       "notification",
@@ -118,24 +117,14 @@
     "json_parent_id": false,
     "text_separator":", "
   },
-  "objects": [
-    {
-      "_id": "_design/custom",
-      "language": "javascript",
-      "views": {
-        "state": {
-          "map": "function(doc) { if (doc.type === 'state' && (doc.common.custom || doc.common.history)) emit(doc._id, doc.common.custom || doc.common.history) }"
-        }
-      }
-    }
-  ],
+  "objects": [],
   "instanceObjects": [
     {
       "_id": "info.connection",
       "type": "state",
       "common": {
         "role": "indicator.connected",
-        "name": "If connected to Telegram server",
+        "name": "If connected to Todoist server",
         "type": "boolean",
         "read": true,
         "write": false,

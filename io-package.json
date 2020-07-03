@@ -98,7 +98,22 @@
     "filter_aktiv": false,
     "blacklist": [],
     "sync": [],
-    "filterlist": []
+    "filterlist": [],
+    "html_css_table": [],
+    "html_css_button": [],
+    "html_id": true,
+    "html_priority": false,
+    "html_url": false,
+    "html_project_id": false,
+    "html_comment_cound": false,
+    "html_parent_id": false,
+    "json_id": true,
+    "json_priority": false,
+    "json_url": false,
+    "json_project_id": false,
+    "json_comment_cound": false,
+    "json_parent_id": false,
+    "text_separator":", "
   },
   "objects": [
     {

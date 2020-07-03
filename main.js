@@ -19,6 +19,7 @@ const utils = require('@iobroker/adapter-core'); // Get common adapter utils
 const adapterName = require('./package.json').name.split('.').pop();
 const request = require("request");
 
+
 let online_net = false;
 let poll;
 let uuid;
@@ -1359,7 +1360,14 @@ async function tasktoproject(project){
 
 
                     
-                    var HTMLstring = '';
+                    var HTMLstring = '<tr><th>' + "Task" + '</th><th>';
+                    if(adapter.config.html_id){HTMLstring = HTMLstring + "ID" + '</th><th>'};
+                    if(adapter.config.html_priority){HTMLstring = HTMLstring + "Priority" + '</th><th>'};
+                    if(adapter.config.html_url){HTMLstring = HTMLstring + "URL" + '</th><th>'};
+                    if(adapter.config.html_project_id){HTMLstring = HTMLstring + "Project ID" + '</th><th>'};
+                    if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + "Comment Count" + '</th><th>'};
+                    if(adapter.config.html_parent_id){HTMLstring = HTMLstring + "Parent ID" + '</th><th>'};
+                    HTMLstring = HTMLstring + "" + '</th></tr>';
                     //adapter.setState('Lists.' + project.projects_name[j], {ack: true, val: 'empty'});
                     var i = 0;
 
@@ -1400,19 +1408,45 @@ async function tasktoproject(project){
                             if(debug)adapter.log.info('[' + content + '] in ' + project.projects_names[j] + ' found');
                             
                             //HTML
-                            HTMLstring = HTMLstring + '<tr><td><li><a href="' + taskurl + '" target="_blank">' + content + ' ID: ' + id + '</a></li></td></tr>';
+                            
+                            HTMLstring = HTMLstring + '<tr><td id="button_html">' + content + "</td><td>";
+                            if(adapter.config.html_id){HTMLstring = HTMLstring + id + '</td><td>'};
+                            if(adapter.config.html_priority){HTMLstring = HTMLstring + json[i].priority + '</td><td>'};
+                            if(adapter.config.html_url){HTMLstring = HTMLstring + taskurl + '</td><td>'};
+                            if(adapter.config.html_project_id){HTMLstring = HTMLstring + json[i].project_id + '</td><td>'};
+                            if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + json[i].comment_count + '</td><td>'};
+                            if(adapter.config.html_parent_id){HTMLstring = HTMLstring + json[i].parent_id + '</td><td>'};
+                            //HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">Close</button>' + '</td></tr>';
+                            HTMLstring = HTMLstring + '</td></tr>';
+                            
+                            
+                            
                             //var json_zwischen = JSON.stringify(json[i]);
                             //json_task = json_task + json_zwischen;
                             if(debug) adapter.log.info("Aufbau Projekt Liste HTML: " + HTMLstring);
                             
                             //JSON
-                            json_task_parse.push({"name":content, "ID":id});
+                            var baue_json = '{"name":"' + content + '"';
+                            if(adapter.config.json_id){baue_json = baue_json + ', "ID":"' + id + '"'};
+                            if(adapter.config.json_priority){baue_json = baue_json + ', "Priority":"' + json[i].priority + '"'};
+                            if(adapter.config.json_url){baue_json = baue_json + ', "URL":"' + taskurl + '"'};
+                            if(adapter.config.json_project_id){baue_json = baue_json + ', "Project ID":"' + json[i].project_id + '"'};
+                            if(adapter.config.json_comment_cound){baue_json = baue_json + ', "Comment Cound":"' + json[i].comment_count + '"'};
+                            if(adapter.config.json_parent_id){baue_json = baue_json + ', "Parent ID":"' + json[i].parent_id + '"'};
+                            baue_json = baue_json + "}";
+                            baue_json = JSON.stringify(baue_json);
+                            
+                            baue_json = baue_json.replace(/\\/g, '');
+                            baue_json = baue_json.replace(/\\/g, '');
+                            
+                            json_task_parse.push(baue_json);
             
                             json_task = JSON.stringify(json_task_parse);
                             if(debug) adapter.log.info("Aufbau Projekt Liste JSON: " + json_task)
 
                             //TEXT
-                            text_task = text_task + content + ", ";
+                            text_task = text_task + content + adapter.config.text_separator;
+                            
                             if(debug) adapter.log.info("Aufbau Projekt Liste Text: " + text_task);
                         }
                     }
@@ -1424,18 +1458,59 @@ async function tasktoproject(project){
                     
                     //Setzte den Status:
                     if(adapter.config.html_objects == true){
-                    adapter.setState('HTML.Projects-HTML.'+project.projects_names[j], {val: '<table><ul>' + HTMLstring + '</ul></table>', ack: true});
+                        var css = JSON.stringify(adapter.config.html_css_table);
+                        css = css.replace(/\\n/g, '');
+                        css = css.replace(/\\/g, '');
+                        css = css.replace(/\"/g, '');
+
+                        var css2 = JSON.stringify(adapter.config.html_css_button);
+                        css2 = css2.replace(/\\n/g, '');
+                        css2 = css2.replace(/\\/g, '');
+                        css2 = css2.replace(/\"/g, '');
+                        if(json_task === "[]"){
+                            HTMLstring = HTMLstring + '<tr><td id="button_html">' + "no Todo" + "</td><td>";
+                                    if(adapter.config.html_id){HTMLstring = HTMLstring + "-" + '</td><td>'};
+                                    if(adapter.config.html_priority){HTMLstring = HTMLstring + "-" + '</td><td>'};
+                                    if(adapter.config.html_url){HTMLstring = HTMLstring + "-" + '</td><td>'};
+                                    if(adapter.config.html_project_id){HTMLstring = HTMLstring + "-" + '</td><td>'};
+                                    if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + "-" + '</td><td>'};
+                                    if(adapter.config.html_parent_id){HTMLstring = HTMLstring + "-" + '</td><td>'};
+                                    //HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">Close</button>' + '</td></tr>';
+                                    HTMLstring = HTMLstring + '</td></tr>';
+        
+                        }
+                        
+                    adapter.setState('HTML.Projects-HTML.'+project.projects_names[j], {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {send_to("todoist2", "send", {funktion:"close_task", task_id:id})}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
                     }
                     if(json_task === "[]"){
-                        json_task = '[{"name":"no Todos"}]';
+                        var baue_json = '{"name":"' + "no Todo" + '"';
+                            if(adapter.config.json_id){baue_json = baue_json + ', "ID":"' + "-" + '"'};
+                            if(adapter.config.json_priority){baue_json = baue_json + ', "Priority":"' + "-" + '"'};
+                            if(adapter.config.json_url){baue_json = baue_json + ', "URL":"' + "-" + '"'};
+                            if(adapter.config.json_project_id){baue_json = baue_json + ', "Project ID":"' + "-" + '"'};
+                            if(adapter.config.json_comment_cound){baue_json = baue_json + ', "Comment Cound":"' + "-" + '"'};
+                            if(adapter.config.json_parent_id){baue_json = baue_json + ', "Parent ID":"' + "-" + '"'};
+                            baue_json = baue_json + "}";
+                            baue_json = JSON.stringify(baue_json);
+                            
+                            baue_json = baue_json.replace(/\\/g, '');
+                            baue_json = baue_json.replace(/\\/g, '');
+                            json_task_parse.push(baue_json);
                     }
+                    json_task = json_task.replace(/\\n/g, '');
+                    json_task = json_task.replace(/\\/g, '');
+                    json_task = json_task.replace(/\""/g, '');
+
                     if(adapter.config.json_objects == true){
                     adapter.setState('JSON.Projects-JSON.'+project.projects_names[j], {val: json_task, ack: true});
                     }
                     if(text_task == ""){
                         text_task = "No Todos";
+                    }else{
+                    
+                        text_task = text_task.substr(0, text_task.length-adapter.config.text_separator.length);
                     }
-                    if(adapter.config.text_objects == true){
+                        if(adapter.config.text_objects == true){
                         adapter.setState('TEXT.Projects-TEXT.'+project.projects_names[j], {val: text_task, ack: true});
                     }
             
@@ -1476,7 +1551,14 @@ async function tasktolabels(labels){
 
 
                     
-                    var HTMLstring = '';
+                    var HTMLstring = '<tr><th>' + "Task" + '</th><th>';
+                    if(adapter.config.html_id){HTMLstring = HTMLstring + "ID" + '</th><th>'};
+                    if(adapter.config.html_priority){HTMLstring = HTMLstring + "Priority" + '</th><th>'};
+                    if(adapter.config.html_url){HTMLstring = HTMLstring + "URL" + '</th><th>'};
+                    if(adapter.config.html_project_id){HTMLstring = HTMLstring + "Project ID" + '</th><th>'};
+                    if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + "Comment Count" + '</th><th>'};
+                    if(adapter.config.html_parent_id){HTMLstring = HTMLstring + "Parent ID" + '</th><th>'};
+                    HTMLstring = HTMLstring + "" + '</th></tr>';
                     //adapter.setState('Lists.' + project.projects_name[j], {ack: true, val: 'empty'});
                     var i = 0;
                     var json_task = "[]";
@@ -1503,16 +1585,41 @@ async function tasktolabels(labels){
                         	if(label[d] === labels.labels_id[j]){
                         		if(debug)adapter.log.info('[' + content + '] in ' + labels.labes_names[j] + ' found');
                         		//HTML
-                        		HTMLstring = HTMLstring + '<tr><td><li><a href="' + taskurl + '" target="_blank">' + content + ' ID: ' + id + '</a></li></td></tr>';
+                                
+                                HTMLstring = HTMLstring + '<tr><td id="button_html">' + content + "</td><td>";
+                            if(adapter.config.html_id){HTMLstring = HTMLstring + id + '</td><td>'};
+                            if(adapter.config.html_priority){HTMLstring = HTMLstring + json[i].priority + '</td><td>'};
+                            if(adapter.config.html_url){HTMLstring = HTMLstring + taskurl + '</td><td>'};
+                            if(adapter.config.html_project_id){HTMLstring = HTMLstring + json[i].project_id + '</td><td>'};
+                            if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + json[i].comment_count + '</td><td>'};
+                            if(adapter.config.html_parent_id){HTMLstring = HTMLstring + json[i].parent_id + '</td><td>'};
+                            //HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">Close</button>' + '</td></tr>';
+                            HTMLstring = HTMLstring + '</td></tr>';
+                                
+                                
+                                
                             //var json_zwischen = JSON.stringify(json[i]);
                             //json_task = json_task + json_zwischen;
                                 // JSON
-                            json_task_parse.push({"name":content, "ID":id});
-            
-                            json_task = JSON.stringify(json_task_parse);
+                                var baue_json = '{"name":"' + content + '"';
+                                if(adapter.config.json_id){baue_json = baue_json + ', "ID":"' + id + '"'};
+                                if(adapter.config.json_priority){baue_json = baue_json + ', "Priority":"' + json[i].priority + '"'};
+                                if(adapter.config.json_url){baue_json = baue_json + ', "URL":"' + taskurl + '"'};
+                                if(adapter.config.json_project_id){baue_json = baue_json + ', "Project ID":"' + json[i].project_id + '"'};
+                                if(adapter.config.json_comment_cound){baue_json = baue_json + ', "Comment Cound":"' + json[i].comment_count + '"'};
+                                if(adapter.config.json_parent_id){baue_json = baue_json + ', "Parent ID":"' + json[i].parent_id + '"'};
+                                baue_json = baue_json + "}";
+                                baue_json = JSON.stringify(baue_json);
+                                
+                                baue_json = baue_json.replace(/\\/g, '');
+                                baue_json = baue_json.replace(/\\/g, '');
+                                
+                                json_task_parse.push(baue_json);
+                
+                                json_task = JSON.stringify(json_task_parse);
                             if(debug) adapter.log.info("Aufbau Projekt Liste: " + json_task)
                                 //TEXT
-                            text_task = text_task + content + ", ";
+                            text_task = text_task + content + adapter.config.text_separator;
                             if(debug) adapter.log.info("Aufbau Projekt Liste Text: " + text_task);    
                         	}
                         	
@@ -1526,17 +1633,55 @@ async function tasktolabels(labels){
 				//json_task = JSON.stringify(json_task);
                // json_task = json_task.replace(/\\/g, ''); //Backschlasche entfernen!
                //Setzte den Status:
-               if(adapter.config.html_objects){
-               adapter.setState('HTML.Labels-HTML.'+labels.labes_names[j], {val: '<table><ul>' + HTMLstring + '</ul></table>', ack: true});
-               }
+               if(adapter.config.html_objects == true){
+                var css = JSON.stringify(adapter.config.html_css_table);
+                css = css.replace(/\\n/g, '');
+                css = css.replace(/\\/g, '');
+                css = css.replace(/\"/g, '');
+
+                var css2 = JSON.stringify(adapter.config.html_css_button);
+                css2 = css2.replace(/\\n/g, '');
+                css2 = css2.replace(/\\/g, '');
+                css2 = css2.replace(/\"/g, '');
+                if(label.length == 0){
+                    HTMLstring = HTMLstring + '<tr><td id="button_html">' + "no Todo" + "</td><td>";
+                            if(adapter.config.html_id){HTMLstring = HTMLstring + "-" + '</td><td>'};
+                            if(adapter.config.html_priority){HTMLstring = HTMLstring + "-" + '</td><td>'};
+                            if(adapter.config.html_url){HTMLstring = HTMLstring + "-" + '</td><td>'};
+                            if(adapter.config.html_project_id){HTMLstring = HTMLstring + "-" + '</td><td>'};
+                            if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + "-" + '</td><td>'};
+                            if(adapter.config.html_parent_id){HTMLstring = HTMLstring + "-" + '</td><td>'};
+                            //HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">Close</button>' + '</td></tr>';
+                            HTMLstring = HTMLstring + '</td></tr>';
+
+                }
+            adapter.setState('HTML.Labels-HTML.'+labels.labes_names[j], {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {send_to("todoist2", "send", {funktion:"close_task", task_id:id})}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
+            }
                if(json_task === "[]"){
-                json_task = '[{"name":"no Todos"}]';
+                var baue_json = '{"name":"' + "no Todo" + '"';
+                            if(adapter.config.json_id){baue_json = baue_json + ', "ID":"' + "-" + '"'};
+                            if(adapter.config.json_priority){baue_json = baue_json + ', "Priority":"' + "-" + '"'};
+                            if(adapter.config.json_url){baue_json = baue_json + ', "URL":"' + "-" + '"'};
+                            if(adapter.config.json_project_id){baue_json = baue_json + ', "Project ID":"' + "-" + '"'};
+                            if(adapter.config.json_comment_cound){baue_json = baue_json + ', "Comment Cound":"' + "-" + '"'};
+                            if(adapter.config.json_parent_id){baue_json = baue_json + ', "Parent ID":"' + "-" + '"'};
+                            baue_json = baue_json + "}";
+                            baue_json = JSON.stringify(baue_json);
+                            
+                            baue_json = baue_json.replace(/\\/g, '');
+                            baue_json = baue_json.replace(/\\/g, '');
+                            json_task_parse.push(baue_json);
                }
+                json_task = json_task.replace(/\\n/g, '');
+                json_task = json_task.replace(/\\/g, '');
+                json_task = json_task.replace(/\""/g, '');
                if(adapter.config.json_objects){
                adapter.setState('JSON.Labels-JSON.'+labels.labes_names[j], {val: json_task, ack: true});
                }
                if(text_task == ""){
                 text_task = "No Todos";
+                }else{                   
+                    text_task = text_task.substr(0, text_task.length-adapter.config.text_separator.length);
                 }
                 if(adapter.config.text_objects == true){
                     adapter.setState('TEXT.Labels-TEXT.'+labels.labes_names[j], {val: text_task, ack: true});
@@ -1559,14 +1704,56 @@ async function tasktofilter(filter_json, filter_name){
         //if(debug) adapter.log.warn("anzahl task: " + json.length);
         var json = filter_json;
         //Verarbeitung von Filter
+        var css = JSON.stringify(adapter.config.html_css_table);
+        css = css.replace(/\\n/g, '');
+        css = css.replace(/\\/g, '');
+        css = css.replace(/\"/g, '');
+
+        var css2 = JSON.stringify(adapter.config.html_css_button);
+        css2 = css2.replace(/\\n/g, '');
+        css2 = css2.replace(/\\/g, '');
+        css2 = css2.replace(/\"/g, '');
+
+        var HTMLstring = '<tr><th>' + "Task" + '</th><th>';
+                    if(adapter.config.html_id){HTMLstring = HTMLstring + "ID" + '</th><th>'};
+                    if(adapter.config.html_priority){HTMLstring = HTMLstring + "Priority" + '</th><th>'};
+                    if(adapter.config.html_url){HTMLstring = HTMLstring + "URL" + '</th><th>'};
+                    if(adapter.config.html_project_id){HTMLstring = HTMLstring + "Project ID" + '</th><th>'};
+                    if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + "Comment Count" + '</th><th>'};
+                    if(adapter.config.html_parent_id){HTMLstring = HTMLstring + "Parent ID" + '</th><th>'};
+                    HTMLstring = HTMLstring + "" + '</th></tr>';
+
         //wenn filter leer:
         if(filter_json.length == 0){
             if(adapter.config.html_objects == true){
-                var HTMLstring_filter = "";
-                adapter.setState('HTML.Filter-HTML.'+filter_name, {val: '<table><ul>' + HTMLstring_filter + '</ul></table>', ack: true});
+                
+                HTMLstring = HTMLstring + '<tr><td id="button_html">' + "no Todo" + "</td><td>";
+                            if(adapter.config.html_id){HTMLstring = HTMLstring + "-" + '</td><td>'};
+                            if(adapter.config.html_priority){HTMLstring = HTMLstring + "-" + '</td><td>'};
+                            if(adapter.config.html_url){HTMLstring = HTMLstring + "-" + '</td><td>'};
+                            if(adapter.config.html_project_id){HTMLstring = HTMLstring + "-" + '</td><td>'};
+                            if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + "-" + '</td><td>'};
+                            if(adapter.config.html_parent_id){HTMLstring = HTMLstring + "-" + '</td><td>'};
+                            //HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">Close</button>' + '</td></tr>';
+                            HTMLstring = HTMLstring + '</td></tr>';
+
+               // adapter.setState('HTML.Filter-HTML.'+filter_name, {val: '<table><ul>' + HTMLstring_filter + '</ul></table>', ack: true});
+                adapter.setState('HTML.Filter-HTML.'+filter_name, {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {send_to("todoist2", "send", {funktion:"close_task", task_id:id})}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
             }
             
-            var json_filter = '[{"name":"no Todos"}]';
+            var baue_json = '{"name":"' + "no Todo" + '"';
+                            if(adapter.config.json_id){baue_json = baue_json + ', "ID":"' + "-" + '"'};
+                            if(adapter.config.json_priority){baue_json = baue_json + ', "Priority":"' + "-" + '"'};
+                            if(adapter.config.json_url){baue_json = baue_json + ', "URL":"' + "-" + '"'};
+                            if(adapter.config.json_project_id){baue_json = baue_json + ', "Project ID":"' + "-" + '"'};
+                            if(adapter.config.json_comment_cound){baue_json = baue_json + ', "Comment Cound":"' + "-" + '"'};
+                            if(adapter.config.json_parent_id){baue_json = baue_json + ', "Parent ID":"' + "-" + '"'};
+                            baue_json = baue_json + "}";
+                            baue_json = JSON.stringify(baue_json);
+                            
+                            baue_json = baue_json.replace(/\\/g, '');
+                            baue_json = baue_json.replace(/\\/g, '');
+                            var json_filter = json_filter.push(baue_json);
             
             if(adapter.config.json_objects == true){
                 adapter.setState('JSON.Filter-JSON.'+filter_name, {val: json_filter, ack: true});
@@ -1598,7 +1785,7 @@ async function tasktofilter(filter_json, filter_name){
                 continue;
             }
 
-            var HTMLstring = '';
+            
             //adapter.setState('Lists.' + project.projects_name[j], {ack: true, val: 'empty'});
             var i = 0;
 
@@ -1621,19 +1808,43 @@ async function tasktofilter(filter_json, filter_name){
                 //Zuordnung zu den Listen:
   
                     //HTML
-                    HTMLstring = HTMLstring + '<tr><td><li><a href="' + taskurl + '" target="_blank">' + content + ' ID: ' + id + '</a></li></td></tr>';
+                    
+                    HTMLstring = HTMLstring + '<tr><td id="button_html">' + content + "</td><td>";
+                            if(adapter.config.html_id){HTMLstring = HTMLstring + id + '</td><td>'};
+                            if(adapter.config.html_priority){HTMLstring = HTMLstring + json[i].priority + '</td><td>'};
+                            if(adapter.config.html_url){HTMLstring = HTMLstring + taskurl + '</td><td>'};
+                            if(adapter.config.html_project_id){HTMLstring = HTMLstring + json[i].project_id + '</td><td>'};
+                            if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + json[i].comment_count + '</td><td>'};
+                            if(adapter.config.html_parent_id){HTMLstring = HTMLstring + json[i].parent_id + '</td><td>'};
+                            //HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">Close</button>' + '</td></tr>';
+                            HTMLstring = HTMLstring + '</td></tr>';
+                    
+                    
                     //var json_zwischen = JSON.stringify(json[i]);
                     //json_task = json_task + json_zwischen;
                     if(debug) adapter.log.info("Aufbau Filter Liste HTML: " + HTMLstring);
                     
                     //JSON
-                    json_task_parse.push({"name":content, "ID":id});
-    
-                    json_task = JSON.stringify(json_task_parse);
+                    var baue_json = '{"name":"' + content + '"';
+                            if(adapter.config.json_id){baue_json = baue_json + ', "ID":"' + id + '"'};
+                            if(adapter.config.json_priority){baue_json = baue_json + ', "Priority":"' + json[i].priority + '"'};
+                            if(adapter.config.json_url){baue_json = baue_json + ', "URL":"' + taskurl + '"'};
+                            if(adapter.config.json_project_id){baue_json = baue_json + ', "Project ID":"' + json[i].project_id + '"'};
+                            if(adapter.config.json_comment_cound){baue_json = baue_json + ', "Comment Cound":"' + json[i].comment_count + '"'};
+                            if(adapter.config.json_parent_id){baue_json = baue_json + ', "Parent ID":"' + json[i].parent_id + '"'};
+                            baue_json = baue_json + "}";
+                            baue_json = JSON.stringify(baue_json);
+                            
+                            baue_json = baue_json.replace(/\\/g, '');
+                            baue_json = baue_json.replace(/\\/g, '');
+                            
+                            json_task_parse.push(baue_json);
+            
+                            json_task = JSON.stringify(json_task_parse);
                     if(debug) adapter.log.info("Aufbau Filter Liste JSON: " + json_task)
 
                     //TEXT
-                    text_task = text_task + content + ", ";
+                    text_task = text_task + content + adapter.config.text_separator;
                     if(debug) adapter.log.info("Aufbau Filter Liste Text: " + text_task);
                 
             }
@@ -1645,16 +1856,23 @@ async function tasktofilter(filter_json, filter_name){
             
             //Setzte den Status:
             if(adapter.config.html_objects == true){
-            adapter.setState('HTML.Filter-HTML.'+filter_name, {val: '<table><ul>' + HTMLstring + '</ul></table>', ack: true});
+                
+
+            adapter.setState('HTML.Filter-HTML.'+filter_name, {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {send_to("todoist2", "send", {funktion:"close_task", task_id:id})}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
             }
             if(json_task === "[]"){
                 json_task = '[{"name":"no Todos"}]';
             }
+            json_task = json_task.replace(/\\n/g, '');
+            json_task = json_task.replace(/\\/g, '');
+            json_task = json_task.replace(/\""/g, '');
             if(adapter.config.json_objects == true){
             adapter.setState('JSON.Filter-JSON.'+filter_name, {val: json_task, ack: true});
             }
             if(text_task == ""){
                 text_task = "No Todos";
+            }else{                   
+                text_task = text_task.substr(0, text_task.length-adapter.config.text_separator.length);
             }
             if(adapter.config.text_objects == true){
                 adapter.setState('TEXT.Filter-TEXT.'+filter_name, {val: text_task, ack: true});
@@ -2344,8 +2562,6 @@ async function getDate_filter(filter_query){
 }
 
 
-
-
 async function main() {
     if (!adapter.config.token) {
         adapter.log.warn('Token todoist is not set!');
@@ -2420,7 +2636,7 @@ async function main() {
 
     }
     
-     
+
     
 
 //wenn fertig  funktion nach ablauf poll neu starten:

@@ -127,10 +127,11 @@
         <div class="row" style="height: 100%;">
             <div class="col s12">
                 <ul class="tabs">
-                    <li class="tab col s3"><a href="#tab-main" class="translate active">Main settings</a></li>
-                    <li class="tab col s3"><a href="#tab-blackist" class="translate active">Blacklist</a></li>
-                    <li class="tab col s3"><a href="#tab-sync" class="translate active">Syncronisation</a></li>
-                    <li class="tab col s3"><a href="#tab-filterlist" class="translate active">Filter List</a></li>
+                    <li class="tab col s2"><a href="#tab-main" class="translate active">Main settings</a></li>
+                    <li class="tab col s2"><a href="#tab-blackist" class="translate active">Blacklist</a></li>
+                    <li class="tab col s2"><a href="#tab-sync" class="translate active">Syncronisation</a></li>
+                    <li class="tab col s2"><a href="#tab-filterlist" class="translate active">Filter List</a></li>
+                    <li class="tab col s2"><a href="#tab-configlists" class="translate active">Config Lists</a></li>
                 </ul>
             </div>
             <div id="tab-main" class="col s12 page">
@@ -300,6 +301,111 @@
                 </div>
             </div>
             
+        </div>
+
+        <div id="tab-configlists" class="col s12 page">
+            <div class="row">
+                <p></p>
+            <span class=" col s12 m12 l12 translate">Einstellungen Listen:</span>
+            <span class=" col s12 m12 l12 translate">Hier können Sie die Einstellungen der Listen ändern</span>
+            <p></p>
+            </div>
+            <div class="row">
+                <h5 class="col s12 m12 l12 translate">Einstellung HTML</h5>
+                    <div class="input-field col s6 m6 l6 polling-settings">
+                        <textarea id="html_css_table" type="text" class="value"></textarea>
+                        <label class="translate" for="html_css_table">CSS für Table</label>
+                    </div>
+                    <div class="input-field col s5 m5 l5 polling-settings">
+                        <textarea id="html_css_button" type="text" class="value"></textarea>
+                        <label class="translate" for="html_css_button">CSS für Button</label>
+                    </div>
+                <div class="col s12">
+                    <span class=" col s12 m12 l12 translate">Welche Felder sollen angezeigt werden?</span>    
+                    <div class="input-field col s2 m2 l2">
+                            <input id="html_id" type="checkbox" class="value" />
+                            <span class="translate" for="html_id">task ID</span>
+                            
+                    </div>
+                    <div class="input-field col s2 m2 l2">
+                            <input id="html_priority" type="checkbox" class="value" />
+                            <span class="translate" for="html_priority">task priority</span>
+                            
+                    </div>
+                    <div class="input-field col s2 m2 l2">
+                            <input id="html_url" type="checkbox" class="value" />
+                            <span class="translate" for="html_url">task url</span>
+                            
+                    </div>
+                    <div class="input-field col s2 m2 l2">
+                        <input id="html_project_id" type="checkbox" class="value" />
+                        <span class="translate" for="html_project_id">task project id</span>
+                        
+                    </div>
+                    <div class="input-field col s2 m2 l2">
+                        <input id="html_comment_cound" type="checkbox" class="value" />
+                        <span class="translate" for="html_comment_cound">task comment count</span>
+                        
+                    </div>
+                    <div class="input-field col s2 m2 l2">
+                        <input id="html_parent_id" type="checkbox" class="value" />
+                        <span class="translate" for="html_parent_id">task parent id</span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="row">
+                    <div class="col s12">
+                    <h5 class="translate">Einstellung JSON</h5>
+                    </div>   
+                    
+                    <div class="col s12">
+                        <span class=" col s12 m12 l12 translate">Welche Felder sollen angezeigt werden?</span>     
+                        <div class="input-field col s2 m2 l2">
+                            <input id="json_id" type="checkbox" class="value" />
+                            <span class="translate" for="json_id">task ID</span>
+                            
+                    </div>
+                    <div class="input-field col s2 m2 l2">
+                            <input id="json_priority" type="checkbox" class="value" />
+                            <span class="translate" for="json_priority">task priority</span>
+                            
+                    </div>
+                    <div class="input-field col s2 m2 l2">
+                            <input id="json_url" type="checkbox" class="value" />
+                            <span class="translate" for="json_url">task url</span>
+                            
+                    </div>
+                    <div class="input-field col s2 m2 l2">
+                        <input id="json_project_id" type="checkbox" class="value" />
+                        <span class="translate" for="json_project_id">task project id</span>
+                        
+                    </div>
+                    <div class="input-field col s2 m2 l2">
+                        <input id="json_comment_cound" type="checkbox" class="value" />
+                        <span class="translate" for="json_comment_cound">task comment count</span>
+                        
+                    </div>
+                    <div class="input-field col s2 m2 l2">
+                        <input id="json_parent_id" type="checkbox" class="value" />
+                        <span class="translate" for="json_parent_id">task parent id</span>
+                        
+                    </div>
+                        
+                    </div>
+                 </div>
+                    <div class="row">
+                        <h5 class="col s12 m12 l12 translate">Einstellung Text</h5>
+                            
+                        <div >
+                            <div class="input-field col s12 m4 l4 polling-settings">
+                                <input id="text_separator" type="text" class="value" />
+                                <label class="translate" for="text_separator">, or - or _ or / or what you want</label>
+                                <span></span>                             
+                            </div>  
+                        </div>
+    
         </div>
 
     </div>

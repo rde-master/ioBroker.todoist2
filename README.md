@@ -90,6 +90,53 @@ z.B. Filter: "today" gibt alle heute fälligen Todos aus usw...
 Wichtig: für diese Funktion ist ein Premium Account bei Todoist nötig! 
 Aktiviere diese Funktion nur wenn du einen Premium Account hast.
 
+# Configuration der Listen
+## HTML
+
+Beispiel CSS HTML Table
+ ``` 
+#task_table {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#task_table td, #task_table th {
+  border: 1px solid #ddd;
+  padding: 16px;
+}
+
+#task_table tr:nth-child(even){background-color: #f2f2f2;}
+
+#task_table tr:hover {background-color: #ddd;}
+
+#task_table th {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
+
+
+```
+
+Beispiel CSS HTML Table
+ ``` 
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+```
 
 
 ## Changelog

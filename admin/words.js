@@ -524,5 +524,113 @@ systemDictionary = {
         "es": "Consulta de filtro",
         "pl": "Filtruj zapytanie",
         "zh-cn": "筛选查询"
+      },
+      "Einstellungen Listen:": {
+        "en": "List settings:",
+        "de": "Listeneinstellungen:",
+        "ru": "Настройки списка:",
+        "pt": "Configurações da lista:",
+        "nl": "Lijstinstellingen:",
+        "fr": "Liste des paramètres:",
+        "it": "Impostazioni elenco:",
+        "es": "Configuración de la lista:",
+        "pl": "Ustawienia listy:",
+        "zh-cn": "清单设定："
+      },
+      "Hier können Sie die Einstellungen der Listen ändern": {
+        "en": "Here you can change the settings of the lists",
+        "de": "Hier können Sie die Einstellungen der Listen ändern",
+        "ru": "Здесь вы можете изменить настройки списков",
+        "pt": "Aqui você pode alterar as configurações das listas",
+        "nl": "Hier kunt u de instellingen van de lijsten wijzigen",
+        "fr": "Ici, vous pouvez modifier les paramètres des listes",
+        "it": "Qui è possibile modificare le impostazioni degli elenchi",
+        "es": "Aquí puede cambiar la configuración de las listas",
+        "pl": "Tutaj możesz zmienić ustawienia list",
+        "zh-cn": "在这里您可以更改列表的设置"
+      },
+      "Einstellung HTML": {
+        "en": "HTML setting",
+        "de": "HTML-Einstellung",
+        "ru": "Настройка HTML",
+        "pt": "Configuração HTML",
+        "nl": "HTML-instelling",
+        "fr": "Paramètre HTML",
+        "it": "Impostazione HTML",
+        "es": "Configuración HTML",
+        "pl": "Ustawienie HTML",
+        "zh-cn": "HTML设置"
+      },
+      "CSS für Table": {
+        "en": "CSS for table",
+        "de": "CSS für Tabelle",
+        "ru": "CSS для таблицы",
+        "pt": "CSS para tabela",
+        "nl": "CSS voor tabel",
+        "fr": "CSS pour la table",
+        "it": "CSS per tabella",
+        "es": "CSS para tabla",
+        "pl": "CSS dla tabeli",
+        "zh-cn": "表的CSS"
+      },
+      "CSS für Button": {
+        "en": "CSS for button",
+        "de": "CSS für Schaltfläche",
+        "ru": "CSS для кнопки",
+        "pt": "CSS para botão",
+        "nl": "CSS voor knop",
+        "fr": "CSS pour le bouton",
+        "it": "CSS per pulsante",
+        "es": "CSS para botón",
+        "pl": "CSS dla przycisku",
+        "zh-cn": "按钮的CSS"
+      },
+      "Welche Felder sollen angezeigt werden?": {
+        "en": "Which fields should be displayed?",
+        "de": "Welche Felder sollen angezeigt werden?",
+        "ru": "Какие поля должны отображаться?",
+        "pt": "Quais campos devem ser exibidos?",
+        "nl": "Welke velden moeten worden weergegeven?",
+        "fr": "Quels champs doivent être affichés?",
+        "it": "Quali campi devono essere visualizzati?",
+        "es": "¿Qué campos deberían mostrarse?",
+        "pl": "Które pola powinny zostać wyświetlone?",
+        "zh-cn": "应显示哪些字段？"
+      },
+      "Einstellung JSON": {
+        "en": "JSON setting",
+        "de": "JSON-Einstellung",
+        "ru": "Настройка JSON",
+        "pt": "Configuração JSON",
+        "nl": "JSON-instelling",
+        "fr": "Paramètre JSON",
+        "it": "Impostazione JSON",
+        "es": "Configuración JSON",
+        "pl": "Ustawienie JSON",
+        "zh-cn": "JSON设置"
+      },
+      "Einstellung Text": {
+        "en": "Setting text",
+        "de": "Text einstellen",
+        "ru": "Настройка текста",
+        "pt": "Definir texto",
+        "nl": "Tekst instellen",
+        "fr": "Définition du texte",
+        "it": "Impostazione del testo",
+        "es": "Establecer texto",
+        "pl": "Ustawianie tekstu",
+        "zh-cn": "设定文字"
+      },
+      ", or - or _ or / or what you want": {
+        "en": ", or - or _ or / or what you want",
+        "de": ", oder - oder _ oder / oder was du willst",
+        "ru": "или - или _ или / или что вы хотите",
+        "pt": ", ou - ou _ ou / ou o que você deseja",
+        "nl": ", of - of _ of / of wat je wilt",
+        "fr": ", ou - ou _ ou / ou ce que vous voulez",
+        "it": ", oppure - oppure _ o / o ciò che desideri",
+        "es": ", o - o _ o / o lo que quieras",
+        "pl": ", lub - lub _ lub / lub co chcesz",
+        "zh-cn": "或-或_或/或您想要的"
       }
 }    

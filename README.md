@@ -140,6 +140,9 @@ Beispiel CSS HTML Table
 
 
 ## Changelog
+### 0.6.0
+* (rde-master) New List Options added
+
 ### 0.5.0
 * (rde-master) Filter Option added (Premium Todoist needed!!)
 

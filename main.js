@@ -66,7 +66,7 @@ async function startAdapter(options) {
         blacklist = adapter.config.blacklist;
         sync = adapter.config.sync;
         filter_list = adapter.config.filterlist;
-        rechnen = poll/2;
+        rechnen = adapter.config.pollingInterval/2;
 
         //adapter.log.warn("blacklist: " + blacklist.length);
         

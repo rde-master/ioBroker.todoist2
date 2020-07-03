@@ -4,8 +4,12 @@
     "require": {
       "js-controller": ">0.6.6"
     },
-    "version": "0.6.0",
+    "version": "0.6.1",
     "news": {
+      "0.6.1": {
+        "en": "Bugfix",
+        "de": "Bugfix"
+      },
       "0.6.0": {
         "en": "Add new List Options",
         "de": "Neue Einstellungen für Listen eingefügt"

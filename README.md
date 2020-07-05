@@ -140,6 +140,13 @@ Beispiel CSS HTML Table
 
 
 ## Changelog
+### 0.6.5
+* (rde-master) HTML Button added
+* (rde-master) closeTask now shows the result immediately
+
+### 0.6.1
+* (rde-master) Bugfix
+
 ### 0.6.0
 * (rde-master) New List Options added
 

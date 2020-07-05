@@ -519,7 +519,7 @@ async function check_online(){
             }else{
             	
             	adapter.setState('info.connection', false, true);
-                adapter.log.error("No Connection to todoist possible!!! Please Check your Internet Connection.")
+                adapter.log.warn("No Connection to todoist possible!!! Please Check your Internet Connection.")
                 online_net = false;
                 resolve("ok");
             }
@@ -2615,7 +2615,7 @@ async function main() {
         mainintval = setTimeout(function(){
             main();
         }, rechnen);
-        adapter.log.warn("Recheck in " + rechnen + "seconds!");
+        adapter.log.warn("Recheck in " + rechnen + " seconds!");
         return
         
     };

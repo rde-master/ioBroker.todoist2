@@ -99,7 +99,8 @@ async function startAdapter(options) {
 
         newstate();
         //subskribe um neue Stats anlegen zu können
-        adapter.subscribeStates('New.Task');
+        adapter.subscribeStates('Control.New.Task');
+        adapter.subscribeStates('Control.Close.ID');
 
         //Subscribe wenn Task aktiv sind alle Tasks um dessen Änderung zu bearbeiten
         if(adapter.config.tasks == true){
@@ -157,7 +158,7 @@ async function startAdapter(options) {
         var end_pos = id.length;
         var new_id = id.substr(pos, end_pos);
 
-
+        
         //adapter.log.info("state: " + JSON.stringify(state));
 
         //addTask(item, proejct_id, section_id, parent, order, label_id, priority, date, dupli)
@@ -165,6 +166,13 @@ async function startAdapter(options) {
         if(new_id == "Task"){
             //neuer Task über Objekte
             new_with_state(id, state);
+        }else if(new_id == "ID"){
+
+            // @ts-ignore
+            //adapter.log.info("ausführen: " + state.val);
+            // @ts-ignore
+            closeTask(state.val);
+
         }else{
             //wenn ein Butten gedrückt wird in der Objekt liste.....
             state_task_delete(new_id, state);
@@ -234,7 +242,7 @@ async function new_with_state(id, state){
 //Baue neue States
 
 async function newstate(){
-    await adapter.setObjectNotExistsAsync("New.Task", {
+    await adapter.setObjectNotExistsAsync("Control.New.Task", {
         type: 'state',
         common: {
             role: 'text',
@@ -244,7 +252,7 @@ async function newstate(){
         },
         native: {}
           });
-    await adapter.setObjectNotExistsAsync("New.Project", {
+    await adapter.setObjectNotExistsAsync("Control.New.Project", {
             type: 'state',
             common: {
                 role: 'state',
@@ -255,7 +263,7 @@ async function newstate(){
             native: {}
               });
     
-    await adapter.setObjectNotExistsAsync("New.Label", {
+    await adapter.setObjectNotExistsAsync("Control.New.Label", {
                 type: 'state',
                 common: {
                     role: 'state',
@@ -266,7 +274,7 @@ async function newstate(){
                 native: {}
                   });
 
-    await adapter.setObjectNotExistsAsync("New.Priority", {
+    await adapter.setObjectNotExistsAsync("Control.New.Priority", {
                     type: 'state',
                     common: {
                         role: 'value',
@@ -277,7 +285,7 @@ async function newstate(){
                     native: {}
                       });
 
-    await adapter.setObjectNotExistsAsync("New.Date", {
+    await adapter.setObjectNotExistsAsync("Control.New.Date", {
                         type: 'state',
                         common: {
                             role: 'date',
@@ -287,6 +295,17 @@ async function newstate(){
                         },
                         native: {}
                           });
+
+        await adapter.setObjectNotExistsAsync("Control.Close.ID", {
+                type: 'state',
+                common: {
+                role: 'state',
+                name: 'Task ID',
+                type: 'number'
+                            
+                },
+                native: {}
+                });
 
 }
 
@@ -453,7 +472,7 @@ function syncronisation(){
                                 addTask(json.content, sync_ziel, "", "", "", "", "", "", false);
 
                                 if(sync_delete == true){
-
+                                    
                                     closeTask(sync_task_id);
                     
                                 }
@@ -684,6 +703,9 @@ function closeTask(task_id){
           if(error){adapter.log.error(error);}
         
           if(debug) adapter.log.info(JSON.stringify("Task wurde geschlossen...." + body));
+          //adapter.log.info("Clear main interval");
+          clearTimeout(mainintval);
+          main();
         });
 	
 
@@ -1418,7 +1440,7 @@ async function tasktoproject(project){
                             if(adapter.config.html_project_id){HTMLstring = HTMLstring + json[i].project_id + '</td><td>'};
                             if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + json[i].comment_count + '</td><td>'};
                             if(adapter.config.html_parent_id){HTMLstring = HTMLstring + json[i].parent_id + '</td><td>'};
-                            //HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">Close</button>' + '</td></tr>';
+                            HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">Close</button>' + '</td></tr>';
                             HTMLstring = HTMLstring + '</td></tr>';
                             
                             
@@ -1482,7 +1504,7 @@ async function tasktoproject(project){
         
                         }
                         
-                    adapter.setState('HTML.Projects-HTML.'+project.projects_names[j], {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {send_to("todoist2", "send", {funktion:"close_task", task_id:id})}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
+                    adapter.setState('HTML.Projects-HTML.'+project.projects_names[j], {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {servConn.setState("todoist2.0.Control.Close.ID", id)}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
                     }
                     if(json_task === "[]"){
                         var baue_json = '{"name":"' + "no Todo" + '"';

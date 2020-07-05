@@ -1617,7 +1617,7 @@ async function tasktolabels(labels){
                             if(adapter.config.html_project_id){HTMLstring = HTMLstring + json[i].project_id + '</td><td>'};
                             if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + json[i].comment_count + '</td><td>'};
                             if(adapter.config.html_parent_id){HTMLstring = HTMLstring + json[i].parent_id + '</td><td>'};
-                            //HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">Close</button>' + '</td></tr>';
+                            HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">Close</button>' + '</td></tr>';
                             HTMLstring = HTMLstring + '</td></tr>';
                                 
                                 
@@ -1679,7 +1679,7 @@ async function tasktolabels(labels){
                             HTMLstring = HTMLstring + '</td></tr>';
 
                 }
-            adapter.setState('HTML.Labels-HTML.'+labels.labes_names[j], {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {send_to("todoist2", "send", {funktion:"close_task", task_id:id})}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
+            adapter.setState('HTML.Labels-HTML.'+labels.labes_names[j], {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {servConn.setState("todoist2.0.Control.Close.ID", id)}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
             }
                if(json_task === "[]"){
                 var baue_json = '{"name":"' + "no Todo" + '"';
@@ -1767,7 +1767,7 @@ async function tasktofilter(filter_json, filter_name){
                             HTMLstring = HTMLstring + '</td></tr>';
 
                // adapter.setState('HTML.Filter-HTML.'+filter_name, {val: '<table><ul>' + HTMLstring_filter + '</ul></table>', ack: true});
-                adapter.setState('HTML.Filter-HTML.'+filter_name, {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {send_to("todoist2", "send", {funktion:"close_task", task_id:id})}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
+                adapter.setState('HTML.Filter-HTML.'+filter_name, {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {servConn.setState("todoist2.0.Control.Close.ID", id)}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
             }
             
             var baue_json = '{"name":"' + "no Todo" + '"';
@@ -1850,7 +1850,7 @@ async function tasktofilter(filter_json, filter_name){
                             if(adapter.config.html_project_id){HTMLstring = HTMLstring + json[i].project_id + '</td><td>'};
                             if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + json[i].comment_count + '</td><td>'};
                             if(adapter.config.html_parent_id){HTMLstring = HTMLstring + json[i].parent_id + '</td><td>'};
-                            //HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">Close</button>' + '</td></tr>';
+                            HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">Close</button>' + '</td></tr>';
                             HTMLstring = HTMLstring + '</td></tr>';
                     
                     
@@ -1892,7 +1892,7 @@ async function tasktofilter(filter_json, filter_name){
             if(adapter.config.html_objects == true){
                 
 
-            adapter.setState('HTML.Filter-HTML.'+filter_name, {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {send_to("todoist2", "send", {funktion:"close_task", task_id:id})}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
+            adapter.setState('HTML.Filter-HTML.'+filter_name, {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {servConn.setState("todoist2.0.Control.Close.ID", id)}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
             }
             if(json_task === "[]"){
                 json_task = '[{"name":"no Todos"}]';

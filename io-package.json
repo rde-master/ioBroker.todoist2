@@ -4,8 +4,12 @@
     "require": {
       "js-controller": ">0.6.6"
     },
-    "version": "0.6.5",
+    "version": "0.6.6",
     "news": {
+      "0.6.6": {
+        "en": "Bugfix",
+        "de": "Bugfix"
+      },
       "0.6.5": {
         "en": "add HTML Button",
         "de": "HTML Button hinzugefügt"

@@ -20,6 +20,7 @@ const adapterName = require('./package.json').name.split('.').pop();
 const request = require("request");
 
 
+
 let online_net = false;
 let poll;
 let rechnen;
@@ -442,6 +443,7 @@ function syncronisation(){
 
     var sync_project_id = all_task_objekts[i].project_id;
     var sync_task_id = all_task_objekts[i].id;
+    var sync_task_contend = all_task_objekts[i].content;
 
 
         for(var j = 0; j < sync.length; j++){
@@ -454,38 +456,26 @@ function syncronisation(){
 
             if(sync_project_id == sync_quelle && sync_activ == true){
                 
-                // eigene Abfrage nötig, da nur dieser eine Tasks abgefragt wird:
-                var APItoken = adapter.config.token;
-                var TasksApi = { method: 'GET',
-                url: 'https://api.todoist.com/rest/v1/tasks/' + sync_task_id,
-                headers: 
-                { Authorization: 'Bearer ' + APItoken}
-                 };
+
+                
+                 
             
-	
-                    request(TasksApi, function (error, response, body) {
-                        if(error){adapter.log.error(error);}
-                            try {
+                                 addTask(sync_task_contend, sync_ziel, "", "", "", "", "", "", false);
+                                adapter.log.info("ergebnist: ");
                                 
-                                var json = JSON.parse(body);
-
-                                addTask(json.content, sync_ziel, "", "", "", "", "", "", false);
-
                                 if(sync_delete == true){
                                     
-                                    closeTask(sync_task_id);
-                    
+                                closeTask(sync_task_id);
+                                    adapter.log.info("ergebnis2: ");
+                                    
+                                    
                                 }
-                                
-                            } catch (err) {
-                                adapter.log.error('Error by read of task: ' + err);
-                            }
-                        });
-     
 
-            }
 
-    
+                
+                    }
+
+                    
         }
     }
 }
@@ -550,7 +540,8 @@ function createUUID(){
 //wurde eingebaut um die Synconistations funktion die duplikateserkenng zu umgehen.
 // false --> deaktiviert
 //true --> aktiviert (sollte standard sein)
-function addTask(item, proejct_id, section_id, parent, order, label_id, priority, date, dupli){
+async function addTask(item, proejct_id, section_id, parent, order, label_id, priority, date, dupli){
+    return new Promise(function (resolve, reject) {
     if(debug) adapter.log.info("neuen Task anlegen starten....");
     var dublicate_sperre = false;
     
@@ -617,11 +608,11 @@ function addTask(item, proejct_id, section_id, parent, order, label_id, priority
         if(dublicate_sperre == false) request(options, function (error, response, body) {
           //if (error) throw new Error(error);
           if(error){adapter.log.error(error);}
-        
+            resolve(response);
            if(debug)adapter.log.info(JSON.stringify(body));
         });
+});
 }
-
 
 function delTask(task_id){
 	
@@ -689,8 +680,8 @@ function dellProject(project_id){
 }
 
 
-function closeTask(task_id){
-	
+async function closeTask(task_id){
+	return new Promise(function (resolve, reject) {
 	var APItoken = adapter.config.token;
         //purchItem = item + " " + anzahl + " Stück";
         var del_task = { method: 'POST',
@@ -701,14 +692,14 @@ function closeTask(task_id){
 		request(del_task, function (error, response, body) {
           //if (error) throw new Error(error);
           if(error){adapter.log.error(error);}
-        
+            resolve(response);
           if(debug) adapter.log.info(JSON.stringify("Task wurde geschlossen...." + body));
-          //adapter.log.info("Clear main interval");
-          clearTimeout(mainintval);
-          main();
+          adapter.log.info("Clear main interval");
+          //clearTimeout(mainintval);
+          //main();
         });
 	
-
+    });
 }
 
 
@@ -2608,9 +2599,9 @@ async function main() {
     // es erfolgt dann auch kein neuer check mehr, adapter muss dann wohl erst neu gestatet werden??
    var status = await check_online();
 
-    
-   
-    if (online_net == false){
+
+
+       if (online_net == false){
         rechnen = rechnen * 2;
         mainintval = setTimeout(function(){
             main();
@@ -2680,6 +2671,7 @@ async function main() {
 
 //wenn fertig  funktion nach ablauf poll neu starten:
 //mainintval =  (function(){main();}, 60000);
+//adapter.log.info("main: " + poll);
 
 mainintval = setTimeout(function(){
     main();

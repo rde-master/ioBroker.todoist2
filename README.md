@@ -140,6 +140,9 @@ Beispiel CSS HTML Table
 
 
 ## Changelog
+### 0.6.7
+* (rde-master) Bugfix Prio 
+
 ### 0.6.6
 * (rde-master) Bugfix
 

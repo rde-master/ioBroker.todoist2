@@ -1424,9 +1424,24 @@ async function tasktoproject(project){
                             
                             //HTML
                             
+                            //Fehler in der Priorität anpassen - es kommen die Falschen zahlen umgedreht:
+                            var prio_neu = 0;
+                            if(json[i].priority == 1){
+                                prio_neu = 4;
+                            }
+                            if(json[i].priority == 2){
+                                prio_neu = 3;
+                            }
+                            if(json[i].priority == 3){
+                                prio_neu = 2;
+                            }
+                            if(json[i].priority == 4){
+                                prio_neu = 1;
+                            }
+
                             HTMLstring = HTMLstring + '<tr><td id="button_html">' + content + "</td><td>";
                             if(adapter.config.html_id){HTMLstring = HTMLstring + id + '</td><td>'};
-                            if(adapter.config.html_priority){HTMLstring = HTMLstring + json[i].priority + '</td><td>'};
+                            if(adapter.config.html_priority){HTMLstring = HTMLstring + prio_neu + '</td><td>'};
                             if(adapter.config.html_url){HTMLstring = HTMLstring + taskurl + '</td><td>'};
                             if(adapter.config.html_project_id){HTMLstring = HTMLstring + json[i].project_id + '</td><td>'};
                             if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + json[i].comment_count + '</td><td>'};
@@ -1443,7 +1458,7 @@ async function tasktoproject(project){
                             //JSON
                             var baue_json = '{"name":"' + content + '"';
                             if(adapter.config.json_id){baue_json = baue_json + ', "ID":"' + id + '"'};
-                            if(adapter.config.json_priority){baue_json = baue_json + ', "Priority":"' + json[i].priority + '"'};
+                            if(adapter.config.json_priority){baue_json = baue_json + ', "Priority":"' + prio_neu + '"'};
                             if(adapter.config.json_url){baue_json = baue_json + ', "URL":"' + taskurl + '"'};
                             if(adapter.config.json_project_id){baue_json = baue_json + ', "Project ID":"' + json[i].project_id + '"'};
                             if(adapter.config.json_comment_cound){baue_json = baue_json + ', "Comment Cound":"' + json[i].comment_count + '"'};
@@ -1601,9 +1616,25 @@ async function tasktolabels(labels){
                         		if(debug)adapter.log.info('[' + content + '] in ' + labels.labes_names[j] + ' found');
                         		//HTML
                                 
+                                //Fehler in der Priorität anpassen - es kommen die Falschen zahlen umgedreht:
+                            var prio_neu = 0;
+                            if(json[i].priority == 1){
+                                prio_neu = 4;
+                            }
+                            if(json[i].priority == 2){
+                                prio_neu = 3;
+                            }
+                            if(json[i].priority == 3){
+                                prio_neu = 2;
+                            }
+                            if(json[i].priority == 4){
+                                prio_neu = 1;
+                            }
+
+
                                 HTMLstring = HTMLstring + '<tr><td id="button_html">' + content + "</td><td>";
                             if(adapter.config.html_id){HTMLstring = HTMLstring + id + '</td><td>'};
-                            if(adapter.config.html_priority){HTMLstring = HTMLstring + json[i].priority + '</td><td>'};
+                            if(adapter.config.html_priority){HTMLstring = HTMLstring + prio_neu + '</td><td>'};
                             if(adapter.config.html_url){HTMLstring = HTMLstring + taskurl + '</td><td>'};
                             if(adapter.config.html_project_id){HTMLstring = HTMLstring + json[i].project_id + '</td><td>'};
                             if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + json[i].comment_count + '</td><td>'};
@@ -1618,7 +1649,7 @@ async function tasktolabels(labels){
                                 // JSON
                                 var baue_json = '{"name":"' + content + '"';
                                 if(adapter.config.json_id){baue_json = baue_json + ', "ID":"' + id + '"'};
-                                if(adapter.config.json_priority){baue_json = baue_json + ', "Priority":"' + json[i].priority + '"'};
+                                if(adapter.config.json_priority){baue_json = baue_json + ', "Priority":"' + prio_neu + '"'};
                                 if(adapter.config.json_url){baue_json = baue_json + ', "URL":"' + taskurl + '"'};
                                 if(adapter.config.json_project_id){baue_json = baue_json + ', "Project ID":"' + json[i].project_id + '"'};
                                 if(adapter.config.json_comment_cound){baue_json = baue_json + ', "Comment Cound":"' + json[i].comment_count + '"'};
@@ -1834,9 +1865,25 @@ async function tasktofilter(filter_json, filter_name){
   
                     //HTML
                     
+                    //Fehler in der Priorität anpassen - es kommen die Falschen zahlen umgedreht:
+                    var prio_neu = 0;
+                    if(json[i].priority == 1){
+                        prio_neu = 4;
+                    }
+                    if(json[i].priority == 2){
+                        prio_neu = 3;
+                    }
+                    if(json[i].priority == 3){
+                        prio_neu = 2;
+                    }
+                    if(json[i].priority == 4){
+                        prio_neu = 1;
+                    }
+
+
                     HTMLstring = HTMLstring + '<tr><td id="button_html">' + content + "</td><td>";
                             if(adapter.config.html_id){HTMLstring = HTMLstring + id + '</td><td>'};
-                            if(adapter.config.html_priority){HTMLstring = HTMLstring + json[i].priority + '</td><td>'};
+                            if(adapter.config.html_priority){HTMLstring = HTMLstring + prio_neu + '</td><td>'};
                             if(adapter.config.html_url){HTMLstring = HTMLstring + taskurl + '</td><td>'};
                             if(adapter.config.html_project_id){HTMLstring = HTMLstring + json[i].project_id + '</td><td>'};
                             if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + json[i].comment_count + '</td><td>'};
@@ -1852,7 +1899,7 @@ async function tasktofilter(filter_json, filter_name){
                     //JSON
                     var baue_json = '{"name":"' + content + '"';
                             if(adapter.config.json_id){baue_json = baue_json + ', "ID":"' + id + '"'};
-                            if(adapter.config.json_priority){baue_json = baue_json + ', "Priority":"' + json[i].priority + '"'};
+                            if(adapter.config.json_priority){baue_json = baue_json + ', "Priority":"' + prio_neu + '"'};
                             if(adapter.config.json_url){baue_json = baue_json + ', "URL":"' + taskurl + '"'};
                             if(adapter.config.json_project_id){baue_json = baue_json + ', "Project ID":"' + json[i].project_id + '"'};
                             if(adapter.config.json_comment_cound){baue_json = baue_json + ', "Comment Cound":"' + json[i].comment_count + '"'};
@@ -1910,6 +1957,8 @@ async function tasktofilter(filter_json, filter_name){
 
 });
 }
+
+
 
 
 async function remove_old_objects(){

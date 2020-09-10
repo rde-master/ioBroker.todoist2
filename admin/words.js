@@ -632,5 +632,89 @@ systemDictionary = {
         "es": ", o - o _ o / o lo que quieras",
         "pl": ", lub - lub _ lub / lub co chcesz",
         "zh-cn": "或-或_或/或您想要的"
+      },
+      "Name für Task ID Feld": {
+        "en": "Name for Task ID field",
+        "de": "Name für das Feld Aufgaben-ID",
+        "ru": "Имя для поля ID задачи",
+        "pt": "Nome para o campo ID da Tarefa",
+        "nl": "Naam voor taak-ID-veld",
+        "fr": "Nom du champ ID de tâche",
+        "it": "Nome per il campo ID attività",
+        "es": "Nombre del campo ID de tarea",
+        "pl": "Nazwa pola ID zadania",
+        "zh-cn": "任务ID字段的名称"
+      },
+      "Name für Priorität Feld": {
+        "en": "Name for priority field",
+        "de": "Name für das Prioritätsfeld",
+        "ru": "Имя для поля приоритета",
+        "pt": "Nome para o campo prioritário",
+        "nl": "Naam voor prioriteitsveld",
+        "fr": "Nom du champ de priorité",
+        "it": "Nome per campo priorità",
+        "es": "Nombre del campo de prioridad",
+        "pl": "Nazwa pola priorytetowego",
+        "zh-cn": "优先字段名称"
+      },
+      "Name für URL Feld": {
+        "en": "Name for URL field",
+        "de": "Name für das URL-Feld",
+        "ru": "Имя для поля URL",
+        "pt": "Nome para o campo de URL",
+        "nl": "Naam voor URL-veld",
+        "fr": "Nom du champ URL",
+        "it": "Nome per il campo URL",
+        "es": "Nombre del campo URL",
+        "pl": "Nazwa pola adresu URL",
+        "zh-cn": "URL字段名称"
+      },
+      "Name für Project ID Feld": {
+        "en": "Name for Project ID field",
+        "de": "Name für das Feld Projekt-ID",
+        "ru": "Имя для поля ID проекта",
+        "pt": "Nome para o campo de ID do projeto",
+        "nl": "Naam voor het veld Project-ID",
+        "fr": "Nom du champ ID de projet",
+        "it": "Nome per il campo ID progetto",
+        "es": "Nombre del campo ID del proyecto",
+        "pl": "Nazwa pola ID projektu",
+        "zh-cn": "项目ID字段的名称"
+      },
+      "Name für Comment Count Feld": {
+        "en": "Name for Comment Count field",
+        "de": "Name für das Feld Anzahl der Kommentare",
+        "ru": "Имя для поля количества комментариев",
+        "pt": "Nome para o campo de contagem de comentários",
+        "nl": "Naam voor het veld Aantal reacties",
+        "fr": "Nom du champ Nombre de commentaires",
+        "it": "Nome per il campo Conteggio commenti",
+        "es": "Nombre del campo Recuento de comentarios",
+        "pl": "Nazwa pola Liczba komentarzy",
+        "zh-cn": "评论计数名称字段"
+      },
+      "Name für Parent ID Feld": {
+        "en": "Name for Parent ID field",
+        "de": "Name für das Feld Eltern-ID",
+        "ru": "Имя для поля родительского идентификатора",
+        "pt": "Nome para o campo de ID pai",
+        "nl": "Naam voor het veld Ouder-ID",
+        "fr": "Nom du champ ID parent",
+        "it": "Nome per il campo ID genitore",
+        "es": "Nombre para el campo de identificación del padre",
+        "pl": "Nazwa pola ID rodzica",
+        "zh-cn": "家长ID字段的名称"
+      },
+      "Name for task field": {
+        "en": "Name for task field",
+        "de": "Name für das Aufgabenfeld",
+        "ru": "Имя для поля задачи",
+        "pt": "Nome para o campo de tarefa",
+        "nl": "Naam voor taakveld",
+        "fr": "Nom du champ de tâche",
+        "it": "Nome per il campo delle attività",
+        "es": "Nombre del campo de la tarea",
+        "pl": "Nazwa pola zadania",
+        "zh-cn": "任务栏名称"
       }
 }    

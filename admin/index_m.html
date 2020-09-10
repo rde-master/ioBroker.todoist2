@@ -315,39 +315,59 @@
                     <div class="input-field col s6 m6 l6 polling-settings">
                         <textarea id="html_css_table" type="text" class="value"></textarea>
                         <label class="translate" for="html_css_table">CSS für Table</label>
+                        <span><a href="https://github.com/rde-master/ioBroker.todoist2" target="_blank" class="translate help">Read README.md Example Code</a></span>
                     </div>
                     <div class="input-field col s5 m5 l5 polling-settings">
                         <textarea id="html_css_button" type="text" class="value"></textarea>
                         <label class="translate" for="html_css_button">CSS für Button</label>
+                        <span><a href="https://github.com/rde-master/ioBroker.todoist2" target="_blank" class="translate help">Read README.md Example Code</a></span>
                     </div>
                 <div class="col s12">
-                    <span class=" col s12 m12 l12 translate">Welche Felder sollen angezeigt werden?</span>    
+                    <span class=" col s12 m12 l12 translate">Welche Felder sollen angezeigt werden?</span> 
+                    <div class="input-field col s12">
+                        <div class="input-field col s2 m2 l2">
+                        <input id="html_name" type="text" class="value" />
+                            <label class="translate" for="html_name">Name for task field</label>                                  
+                        </div>
+                    </div> 
                     <div class="input-field col s2 m2 l2">
-                            <input id="html_id" type="checkbox" class="value" />
+                        <input id="html_id_name" type="text" class="value" />
+                            <label class="translate" for="html_id_name">Name für Task ID Feld</label>     
+                        <input id="html_id" type="checkbox" class="value" />
                             <span class="translate" for="html_id">task ID</span>
-                            
+                                  
                     </div>
                     <div class="input-field col s2 m2 l2">
+                        <input id="html_priority_name" type="text" class="value" />
+                            <label class="translate" for="html_priority_name">Name für Priorität Feld</label> 
                             <input id="html_priority" type="checkbox" class="value" />
                             <span class="translate" for="html_priority">task priority</span>
                             
                     </div>
                     <div class="input-field col s2 m2 l2">
+                        <input id="html_url_name" type="text" class="value" />
+                            <label class="translate" for="html_url_name">Name für URL Feld</label> 
                             <input id="html_url" type="checkbox" class="value" />
                             <span class="translate" for="html_url">task url</span>
                             
                     </div>
                     <div class="input-field col s2 m2 l2">
+                        <input id="html_project_name" type="text" class="value" />
+                            <label class="translate" for="html_project_name">Name für Project ID Feld</label> 
                         <input id="html_project_id" type="checkbox" class="value" />
                         <span class="translate" for="html_project_id">task project id</span>
                         
                     </div>
                     <div class="input-field col s2 m2 l2">
+                        <input id="html_comment_name" type="text" class="value" />
+                            <label class="translate" for="html_comment_name">Name für Comment Count Feld</label> 
                         <input id="html_comment_cound" type="checkbox" class="value" />
                         <span class="translate" for="html_comment_cound">task comment count</span>
                         
                     </div>
                     <div class="input-field col s2 m2 l2">
+                        <input id="html_parent_name" type="text" class="value" />
+                            <label class="translate" for="html_parent_name">Name für Parent ID Feld</label>
                         <input id="html_parent_id" type="checkbox" class="value" />
                         <span class="translate" for="html_parent_id">task parent id</span>
                         
@@ -361,33 +381,52 @@
                     </div>   
                     
                     <div class="col s12">
+                        <div class="input-field col s12">
+                            <div class="input-field col s2 m2 l2">
+                            <input id="json_name" type="text" class="value" />
+                                <label class="translate" for="json_name">Name for task field</label>                                  
+                            </div>
+                        </div> 
+
                         <span class=" col s12 m12 l12 translate">Welche Felder sollen angezeigt werden?</span>     
                         <div class="input-field col s2 m2 l2">
+                            <input id="json_id_name" type="text" class="value" />
+                            <label class="translate" for="json_id_name">Name für Task ID Feld</label>
                             <input id="json_id" type="checkbox" class="value" />
                             <span class="translate" for="json_id">task ID</span>
                             
                     </div>
                     <div class="input-field col s2 m2 l2">
+                        <input id="json_priority_name" type="text" class="value" />
+                            <label class="translate" for="json_priority_name">Name für Priorität Feld</label>
                             <input id="json_priority" type="checkbox" class="value" />
                             <span class="translate" for="json_priority">task priority</span>
                             
                     </div>
                     <div class="input-field col s2 m2 l2">
+                        <input id="json_url_name" type="text" class="value" />
+                            <label class="translate" for="json_url_name">Name für URL Feld</label>
                             <input id="json_url" type="checkbox" class="value" />
                             <span class="translate" for="json_url">task url</span>
                             
                     </div>
                     <div class="input-field col s2 m2 l2">
+                        <input id="json_project_name" type="text" class="value" />
+                            <label class="translate" for="json_project_name">Name für Project ID Feld</label> 
                         <input id="json_project_id" type="checkbox" class="value" />
                         <span class="translate" for="json_project_id">task project id</span>
                         
                     </div>
                     <div class="input-field col s2 m2 l2">
+                        <input id="json_comment_name" type="text" class="value" />
+                            <label class="translate" for="json_comment_name">Name für Comment Count Feld</label> 
                         <input id="json_comment_cound" type="checkbox" class="value" />
                         <span class="translate" for="json_comment_cound">task comment count</span>
                         
                     </div>
                     <div class="input-field col s2 m2 l2">
+                        <input id="json_parent_name" type="text" class="value" />
+                            <label class="translate" for="json_parent_name">Name für Parent ID Feld</label>
                         <input id="json_parent_id" type="checkbox" class="value" />
                         <span class="translate" for="json_parent_id">task parent id</span>
                         

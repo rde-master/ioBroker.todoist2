@@ -93,7 +93,7 @@ Aktiviere diese Funktion nur wenn du einen Premium Account hast.
 # Configuration der Listen
 ## HTML
 
-Beispiel CSS HTML Table
+Example for CSS HTML Table
  ``` 
 #task_table {
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -121,7 +121,7 @@ Beispiel CSS HTML Table
 
 ```
 
-Beispiel CSS HTML Table
+Example for CSS HTML Button
  ``` 
 .button {
   background-color: #4CAF50;
@@ -140,6 +140,9 @@ Beispiel CSS HTML Table
 
 
 ## Changelog
+### 0.70
+* (rde-master) added Option to Name all Fields in HTML table and JSON table
+
 ### 0.6.7
 * (rde-master) Bugfix Prio 
 

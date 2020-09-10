@@ -4,8 +4,12 @@
     "require": {
       "js-controller": ">0.6.6"
     },
-    "version": "0.6.7",
+    "version": "0.7.0",
     "news": {
+      "0.7.0": {
+        "en": "added Option to Name all Fields in HTML table and JSON table",
+        "de": "neue Option um die Namen in allen Felder für HTML Tabelle und JSON Tabelle selbst zu bennenen"
+      },
       "0.6.7": {
         "en": "Bugfix Prio",
         "de": "Bugfix Prio"
@@ -131,7 +135,21 @@
     "json_project_id": false,
     "json_comment_cound": false,
     "json_parent_id": false,
-    "text_separator":", "
+    "text_separator":", ",
+    "html_id_name": "ID",
+    "html_priority_name": "priority",
+    "html_url_name": "url",
+    "html_project_name": "project id",
+    "html_comment_name": "comment count",
+    "html_parent_name": "parent ID",
+    "json_id_name": "ID",
+    "json_priority_name": "priority",
+    "json_url_name": "url",
+    "json_project_name": "project id",
+    "json_comment_name": "comment count",
+    "json_parent_name": "parent ID",
+    "html_name": "Task",
+    "json_name": "Task"
   },
   "objects": [],
   "instanceObjects": [

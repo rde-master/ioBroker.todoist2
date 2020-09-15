@@ -4,8 +4,12 @@
     "require": {
       "js-controller": ">0.6.6"
     },
-    "version": "0.7.0",
+    "version": "0.7.1",
     "news": {
+      "0.7.1": {
+        "en": "Bugfix JSON + added Option Naming the HTML Button",
+        "de": "Bugfix JSON + Option den HTML Button zu aktivieren und diesen zu benennen"
+      },
       "0.7.0": {
         "en": "added Option to Name all Fields in HTML table and JSON table",
         "de": "neue Option um die Namen in allen Felder für HTML Tabelle und JSON Tabelle selbst zu bennenen"
@@ -149,7 +153,9 @@
     "json_comment_name": "comment count",
     "json_parent_name": "parent ID",
     "html_name": "Task",
-    "json_name": "Task"
+    "json_name": "Task",
+    "html_button": true,
+    "html_button_name": "close"
   },
   "objects": [],
   "instanceObjects": [

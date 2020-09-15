@@ -140,7 +140,10 @@ Example for CSS HTML Button
 
 
 ## Changelog
-### 0.70
+### 0.7.1
+* (rde-master) Bugfix JSON + added Option Naming the HTML Button
+
+### 0.7.0
 * (rde-master) added Option to Name all Fields in HTML table and JSON table
 
 ### 0.6.7

@@ -716,5 +716,29 @@ systemDictionary = {
         "es": "Nombre del campo de la tarea",
         "pl": "Nazwa pola zadania",
         "zh-cn": "任务栏名称"
+      },
+      "Name for button": {
+        "en": "Name for button",
+        "de": "Name für Schaltfläche",
+        "ru": "Название кнопки",
+        "pt": "Nome para o botão",
+        "nl": "Naam voor knop",
+        "fr": "Nom du bouton",
+        "it": "Nome per il pulsante",
+        "es": "Nombre del botón",
+        "pl": "Nazwa przycisku",
+        "zh-cn": "按钮名称"
+      },
+      "Button for close task aktiv?": {
+        "en": "Button for close task aktiv?",
+        "de": "Button für enge Aufgabe aktiv?",
+        "ru": "Кнопка закрытия задачи актив?",
+        "pt": "Botão para fechar a tarefa aktiv?",
+        "nl": "Knop voor afsluiten taak aktiv?",
+        "fr": "Bouton pour fermer la tâche aktiv?",
+        "it": "Pulsante per chiudere l'attività aktiv?",
+        "es": "Botón para cerrar la tarea aktiv?",
+        "pl": "Przycisk do zamykania zadań?",
+        "zh-cn": "按钮关闭任务aktiv？"
       }
 }    

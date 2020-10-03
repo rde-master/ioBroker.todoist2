@@ -2651,6 +2651,7 @@ async function main() {
 
        if (online_net == false){
         rechnen = rechnen * 2;
+        clearTimeout(mainintval);
         mainintval = setTimeout(function(){
             main();
         }, rechnen);
@@ -2720,7 +2721,7 @@ async function main() {
 //wenn fertig  funktion nach ablauf poll neu starten:
 //mainintval =  (function(){main();}, 60000);
 //adapter.log.info("main: " + poll);
-
+clearTimeout(mainintval);
 mainintval = setTimeout(function(){
     main();
 }, poll);

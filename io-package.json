@@ -2,10 +2,14 @@
   "common": {
     "name": "todoist2",
     "require": {
-      "js-controller": ">0.6.6"
+      "js-controller": ">1.5.8"
     },
-    "version": "0.7.1",
+    "version": "0.7.2",
     "news": {
+      "0.7.2": {
+        "en": "Bugfix",
+        "de": "Bugfix"
+      },
       "0.7.1": {
         "en": "Bugfix JSON + added Option Naming the HTML Button",
         "de": "Bugfix JSON + Option den HTML Button zu aktivieren und diesen zu benennen"
@@ -78,7 +82,15 @@
     "title": "todoist2",
     "desc": {
       "en": "This adapter communikates with todoist",
-      "de": "Adapter ermöglicht eine Kommunikation mit todoist"
+      "de": "Dieser Adapter kommuniziert mit todoist",
+      "ru": "Этот адаптер взаимодействует с todoist",
+      "pt": "Este adaptador se comunica com todoist",
+      "nl": "Deze adapter communiceert met todoist",
+      "fr": "Cet adaptateur communique avec todoist",
+      "it": "Questo adattatore comunica con todoist",
+      "es": "Este adaptador se comunica con todoist",
+      "pl": "Ten adapter komunikuje się z todoist",
+      "zh-cn": "该适配器与todoist通信"
     },
     "authors": [
       "rde-master <info@rde-master.de>"

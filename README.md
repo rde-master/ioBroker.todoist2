@@ -140,6 +140,9 @@ Example for CSS HTML Button
 
 
 ## Changelog
+### 0.7.3
+* (rde-master) Bugfix
+
 ### 0.7.2
 * (rde-master) Bugfix
 

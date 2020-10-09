@@ -4,8 +4,20 @@
     "require": {
       "js-controller": ">1.5.8"
     },
-    "version": "0.7.2",
+    "version": "0.7.3",
     "news": {
+      "0.7.3": {
+        "en": "Bugfix",
+        "de": "Bug-Fix",
+        "ru": "Исправлена ошибка",
+        "pt": "Bugfix",
+        "nl": "Bugfix",
+        "fr": "Correction d'un bug",
+        "it": "Risoluzione del problema",
+        "es": "Arreglo del fallo",
+        "pl": "Naprawa błędów",
+        "zh-cn": "错误修正"
+      },
       "0.7.2": {
         "en": "Bugfix",
         "de": "Bug-Fix",
@@ -256,15 +268,14 @@
     ],
     "extIcon": "https://raw.githubusercontent.com/rde-master/ioBroker.todoist2/master/admin/todoist.png",
     "type": "messaging",
-    "stopBeforeUpdate": true,
+    "stopBeforeUpdate": false,
     "blockly": true,
     "config": {
       "minWidth": 800,
       "width": 1224,
       "height": 600
-    }
-    
-  },
+    },
+  
   "native": {
     "token": "",
     "pollingInterval": 60000,

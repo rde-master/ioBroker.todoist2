@@ -126,6 +126,7 @@ async function startAdapter(options) {
         if(poll > 10000){
         //mainintval = (function(){main();}, 60000);
         main();
+        mainintval = setInterval(main, poll);
         }
     });
 
@@ -134,7 +135,8 @@ async function startAdapter(options) {
             adapter.log.info('cleaned everything up...');
                 if (adapter && adapter.setState) adapter.setState('info.connection', false, true);
                 //adapter.log.info(JSON.stringify(mainintval));
-                clearTimeout(mainintval);
+                mainintval && clearInterval(mainintval);
+                mainintval = null;
                 
                 
             callback();
@@ -2650,12 +2652,14 @@ async function main() {
 
 
        if (online_net == false){
+        /*
         rechnen = rechnen * 2;
         clearTimeout(mainintval);
         mainintval = setTimeout(function(){
             main();
         }, rechnen);
-        adapter.log.warn("Recheck in " + rechnen + " seconds!");
+        */
+        adapter.log.warn("Recheck in " + poll + " seconds!");
         return
         
     };
@@ -2721,11 +2725,12 @@ async function main() {
 //wenn fertig  funktion nach ablauf poll neu starten:
 //mainintval =  (function(){main();}, 60000);
 //adapter.log.info("main: " + poll);
+/*
 clearTimeout(mainintval);
 mainintval = setTimeout(function(){
     main();
 }, poll);
-
+*/
 }
 
 // If started as allInOne/compact mode => return function to create instance

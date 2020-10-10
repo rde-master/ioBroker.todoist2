@@ -247,10 +247,10 @@
       "es": "Este adaptador se comunica con todoist",
       "pl": "Ten adapter komunikuje się z todoist",
       "zh-cn": "该适配器与todoist通信"
-    },
+      },
     "authors": [
       "rde-master <info@rde-master.de>"
-    ],
+      ],
     "license": "MIT",
     "platform": "Javascript/Node.js",
     "mode": "daemon",
@@ -273,8 +273,8 @@
       "minWidth": 800,
       "width": 1224,
       "height": 600
-    },
-  
+    }
+  },
     "native": {
       "token": "",
       "pollingInterval": 60000,
@@ -349,4 +349,4 @@
       }
     ]
   } 
-}
+

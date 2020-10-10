@@ -275,78 +275,78 @@
       "height": 600
     },
   
-  "native": {
-    "token": "",
-    "pollingInterval": 60000,
-    "debug": false,
-    "project": true,
-    "section": false,
-    "tasks": true,
-    "labels": true,
-    "dublicate": true,
-    "text_objects": true,
-    "json_objects": true,
-    "html_objects": true,
-    "rm_old_objects": false,
-    "filter_aktiv": false,
-    "blacklist": [],
-    "sync": [],
-    "filterlist": [],
-    "html_css_table": [],
-    "html_css_button": [],
-    "html_id": true,
-    "html_priority": false,
-    "html_url": false,
-    "html_project_id": false,
-    "html_comment_cound": false,
-    "html_parent_id": false,
-    "json_id": true,
-    "json_priority": false,
-    "json_url": false,
-    "json_project_id": false,
-    "json_comment_cound": false,
-    "json_parent_id": false,
-    "text_separator":", ",
-    "html_id_name": "ID",
-    "html_priority_name": "priority",
-    "html_url_name": "url",
-    "html_project_name": "project id",
-    "html_comment_name": "comment count",
-    "html_parent_name": "parent ID",
-    "json_id_name": "ID",
-    "json_priority_name": "priority",
-    "json_url_name": "url",
-    "json_project_name": "project id",
-    "json_comment_name": "comment count",
-    "json_parent_name": "parent ID",
-    "html_name": "Task",
-    "json_name": "Task",
-    "html_button": true,
-    "html_button_name": "close"
-  },
-  "objects": [],
-  "instanceObjects": [
-    {
-      "_id": "info",
-      "type": "channel",
-      "common": {
-          "name": "Information"
+    "native": {
+      "token": "",
+      "pollingInterval": 60000,
+      "debug": false,
+      "project": true,
+      "section": false,
+      "tasks": true,
+      "labels": true,
+      "dublicate": true,
+      "text_objects": true,
+      "json_objects": true,
+      "html_objects": true,
+      "rm_old_objects": false,
+      "filter_aktiv": false,
+      "blacklist": [],
+      "sync": [],
+      "filterlist": [],
+      "html_css_table": [],
+      "html_css_button": [],
+      "html_id": true,
+      "html_priority": false,
+      "html_url": false,
+      "html_project_id": false,
+      "html_comment_cound": false,
+      "html_parent_id": false,
+      "json_id": true,
+      "json_priority": false,
+      "json_url": false,
+      "json_project_id": false,
+      "json_comment_cound": false,
+      "json_parent_id": false,
+      "text_separator":", ",
+      "html_id_name": "ID",
+      "html_priority_name": "priority",
+      "html_url_name": "url",
+      "html_project_name": "project id",
+      "html_comment_name": "comment count",
+      "html_parent_name": "parent ID",
+      "json_id_name": "ID",
+      "json_priority_name": "priority",
+      "json_url_name": "url",
+      "json_project_name": "project id",
+      "json_comment_name": "comment count",
+      "json_parent_name": "parent ID",
+      "html_name": "Task",
+      "json_name": "Task",
+      "html_button": true,
+      "html_button_name": "close"
+    },
+    "objects": [],
+    "instanceObjects": [
+      {
+        "_id": "info",
+        "type": "channel",
+        "common": {
+            "name": "Information"
+        },
+        "native": {}
       },
-      "native": {}
-  },
-    {
-      "_id": "info.connection",
-      "type": "state",
-      "common": {
-        "role": "indicator.connected",
-        "name": "If connected to Todoist server",
-        "type": "boolean",
-        "read": true,
-        "write": false,
-        "def": false
-      },
-      "native": {}
-    }
-  ]
-}
+      {
+        "_id": "info.connection",
+        "type": "state",
+        "common": {
+          "role": "indicator.connected",
+          "name": "If connected to Todoist server",
+          "type": "boolean",
+          "read": true,
+          "write": false,
+          "def": false
+        },
+        "native": {}
+      }
+    ]
+  } 
 }

@@ -22,6 +22,7 @@ const request = require("request");
 
 
 let online_net = false;
+let online_count = 0;
 let poll;
 let rechnen;
 let uuid;
@@ -2659,11 +2660,20 @@ async function main() {
             main();
         }, rechnen);
         */
-        adapter.log.warn("Recheck in " + poll + " seconds!");
+        online_count ++;
+        if(online_count > 10){
+            clearInterval(mainintval);
+            adapter.log.err("Adapter cant't finde the API. You need to restart the Adapter to try again!!!!")   ;       
+        }
+        adapter.log.warn("Check again in " + poll + " seconds!");
+        var x = 10 - online_count;
+        adapter.log.warn("Checks before you need to restard the Adapter: " + x);
         return
         
     };
 
+    //ist online, deshalb count auf 0 stellen:
+    online_count = 0;
     
 
     poll = adapter.config.pollingInterval;

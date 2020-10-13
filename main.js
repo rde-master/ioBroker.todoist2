@@ -209,7 +209,10 @@ if(state.val == true && state.val !== undefined){
             });
         }
     }
+}else if (state.val == true && state.val == undefined) {
+    adapter.log.warn("function state_task_Delete is undefined, please report that issue");
 }
+
 }
 
 
@@ -2678,7 +2681,7 @@ async function main() {
         adapter.log.info("Adapter is online, Checks before restart reset!");
 
     }
-  x
+  
     
 
     poll = adapter.config.pollingInterval;

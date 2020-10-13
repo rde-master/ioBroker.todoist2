@@ -198,7 +198,7 @@ async function startAdapter(options) {
 
 //Lösche einen Taks wenn der Butten gedrückt wird in der Objekte übersicht
 async function state_task_delete(new_id, state){
-if(state.val == true){
+if(state.val == true && state.val !== undefined){
     for(var i = 0; i < all_task_objekts.length; i++){
         if(all_task_objekts[i].content == new_id){
             //adapter.log.info("task aus der liste gefunden " + JSON.stringify(state));
@@ -2667,13 +2667,18 @@ async function main() {
         }
         adapter.log.warn("Check again in " + poll + " seconds!");
         var x = 10 - online_count;
-        adapter.log.warn("Checks before you need to restard the Adapter: " + x);
+        adapter.log.warn("Checks before you need to restatd the Adapter: " + x);
         return
         
     };
 
     //ist online, deshalb count auf 0 stellen:
-    online_count = 0;
+    if(online_count > 0){
+        online_count = 0;
+        adapter.log.info("Adapter is online, Checks before restart reset!");
+
+    }
+  x
     
 
     poll = adapter.config.pollingInterval;

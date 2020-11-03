@@ -495,6 +495,7 @@ function syncronisation(){
 async function check_online(){
     var APItoken = adapter.config.token;    
 
+    // @ts-ignore
     await axios({
         method: 'get',
         baseURL: 'https://api.todoist.com',
@@ -546,7 +547,7 @@ async function check_online(){
                     online_net = false;
   
                 }
-            }
+            }.bind(adapter)
  );
 }
 
@@ -566,7 +567,7 @@ function createUUID(){
 // false --> deaktiviert
 //true --> aktiviert (sollte standard sein)
 async function addTask(item, proejct_id, section_id, parent, order, label_id, priority, date, dupli){
-    return new Promise(function (resolve, reject) {
+    
     if(debug) adapter.log.info("neuen Task anlegen starten....");
     var dublicate_sperre = false;
     
@@ -587,58 +588,87 @@ async function addTask(item, proejct_id, section_id, parent, order, label_id, pr
                 
             }
           }
-
-
     }
-
 
         createUUID();
         var APItoken = adapter.config.token;
-        //purchItem = item + " " + anzahl + " Stück";
-        var options = { method: 'POST',
-          url: 'https://api.todoist.com/rest/v1/tasks',
-          headers: 
-           { 'Cache-Control': 'no-cache',
-             Authorization: 'Bearer ' + APItoken,
-             'X-Request-Id': uuid,
-             'Content-Type': 'application/json' },
-          body: 
-           { content: item
-             
-             },
-          json: true };
-        if(proejct_id != ""){
-        options.body.project_id = parseInt(proejct_id);
-        }
-        if(section_id != ""){
-        options.body.section_id = parseInt(section_id);
-        }
-        if(parent != ""){
-        options.body.parent = parent;
-        }
-        if(order != ""){
-            options.body.order = parseInt(order);
-        }
-        if(label_id != ""){
-        options.body.label_ids = label_id;
-        }
-        if(priority != ""){
-        options.body.priority = parseInt(priority);
-        }
-        if(date != ""){
-        options.body.due_date = date;
-        }
 
-        if(debug)adapter.log.info("Daten welche an die API gesendet wird: " + JSON.stringify(options));
-        if(dublicate_sperre == false) request(options, function (error, response, body) {
-          //if (error) throw new Error(error);
-          if(error){adapter.log.error(error);}
-            resolve(response);
-           if(debug)adapter.log.info(JSON.stringify(body));
-        });
-});
+      
+        if(dublicate_sperre == false){
+         
+            // @ts-ignore
+            await axios({
+                method: 'post',
+                baseURL: 'https://api.todoist.com',
+                url: '/rest/v1/tasks',
+                responseType: 'json',
+                headers: 
+                { 'Cache-Control': 'no-cache',
+                Authorization: 'Bearer ' + APItoken,
+                'X-Request-Id': uuid,
+                'Content-Type': 'application/json' },
+                data: '{"content": "' + item + '"',
+                transformRequest: [function (data, headers) {
+                    
+                    if(proejct_id != "" && proejct_id != null){
+                        data = data + ', "project_id": "' + parseInt(proejct_id)+ '"';
+                        };
+                        if(section_id != "" && section_id != null){
+                        data = data + ', "section_id": "' + parseInt(section_id)+ '"';
+                        };
+                        if(parent != "" && parent != null){
+                            data = data + ', "parent": "' + parent+ '"';
+                        };
+                        if(order != "" && order != null){
+                        data = data + ', "order": "' + parseInt(order)+ '"';
+                        };
+                        if(label_id != "" && label_id != null){
+                            data = data + ', "label_ids": "' + label_id+ '"';
+                        };
+                        if(priority != "" && priority != null){
+                            data = data + ', "priority": "' + parseInt(priority)+ '"';
+                        };
+                        if(date != "" && date != null){
+                            data = data + ', "date": "' +  date+ '"';
+                        };
+                        data = data + "}"
+                        adapter.log.warn(data);
+                    return data;
+                        
+                  }]             
+                
+            }
+            ).then( 
+                function (response) {
+                    if(debug)adapter.log.info('setzte neuen Task: ' + response);
+                }
+                
+            ).catch(
+        
+                function (error) {
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        adapter.log.warn('received error ' + error.response.status + ' response from todoist with content: ' + JSON.stringify(error.response.data));
+                        adapter.log.warn(JSON.stringify(error.toJSON()));
+                    } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                        // http.ClientRequest in node.js
+                       adapter.log.info(error.message);
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        adapter.log.error(error.message); 
+                    }
+    }.bind(adapter)
+        
+        );
+         
+   
+    }
 }
 
+    
+    
 function delTask(task_id){
 	
 	var APItoken = adapter.config.token;

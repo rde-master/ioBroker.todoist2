@@ -140,6 +140,9 @@ Example for CSS HTML Button
 
 
 ## Changelog
+### 0.8.0
+* (rde-master) delete Request and add Axios
+
 ### 0.7.3
 * (rde-master) Bugfix
 

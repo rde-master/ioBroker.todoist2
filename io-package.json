@@ -4,8 +4,20 @@
     "require": {
       "js-controller": ">1.5.8"
     },
-    "version": "0.7.3",
+    "version": "0.8.0",
     "news": {
+      "0.8.0": {
+        "en": "delete Request and add Axios",
+        "de": "Anfrage löschen und Axios hinzufügen",
+        "ru": "удалить запрос и добавить Axios",
+        "pt": "excluir solicitação e adicionar Axios",
+        "nl": "verwijder Request en voeg Axios toe",
+        "fr": "supprimer la demande et ajouter Axios",
+        "it": "eliminare la richiesta e aggiungere Axios",
+        "es": "eliminar Solicitud y agregar Axios",
+        "pl": "usuń Żądanie i dodaj Axios",
+        "zh-cn": "删除请求并添加Axios"
+        },
       "0.7.3": {
         "en": "Bugfix",
         "de": "Bug-Fix",

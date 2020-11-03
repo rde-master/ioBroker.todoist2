@@ -178,6 +178,7 @@ async function startAdapter(options) {
             
             //adapter.log.info("ausführen: " + state.val);
             
+            // @ts-ignore
             closeTask(state.val);
 
         }else{

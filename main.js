@@ -759,7 +759,6 @@ await axios({
 
 async function dellProject(project_id){
 	
-	
     var APItoken = adapter.config.token;
     
     // @ts-ignore
@@ -796,14 +795,51 @@ async function dellProject(project_id){
     
     );
 	
-	
-	
 }
 
 
 async function closeTask(task_id){
-	return new Promise(function (resolve, reject) {
-	var APItoken = adapter.config.token;
+    var APItoken = adapter.config.token;
+    
+    // @ts-ignore
+    await axios({
+        method: 'POST',
+        baseURL: 'https://api.todoist.com',
+        url: '/rest/v1/tasks/' + task_id + '/close',
+        responseType: 'json',
+        headers: 
+        {  Authorization: 'Bearer ' + APItoken, },
+    }
+    ).then( 
+        function (response) {
+            if(debug)adapter.log.info('schließe  Task: ' + response);
+        }
+        
+    ).catch(
+    
+        function (error) {
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                adapter.log.warn('received error ' + error.response.status + ' response from todoist with content: ' + JSON.stringify(error.response.data));
+                adapter.log.warn(JSON.stringify(error.toJSON()));
+            } else if (error.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+               adapter.log.info(error.message);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                adapter.log.error(error.message); 
+            }
+    }.bind(adapter)
+    
+    );
+
+
+
+    /*
+    return new Promise(function (resolve, reject) {
+	
         //purchItem = item + " " + anzahl + " Stück";
         var del_task = { method: 'POST',
           url: 'https://api.todoist.com/rest/v1/tasks/' + task_id + '/close',
@@ -821,6 +857,9 @@ async function closeTask(task_id){
         });
 	
     });
+*/
+
+
 }
 
 

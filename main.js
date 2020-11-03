@@ -709,11 +709,64 @@ await axios({
 }
 
 
-function addProject(project, parent){
+async function addProject(project, parent){
 	
 	createUUID();
         var APItoken = adapter.config.token;
         //purchItem = item + " " + anzahl + " Stück";
+    
+// @ts-ignore
+await axios({
+    method: 'post',
+    baseURL: 'https://api.todoist.com',
+    url: '/rest/v1/projects',
+    responseType: 'json',
+    headers: 
+    { 'Cache-Control': 'no-cache',
+    Authorization: 'Bearer ' + APItoken,
+    'X-Request-Id': uuid,
+    'Content-Type': 'application/json' },
+    data: { name: project,
+        parent: parent
+        }         
+}
+).then( 
+    function (response) {
+        if(debug)adapter.log.info('setzte neues Projekt: ' + response);
+    }
+    
+).catch(
+
+    function (error) {
+        if (error.response) {
+            // The request was made and the server responded with a status code
+            adapter.log.warn('received error ' + error.response.status + ' response from todoist with content: ' + JSON.stringify(error.response.data));
+            adapter.log.warn(JSON.stringify(error.toJSON()));
+        } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+           adapter.log.info(error.message);
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            adapter.log.error(error.message); 
+        }
+}.bind(adapter)
+
+);
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+        /*
+       
+       
         var options = { method: 'POST',
           url: 'https://api.todoist.com/rest/v1/projects',
           headers: 
@@ -733,7 +786,7 @@ function addProject(project, parent){
         
           if(debug) adapter.log.info(JSON.stringify(body));
         });
-	
+	*/
 }
 
 function dellProject(project_id){

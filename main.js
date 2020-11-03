@@ -632,7 +632,7 @@ async function addTask(item, proejct_id, section_id, parent, order, label_id, pr
                             data = data + ', "date": "' +  date+ '"';
                         };
                         data = data + "}"
-                        adapter.log.warn(data);
+                        if(debug)adapter.log.info("Daten zum senden: " + data);
                     return data;
                         
                   }]             
@@ -669,21 +669,43 @@ async function addTask(item, proejct_id, section_id, parent, order, label_id, pr
 
     
     
-function delTask(task_id){
+async function delTask(task_id){
 	
 	var APItoken = adapter.config.token;
         //purchItem = item + " " + anzahl + " Stück";
-        var del_task = { method: 'DELETE',
-          url: 'https://api.todoist.com/rest/v1/tasks/' + task_id,
-          headers: {Authorization: 'Bearer ' + APItoken,}};
-		
-		request(del_task, function (error, response, body) {
-          //if (error) throw new Error(error);
-          if(error){adapter.log.error(error);}
-        
-          if(debug) adapter.log.info(JSON.stringify("Task wurde geslöscht...." + body));
-        });
+        // @ts-ignore
+await axios({
+    method: 'DELETE',
+    baseURL: 'https://api.todoist.com',
+    url: '/rest/v1/tasks/' + task_id,
+    responseType: 'json',
+    headers: 
+    {  Authorization: 'Bearer ' + APItoken, },
+}
+).then( 
+    function (response) {
+        if(debug)adapter.log.info('lösche  Task: ' + response);
+    }
+    
+).catch(
 
+    function (error) {
+        if (error.response) {
+            // The request was made and the server responded with a status code
+            adapter.log.warn('received error ' + error.response.status + ' response from todoist with content: ' + JSON.stringify(error.response.data));
+            adapter.log.warn(JSON.stringify(error.toJSON()));
+        } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+           adapter.log.info(error.message);
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            adapter.log.error(error.message); 
+        }
+}.bind(adapter)
+
+);
 }
 
 

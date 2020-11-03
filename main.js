@@ -18,7 +18,7 @@
 const utils = require('@iobroker/adapter-core'); // Get common adapter utils
 const adapterName = require('./package.json').name.split('.').pop();
 const request = require("request");
-const axios = require('axios');
+const axios = require('axios').default;
 const stringify = require('json-stringify-safe');
 
 
@@ -34,6 +34,7 @@ let all_task_objekts = [];
 let all_label_objekts = [];
 let all_project_objekts = [];
 let all_sections_objects = [];
+let all_filter_objects = [];
 let blacklist;
 let sync;
 let filter_list;
@@ -1039,6 +1040,7 @@ async function getData(){
 
         if(debug) adapter.log.info("get Labels");
 
+        // @ts-ignore
         await axios({
             method: 'get',
             baseURL: 'https://api.todoist.com',
@@ -1123,7 +1125,7 @@ async function getData(){
     // wenn das fertig ist, OK ausgeben
     
         if(debug) adapter.log.info("get Tasks");
-        adapter.log.info("get Tasks");
+        
         
         // @ts-ignore
     await axios({
@@ -1137,10 +1139,10 @@ async function getData(){
     ).then( 
         function (response) {
             //adapter.log.info('get Tasks: ' + stringify(response, null, 2));
-            adapter.log.info("response is da");
+            if(debug)adapter.log.info("response is da");
             var tasks_json = response.data;
             all_task_objekts = tasks_json;
-            adapter.log.info(JSON.stringify(all_task_objekts));
+            if(debug)adapter.log.info(JSON.stringify(all_task_objekts));
         }
         
     ).catch(
@@ -2851,52 +2853,58 @@ async function filterlist(){
     if(debug) adapter.log.info(JSON.stringify(filter_name));
 
     //füllte die states mit den jeweiligen daten:
-    var status = await tasktofilter(antwort, filter_name);
+    var status = await tasktofilter(all_filter_objects, filter_name);
     if(debug)  adapter.log.info("Status filter: " + status);
 
     }
 
 }
 
+
 async function getDate_filter(filter_query){
-	return new Promise(function (resolve, reject) {
-	var APItoken = adapter.config.token;
-    var filter = { method: 'GET',
-    url: 'https://api.todoist.com/rest/v1/tasks?filter=' + filter_query, 
-    headers: 
-     { Authorization: 'Bearer ' + APItoken}
-	};
 	
-	request(filter, async function (error, response, body) {
-        try {
-            if(typeof response === 'object' && response.statusCode == 402){
-                adapter.log.warn("Todoist Api say you don't have a premium account. Pleasy bye one or deaktivate this feature!")
-            }else{
-            var filter_json = JSON.parse(body);
-            
-             
-                resolve(filter_json);
-            }   
-            
-            
-        } catch (err) {
-            if(typeof response === 'object' && response.statusCode == 402){
-                adapter.log.warn("Todoist Api say you don't have a premium account. Pleasy bye one or deaktivate this feature!")
-            }else{
-            adapter.log.error("Error bei Filter: " + err);
-            adapter.log.error("Data an Api: " + JSON.stringify(filter));
-            adapter.log.error("Response: " + JSON.stringify(response));
-            adapter.log.error("Body: " + JSON.stringify(filter_json));
-            adapter.log.error("Error: " + error);
-        }
-       
-        //if (error) throw new Error(error);
-        if(error){adapter.log.error(error);}
+	var APItoken = adapter.config.token;
     
+await axios({
+    method: 'get',
+    baseURL: 'https://api.todoist.com',
+    url: '/rest/v1/tasks?filter=' + filter_query, 
+    responseType: 'json',
+    headers: 
+    { Authorization: 'Bearer ' + APItoken}
+}
+).then( 
+    function (response) {
+        if(debug)adapter.log.info('hole  Filter: ' + response);
+        if(typeof response === 'object' && response.status == 402){
+            adapter.log.warn("Todoist Api say you don't have a premium account. Pleasy bye one or deaktivate this feature!")
+        }else{
+        var filter_json = response.data;
+        
+         all_filter_objects = filter_json;
+            
         }
-    });
-});
+    }
     
+).catch(
+
+    function (error) {
+        if (error.response) {
+            // The request was made and the server responded with a status code
+            adapter.log.warn('received error ' + error.response.status + ' response from todoist with content: ' + JSON.stringify(error.response.data));
+            adapter.log.warn(JSON.stringify(error.toJSON()));
+        } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+           adapter.log.info(error.message);
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            adapter.log.error(error.message); 
+        }
+}.bind(adapter)
+
+);
 }
 
 

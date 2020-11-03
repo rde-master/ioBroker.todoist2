@@ -881,51 +881,93 @@ async function reopenTask(task_id){
 }
 
 
-function addSection(section, project_id){
+async function addSection(section, project_id){
 	
 	createUUID();
         var APItoken = adapter.config.token;
         //purchItem = item + " " + anzahl + " Stück";
-        var options = { method: 'POST',
-          url: 'https://api.todoist.com/rest/v1/sections',
-          headers: 
-           { 'Cache-Control': 'no-cache',
-             Authorization: 'Bearer ' + APItoken,
-             'X-Request-Id': uuid,
-             'Content-Type': 'application/json' },
-          body: 
-           { name: section,
-             project_id: project_id,
-             },
-          json: true };
-        
-        request(options, function (error, response, body) {
-          //if (error) throw new Error(error);
-          if(error){adapter.log.error(error);}
-        
-          if(debug) adapter.log.info(JSON.stringify(body));
-        });
-	
-	
+       
+       // @ts-ignore
+await axios({
+    method: 'post',
+    baseURL: 'https://api.todoist.com',
+    url: '/rest/v1/sections',
+    responseType: 'json',
+    headers: 
+    { 'Cache-Control': 'no-cache',
+    Authorization: 'Bearer ' + APItoken,
+    'X-Request-Id': uuid,
+    'Content-Type': 'application/json' },
+    data: { name: section,
+        project_id: project_id,
+        },         
+}
+).then( 
+    function (response) {
+        if(debug)adapter.log.info('setzte neue Section: ' + response);
+    }
+    
+).catch(
+
+    function (error) {
+        if (error.response) {
+            // The request was made and the server responded with a status code
+            adapter.log.warn('received error ' + error.response.status + ' response from todoist with content: ' + JSON.stringify(error.response.data));
+            adapter.log.warn(JSON.stringify(error.toJSON()));
+        } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+           adapter.log.info(error.message);
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            adapter.log.error(error.message); 
+        }
+}.bind(adapter)
+
+);
 	
 }
 
 
 
-function delSection(section_id){
+async function delSection(section_id){
 	
 	var APItoken = adapter.config.token;
-        //purchItem = item + " " + anzahl + " Stück";
-        var del_task = { method: 'DELETE',
-          url: 'https://api.todoist.com/rest/v1/sections/' + section_id,
-          headers: {Authorization: 'Bearer ' + APItoken,}};
-		
-		request(del_task, function (error, response, body) {
-          //if (error) throw new Error(error);
-          if(error){adapter.log.error(error);}
         
-          if(debug) adapter.log.info(JSON.stringify("Section wurde geslöscht...." + body));
-        });
+// @ts-ignore
+await axios({
+    method: 'DELETE',
+    baseURL: 'https://api.todoist.com',
+    url: '/rest/v1/sections/' + section_id,
+    responseType: 'json',
+    headers: 
+    {  Authorization: 'Bearer ' + APItoken, },
+}
+).then( 
+    function (response) {
+        if(debug)adapter.log.info('lösche  Section: ' + response);
+    }
+    
+).catch(
+
+    function (error) {
+        if (error.response) {
+            // The request was made and the server responded with a status code
+            adapter.log.warn('received error ' + error.response.status + ' response from todoist with content: ' + JSON.stringify(error.response.data));
+            adapter.log.warn(JSON.stringify(error.toJSON()));
+        } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+           adapter.log.info(error.message);
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            adapter.log.error(error.message); 
+        }
+}.bind(adapter)
+
+);
 
 }
 

@@ -730,8 +730,8 @@ systemDictionary = {
         "zh-cn": "按钮名称"
       },
       "Button for close task aktiv?": {
-        "en": "Button for close task aktiv?",
-        "de": "Button für enge Aufgabe aktiv?",
+        "en": "Button aktiv?",
+        "de": "Button aktiv?",
         "ru": "Кнопка закрытия задачи актив?",
         "pt": "Botão para fechar a tarefa aktiv?",
         "nl": "Knop voor afsluiten taak aktiv?",
@@ -740,5 +740,17 @@ systemDictionary = {
         "es": "Botón para cerrar la tarea aktiv?",
         "pl": "Przycisk do zamykania zadań?",
         "zh-cn": "按钮关闭任务aktiv？"
+      },
+      "When no Todo, is the table visable?": {
+        "en": "When no Todo, is the table visable?",
+        "de": "Wenn kein Todo, ist die Tabelle sichtbar?",
+        "ru": "Если нет Todo, видна ли таблица?",
+        "pt": "Quando não há Todo, a mesa fica visível?",
+        "nl": "Is de tafel zichtbaar als er geen Todo is?",
+        "fr": "Quand pas de Todo, la table est-elle visible?",
+        "it": "Quando non c'è niente da fare, il tavolo è visibile?",
+        "es": "Cuando no hay Todo, ¿se ve la mesa?",
+        "pl": "Jeśli nie ma zadań do wykonania, czy tabela jest widoczna?",
+        "zh-cn": "如果没有待办事项，该表是否可见？"
       }
 }    

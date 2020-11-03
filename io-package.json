@@ -4,8 +4,20 @@
     "require": {
       "js-controller": ">1.5.8"
     },
-    "version": "0.8.0",
+    "version": "0.8.1",
     "news": {
+      "0.8.1": {
+        "en": "add Option for SVG ICON, add Option disable Table when no Todo is there, add Option to hide Table Headlines when there is no Name for it, experimental: add Option, when you close a Task in Vis or per Objekt then the Main function is called to Refresh the Objekts and VIS",
+    "de": "Option für SVG ICON hinzufügen, Option hinzufügen Tabelle deaktivieren, wenn kein Todo vorhanden ist, Option hinzufügen, um Tabellenüberschriften auszublenden, wenn kein Name dafür vorhanden ist, experimentell: Option hinzufügen, wenn Sie eine Aufgabe in Vis oder pro Objekt schließen, ist die Hauptfunktion aufgerufen, um die Objekte und das VIS zu aktualisieren",
+    "ru": "добавить параметр для SVG ICON, добавить параметр отключить таблицу, когда нет Todo, добавить параметр, чтобы скрыть заголовки таблиц, когда для него нет имени, экспериментальный: добавить параметр, когда вы закрываете задачу в Vis или для каждого объекта, тогда основная функция призвал обновить объекты и ВИС",
+    "pt": "adicionar Opção para SVG ICON, adicionar Opção desabilitar Tabela quando não houver tarefas, adicionar Opção para ocultar Títulos de Tabela quando não houver Nome para ela, experimental: adicionar Opção, quando você fecha uma Tarefa no Vis ou por Objekt, a função Principal é chamado para atualizar os Objekts e VIS",
+    "nl": "voeg optie toe voor SVG ICON, voeg optie toe deactiveer tabel wanneer er geen Todo is, voeg optie toe om tabelkoppen te verbergen als er geen naam voor is, experimenteel: voeg optie toe, wanneer je een taak sluit in Vis of per object dan is de hoofdfunctie opgeroepen om de Objecten en VIS te vernieuwen",
+    "fr": "ajouter une option pour SVG ICON, ajouter une option désactiver la table quand aucun Todo n'est là, ajouter une option pour masquer les titres de la table quand il n'y a pas de nom pour elle, expérimental: ajouter une option, lorsque vous fermez une tâche dans Vis ou par objekt, la fonction principale est appelé pour rafraîchir les Objekts et VIS",
+    "it": "aggiungi l'opzione per l'ICONA SVG, aggiungi l'opzione disabilita la tabella quando non ci sono cose da fare, aggiungi l'opzione per nascondere i titoli della tabella quando non c'è un nome, sperimentale: aggiungi l'opzione, quando chiudi un'attività in Vis o per Objekt, la funzione principale è chiamato a Refresh the Objekts e VIS",
+    "es": "agregar Opción para ICONO SVG, agregar Opción deshabilitar Tabla cuando no hay Todo, agregar Opción para ocultar Titulares de tabla cuando no hay un Nombre para ello, experimental: agregar Opción, cuando cierra una Tarea en Vis o por Objekt, entonces la función Principal es llamado para actualizar los Objekts y VIS",
+    "pl": "dodaj opcję dla ikony SVG, dodaj opcję wyłącz tabelę, gdy nie ma zadań do wykonania, dodaj opcję ukrywania nagłówków tabeli, gdy nie ma dla niej nazwy, eksperymentalnie: dodaj opcję, gdy zamykasz zadanie w Vis lub na obiekt, wtedy funkcja główna jest wezwany do odświeżenia obiektów i VIS",
+    "zh-cn": "为SVG ICON添加选项，在没有Todo的情况下添加Option禁用表，在没有名称的情况下添加Option以隐藏表标题，实验性：添加Option，当您在Vis中或根据对象关闭任务时，Main函数为要求刷新目标和VIS"
+        },
       "0.8.0": {
         "en": "delete Request and add Axios",
         "de": "Anfrage löschen und Axios hinzufügen",
@@ -306,6 +318,8 @@
       "filterlist": [],
       "html_css_table": [],
       "html_css_button": [],
+      "html_svg_button": [],
+      "html_visable": true,
       "html_id": true,
       "html_priority": false,
       "html_url": false,

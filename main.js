@@ -180,7 +180,7 @@ async function startAdapter(options) {
             
             // @ts-ignore
             closeTask(state.val);
-
+            main();
         }else{
             //wenn ein Butten gedrückt wird in der Objekt liste.....
             state_task_delete(new_id, state);
@@ -1643,13 +1643,14 @@ async function tasktoproject(project){
 
 
                     
-                    var HTMLstring = '<tr><th>' + adapter.config.html_name + '</th><th>';
-                    if(adapter.config.html_id){HTMLstring = HTMLstring + adapter.config.html_id_name + '</th><th>'};
-                    if(adapter.config.html_priority){HTMLstring = HTMLstring + adapter.config.html_priority_name + '</th><th>'};
-                    if(adapter.config.html_url){HTMLstring = HTMLstring + adapter.config.html_url_name + '</th><th>'};
-                    if(adapter.config.html_project_id){HTMLstring = HTMLstring + adapter.config.html_project_id_name + '</th><th>'};
-                    if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + adapter.config.html_comment_cound_name + '</th><th>'};
-                    if(adapter.config.html_parent_id){HTMLstring = HTMLstring + adapter.config.html_parent_id_name + '</th><th>'};
+                    var HTMLstring ='<tr><th>' ;
+                    if(adapter.config.html_name !=""){ HTMLstring = HTMLstring + adapter.config.html_name + '</th><th>';}
+                    if(adapter.config.html_id && adapter.config.html_id_name!=""){HTMLstring = HTMLstring + adapter.config.html_id_name + '</th><th>'};
+                    if(adapter.config.html_priority && adapter.config.html_priority_name!=""){HTMLstring = HTMLstring + adapter.config.html_priority_name + '</th><th>'};
+                    if(adapter.config.html_url && adapter.config.html_url_name!=""){HTMLstring = HTMLstring + adapter.config.html_url_name + '</th><th>'};
+                    if(adapter.config.html_project_id && adapter.config.html_project_id_name!=""){HTMLstring = HTMLstring + adapter.config.html_project_id_name + '</th><th>'};
+                    if(adapter.config.html_comment_cound && adapter.config.html_comment_cound_name!=""){HTMLstring = HTMLstring + adapter.config.html_comment_cound_name + '</th><th>'};
+                    if(adapter.config.html_parent_id && adapter.config.html_parent_id_name!=""){HTMLstring = HTMLstring + adapter.config.html_parent_id_name + '</th><th>'};
                     HTMLstring = HTMLstring + "" + '</th></tr>';
                     //adapter.setState('Lists.' + project.projects_name[j], {ack: true, val: 'empty'});
                     var i = 0;
@@ -1714,7 +1715,7 @@ async function tasktoproject(project){
                             if(adapter.config.html_project_id){HTMLstring = HTMLstring + json[i].project_id + '</td><td>'};
                             if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + json[i].comment_count + '</td><td>'};
                             if(adapter.config.html_parent_id){HTMLstring = HTMLstring + json[i].parent_id + '</td><td>'};
-                            if(adapter.config.html_button){HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">'+adapter.config.html_button_name+'</button>' + '</td></tr>';}
+                            if(adapter.config.html_button){HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">' + adapter.config.html_svg_button+adapter.config.html_button_name+'</button>' + '</td></tr>';}
                             HTMLstring = HTMLstring + '</td></tr>';
                             
                             
@@ -1775,7 +1776,9 @@ async function tasktoproject(project){
                                     if(adapter.config.html_parent_id){HTMLstring = HTMLstring + "-" + '</td><td>'};
                                     //HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">Close</button>' + '</td></tr>';
                                     HTMLstring = HTMLstring + '</td></tr>';
-        
+                        if(adapter.config.html_visable == false){
+                            HTMLstring = "";
+                        }            
                         }
                         
                     adapter.setState('HTML.Projects-HTML.'+project.projects_names[j], {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {servConn.setState("todoist2.0.Control.Close.ID", id)}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
@@ -1849,13 +1852,14 @@ async function tasktolabels(labels){
 
 
                     
-                    var HTMLstring = '<tr><th>' + adapter.config.html_name + '</th><th>';
-                    if(adapter.config.html_id){HTMLstring = HTMLstring + adapter.config.html_id_name + '</th><th>'};
-                    if(adapter.config.html_priority){HTMLstring = HTMLstring + adapter.config.html_priority_name + '</th><th>'};
-                    if(adapter.config.html_url){HTMLstring = HTMLstring + adapter.config.html_url_name + '</th><th>'};
-                    if(adapter.config.html_project_id){HTMLstring = HTMLstring + adapter.config.html_project_id_name + '</th><th>'};
-                    if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + adapter.config.html_comment_cound_name + '</th><th>'};
-                    if(adapter.config.html_parent_id){HTMLstring = HTMLstring + adapter.config.html_parent_id_name + '</th><th>'};
+                    var HTMLstring ='<tr><th>' ;
+                    if(adapter.config.html_name !=""){ HTMLstring = HTMLstring + adapter.config.html_name + '</th><th>';}
+                    if(adapter.config.html_id && adapter.config.html_id_name!=""){HTMLstring = HTMLstring + adapter.config.html_id_name + '</th><th>'};
+                    if(adapter.config.html_priority && adapter.config.html_priority_name!=""){HTMLstring = HTMLstring + adapter.config.html_priority_name + '</th><th>'};
+                    if(adapter.config.html_url && adapter.config.html_url_name!=""){HTMLstring = HTMLstring + adapter.config.html_url_name + '</th><th>'};
+                    if(adapter.config.html_project_id && adapter.config.html_project_id_name!=""){HTMLstring = HTMLstring + adapter.config.html_project_id_name + '</th><th>'};
+                    if(adapter.config.html_comment_cound && adapter.config.html_comment_cound_name!=""){HTMLstring = HTMLstring + adapter.config.html_comment_cound_name + '</th><th>'};
+                    if(adapter.config.html_parent_id && adapter.config.html_parent_id_name!=""){HTMLstring = HTMLstring + adapter.config.html_parent_id_name + '</th><th>'};
                     HTMLstring = HTMLstring + "" + '</th></tr>';
                     //adapter.setState('Lists.' + project.projects_name[j], {ack: true, val: 'empty'});
                     var i = 0;
@@ -1907,7 +1911,7 @@ async function tasktolabels(labels){
                             if(adapter.config.html_project_id){HTMLstring = HTMLstring + json[i].project_id + '</td><td>'};
                             if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + json[i].comment_count + '</td><td>'};
                             if(adapter.config.html_parent_id){HTMLstring = HTMLstring + json[i].parent_id + '</td><td>'};
-                            if(adapter.config.html_button){HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">'+adapter.config.html_button_name+'</button>' + '</td></tr>';}
+                            if(adapter.config.html_button){HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')"> ' + adapter.config.html_svg_button + adapter.config.html_button_name+'</button>' + '</td></tr>';}
                             HTMLstring = HTMLstring + '</td></tr>';
                                 
                                 
@@ -1967,7 +1971,10 @@ async function tasktolabels(labels){
                             if(adapter.config.html_parent_id){HTMLstring = HTMLstring + "-" + '</td><td>'};
                             //HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">Close</button>' + '</td></tr>';
                             HTMLstring = HTMLstring + '</td></tr>';
-
+                            //wenn html tablle bei keinem todo auch nicht angezeigt werden soll:
+                            if(adapter.config.html_visable == false){
+                                HTMLstring = "";
+                            }          
                 }
             adapter.setState('HTML.Labels-HTML.'+labels.labes_names[j], {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {servConn.setState("todoist2.0.Control.Close.ID", id)}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
             }
@@ -2033,13 +2040,14 @@ async function tasktofilter(filter_json, filter_name){
         css2 = css2.replace(/\\/g, '');
         css2 = css2.replace(/\"/g, '');
 
-        var HTMLstring = '<tr><th>' + adapter.config.html_name + '</th><th>';
-                    if(adapter.config.html_id){HTMLstring = HTMLstring + adapter.config.html_id_name + '</th><th>'};
-                    if(adapter.config.html_priority){HTMLstring = HTMLstring + adapter.config.html_priority_name + '</th><th>'};
-                    if(adapter.config.html_url){HTMLstring = HTMLstring + adapter.config.html_url_name + '</th><th>'};
-                    if(adapter.config.html_project_id){HTMLstring = HTMLstring + adapter.config.html_project_id_name + '</th><th>'};
-                    if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + adapter.config.html_comment_cound_name + '</th><th>'};
-                    if(adapter.config.html_parent_id){HTMLstring = HTMLstring + adapter.config.html_parent_id_name + '</th><th>'};
+                     var HTMLstring ='<tr><th>' ;
+                    if(adapter.config.html_name !=""){ HTMLstring = HTMLstring + adapter.config.html_name + '</th><th>';}
+                    if(adapter.config.html_id && adapter.config.html_id_name!=""){HTMLstring = HTMLstring + adapter.config.html_id_name + '</th><th>'};
+                    if(adapter.config.html_priority && adapter.config.html_priority_name!=""){HTMLstring = HTMLstring + adapter.config.html_priority_name + '</th><th>'};
+                    if(adapter.config.html_url && adapter.config.html_url_name!=""){HTMLstring = HTMLstring + adapter.config.html_url_name + '</th><th>'};
+                    if(adapter.config.html_project_id && adapter.config.html_project_id_name!=""){HTMLstring = HTMLstring + adapter.config.html_project_id_name + '</th><th>'};
+                    if(adapter.config.html_comment_cound && adapter.config.html_comment_cound_name!=""){HTMLstring = HTMLstring + adapter.config.html_comment_cound_name + '</th><th>'};
+                    if(adapter.config.html_parent_id && adapter.config.html_parent_id_name!=""){HTMLstring = HTMLstring + adapter.config.html_parent_id_name + '</th><th>'};
                     HTMLstring = HTMLstring + "" + '</th></tr>';
 
         //wenn filter leer:
@@ -2055,7 +2063,10 @@ async function tasktofilter(filter_json, filter_name){
                             if(adapter.config.html_parent_id){HTMLstring = HTMLstring + "-" + '</td><td>'};
                             //HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">Close</button>' + '</td></tr>';
                             HTMLstring = HTMLstring + '</td></tr>';
-
+                 //wenn html tablle bei keinem todo auch nicht angezeigt werden soll:
+                 if(adapter.config.html_visable == false){
+                    HTMLstring = "";
+                }                      
                // adapter.setState('HTML.Filter-HTML.'+filter_name, {val: '<table><ul>' + HTMLstring_filter + '</ul></table>', ack: true});
                 adapter.setState('HTML.Filter-HTML.'+filter_name, {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {servConn.setState("todoist2.0.Control.Close.ID", id)}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
             }
@@ -2156,7 +2167,7 @@ async function tasktofilter(filter_json, filter_name){
                             if(adapter.config.html_project_id){HTMLstring = HTMLstring + json[i].project_id + '</td><td>'};
                             if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + json[i].comment_count + '</td><td>'};
                             if(adapter.config.html_parent_id){HTMLstring = HTMLstring + json[i].parent_id + '</td><td>'};
-                            if(adapter.config.html_button){HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">'+adapter.config.html_button_name+'</button>' + '</td></tr>';}
+                            if(adapter.config.html_button){HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">'+ adapter.config.html_svg_button + adapter.config.html_button_name+'</button>' + '</td></tr>';}
                             HTMLstring = HTMLstring + '</td></tr>';
                     
                     

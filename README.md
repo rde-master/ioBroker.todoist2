@@ -134,12 +134,32 @@ Example for CSS HTML Button
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
+
+.button__icon{
+width: 1.2em;
+height: 1.2em;
+fill: black;
+margin-right: 0.5em;
 }
+
+}
+
+```
+
+Example for SVG Icon in Button
+ ``` 
+<svg class="button__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true" focusable="false"> <path class="cls-2" d="M18,3H6A3,3,0,0,0,3,6V18a3,3,0,0,0,3,3H18a3,3,0,0,0,3-3V6A3,3,0,0,0,18,3Zm1,15a1,1,0,0,1-1,1H6a1,1,0,0,1-1-1V6A1,1,0,0,1,6,5H18a1,1,0,0,1,1,1Z"/><path class="cls-2" d="M14.7,8.39l-3.78,5L9.29,11.28a1,1,0,0,0-1.58,1.23l2.43,3.11a1,1,0,0,0,.79.38h0a1,1,0,0,0,.79-.39l4.57-6a1,1,0,1,0-1.6-1.22Z"/></g></g></g></svg>
 
 ```
 
 
 ## Changelog
+### 0.8.1
+* (rde-master) add Option for SVG ICON
+* (rde-master) add Option disable Table when no Todo is there
+* (rde-master) add Option to hide Table Headlines when there is no Name for it
+* (rde-master) experimental: add Option, when you close a Task in Vis or per Objekt then the Main function is called to Refresh the Objekts and VIS
+
 ### 0.8.0
 * (rde-master) delete Request and add Axios
 

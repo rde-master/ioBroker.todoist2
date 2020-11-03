@@ -754,56 +754,47 @@ await axios({
 }.bind(adapter)
 
 );
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-        /*
-       
-       
-        var options = { method: 'POST',
-          url: 'https://api.todoist.com/rest/v1/projects',
-          headers: 
-           { 'Cache-Control': 'no-cache',
-             Authorization: 'Bearer ' + APItoken,
-             'X-Request-Id': uuid,
-             'Content-Type': 'application/json' },
-          body: 
-           { name: project,
-             parent: parent,
-             },
-          json: true };
-        
-        request(options, function (error, response, body) {
-          //if (error) throw new Error(error);
-          if(error){adapter.log.error(error);}
-        
-          if(debug) adapter.log.info(JSON.stringify(body));
-        });
-	*/
+          
 }
 
-function dellProject(project_id){
+async function dellProject(project_id){
 	
 	
-	var APItoken = adapter.config.token;
-        //purchItem = item + " " + anzahl + " Stück";
-        var del_task = { method: 'DELETE',
-          url: 'https://api.todoist.com/rest/v1/projects/' + project_id,
-          headers: {Authorization: 'Bearer ' + APItoken,}};
-		
-		request(del_task, function (error, response, body) {
-          //if (error) throw new Error(error);
-          if(error){adapter.log.error(error);}
+    var APItoken = adapter.config.token;
+    
+    // @ts-ignore
+    await axios({
+        method: 'DELETE',
+        baseURL: 'https://api.todoist.com',
+        url: '/rest/v1/projects/' + project_id,
+        responseType: 'json',
+        headers: 
+        {  Authorization: 'Bearer ' + APItoken, },
+    }
+    ).then( 
+        function (response) {
+            if(debug)adapter.log.info('lösche  Projekt: ' + response);
+        }
         
-          if(debug) adapter.log.info(JSON.stringify("Project wurde geslöscht...." + body));
-        });
+    ).catch(
+    
+        function (error) {
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                adapter.log.warn('received error ' + error.response.status + ' response from todoist with content: ' + JSON.stringify(error.response.data));
+                adapter.log.warn(JSON.stringify(error.toJSON()));
+            } else if (error.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+               adapter.log.info(error.message);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                adapter.log.error(error.message); 
+            }
+    }.bind(adapter)
+    
+    );
 	
 	
 	

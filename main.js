@@ -175,9 +175,9 @@ async function startAdapter(options) {
             new_with_state(id, state);
         }else if(new_id == "ID"){
 
-            // @ts-ignore
+            
             //adapter.log.info("ausführen: " + state.val);
-            // @ts-ignore
+            
             closeTask(state.val);
 
         }else{
@@ -496,7 +496,7 @@ function syncronisation(){
 async function check_online(){
     var APItoken = adapter.config.token;    
 
-    // @ts-ignore
+    
     await axios({
         method: 'get',
         baseURL: 'https://api.todoist.com',
@@ -597,7 +597,7 @@ async function addTask(item, proejct_id, section_id, parent, order, label_id, pr
       
         if(dublicate_sperre == false){
          
-            // @ts-ignore
+            
             await axios({
                 method: 'post',
                 baseURL: 'https://api.todoist.com',
@@ -674,7 +674,7 @@ async function delTask(task_id){
 	
 	var APItoken = adapter.config.token;
         //purchItem = item + " " + anzahl + " Stück";
-        // @ts-ignore
+        
 await axios({
     method: 'DELETE',
     baseURL: 'https://api.todoist.com',
@@ -716,7 +716,7 @@ async function addProject(project, parent){
         var APItoken = adapter.config.token;
         //purchItem = item + " " + anzahl + " Stück";
     
-// @ts-ignore
+
 await axios({
     method: 'post',
     baseURL: 'https://api.todoist.com',
@@ -762,7 +762,7 @@ async function dellProject(project_id){
 	
     var APItoken = adapter.config.token;
     
-    // @ts-ignore
+  
     await axios({
         method: 'DELETE',
         baseURL: 'https://api.todoist.com',
@@ -802,7 +802,7 @@ async function dellProject(project_id){
 async function closeTask(task_id){
     var APItoken = adapter.config.token;
     
-    // @ts-ignore
+    
     await axios({
         method: 'POST',
         baseURL: 'https://api.todoist.com',
@@ -844,7 +844,7 @@ async function reopenTask(task_id){
 	
 	var APItoken = adapter.config.token;
     
-    // @ts-ignore
+   
     await axios({
         method: 'POST',
         baseURL: 'https://api.todoist.com',
@@ -888,7 +888,7 @@ async function addSection(section, project_id){
         var APItoken = adapter.config.token;
         //purchItem = item + " " + anzahl + " Stück";
        
-       // @ts-ignore
+       
 await axios({
     method: 'post',
     baseURL: 'https://api.todoist.com',
@@ -936,7 +936,7 @@ async function delSection(section_id){
 	
 	var APItoken = adapter.config.token;
         
-// @ts-ignore
+
 await axios({
     method: 'DELETE',
     baseURL: 'https://api.todoist.com',
@@ -987,7 +987,7 @@ async function getData(){
     if(adapter.config.project === true){
     if(debug) adapter.log.info("get Projects");
 
-    // @ts-ignore
+    
     await axios({
         method: 'get',
         baseURL: 'https://api.todoist.com',
@@ -1040,7 +1040,7 @@ async function getData(){
 
         if(debug) adapter.log.info("get Labels");
 
-        // @ts-ignore
+        
         await axios({
             method: 'get',
             baseURL: 'https://api.todoist.com',
@@ -1082,7 +1082,7 @@ async function getData(){
     if(adapter.config.section === true){
 
         if(debug) adapter.log.info("get Sections");
-             // @ts-ignore
+            
     await axios({
         method: 'get',
         baseURL: 'https://api.todoist.com',
@@ -1127,7 +1127,7 @@ async function getData(){
         if(debug) adapter.log.info("get Tasks");
         
         
-        // @ts-ignore
+       
     await axios({
         method: 'get',
         baseURL: 'https://api.todoist.com',
@@ -3019,6 +3019,7 @@ mainintval = setTimeout(function(){
 }
 
 // If started as allInOne/compact mode => return function to create instance
+
 // @ts-ignore
 if (module && module.parent) {
     module.exports = startAdapter;

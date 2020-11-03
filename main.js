@@ -18,6 +18,8 @@
 const utils = require('@iobroker/adapter-core'); // Get common adapter utils
 const adapterName = require('./package.json').name.split('.').pop();
 const request = require("request");
+const axios = require('axios');
+const stringify = require('json-stringify-safe');
 
 
 
@@ -491,46 +493,63 @@ function syncronisation(){
 
 
 async function check_online(){
-	return new Promise(function (resolve, reject) {
-	var APItoken = adapter.config.token;
-	var online = { method: 'GET',
-          url: 'https://api.todoist.com/rest/v1/projects',
-          headers: 
+    var APItoken = adapter.config.token;    
+
+    await axios({
+        method: 'get',
+        baseURL: 'https://api.todoist.com',
+        url: '/rest/v1/projects',
+        //responseType: 'json',
+        headers: 
            { Authorization: 'Bearer ' + APItoken}
-	};
-	
-	request(online, async function (error, response, body) {
-        try {
-            //var projects_json = JSON.parse(body);
-            
-             
-            
-            
-            if(typeof response === 'object' && response.statusCode == 200){
-            	if(debug) adapter.log.warn("check online: " + JSON.stringify(response.statusCode));
+    }).then(
+        function (response) {
+
+            //adapter.log.warn("axios check!! " + stringify(response, null, 2));
+            //adapter.log.warn("axios check!! " + response.status);
+
+            if(typeof response === 'object' && response.status == 200){
+            	if(debug) adapter.log.warn("check online: " + JSON.stringify(response.status));
                 adapter.setState('info.connection', true, true);
                 online_net = true;
-                resolve("ok");
+                
                 
             }else{
             	
             	adapter.setState('info.connection', false, true);
                 adapter.log.warn("No Connection to todoist possible!!! Please Check your Internet Connection.")
                 online_net = false;
-                resolve("ok");
+                
             }
-            
-        } catch (err) {
-            adapter.log.warn("error: " + err);
         }
-       
-        //if (error) throw new Error(error);
-        if(error){adapter.log.error(error);}
-    });
-    
-});
-    
+        
+        ).catch(
+
+            function (error) {
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    adapter.log.warn('received error ' + error.response.status + ' response from todoist with content: ' + JSON.stringify(error.response.data));
+                    adapter.setState('info.connection', false, true);
+                    online_net = false;
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+                    adapter.log.info(error.message);
+                    adapter.setState('info.connection', false, true);
+                    online_net = false;
+
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    adapter.log.error(error.message);
+                    adapter.setState('info.connection', false, true);
+                    online_net = false;
+  
+                }
+            }
+ );
 }
+
 
 function createUUID(){
     var dt = new Date().getTime();

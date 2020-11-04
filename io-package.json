@@ -221,55 +221,7 @@
         "es": "agregar nuevas tareas y eliminar Old Objekts Beta",
         "pl": "dodaj nowe Zadania i usuń Stare Objekts Beta",
         "zh-cn": "添加新任务，并删除旧Objekts Beta"
-          },
-      "0.1.0": {
-        "en": "add Blacklist",
-        "de": "Blacklist hinzufügen",
-        "ru": "добавить черный список",
-        "pt": "adicionar lista negra",
-        "nl": "zwarte lijst toevoegen",
-        "fr": "ajouter une liste noire",
-        "it": "aggiungi lista nera",
-        "es": "agregar lista negra",
-        "pl": "dodaj Czarną listę",
-        "zh-cn": "添加黑名单"
-          },
-      "0.0.7": {
-        "en": "Update funktions",
-        "de": "Funktionen aktualisieren",
-        "ru": "Обновить функции",
-        "pt": "Atualizar funções",
-        "nl": "Update functies",
-        "fr": "Mettre à jour les fonctions",
-        "it": "Aggiorna funktions",
-        "es": "Actualizar funciones",
-        "pl": "Zaktualizuj funkcje",
-        "zh-cn": "更新功能"
-          },
-      "0.0.5": {
-        "en": "Update funktions",
-        "de": "Funktionen aktualisieren",
-        "ru": "Обновить функции",
-        "pt": "Atualizar funções",
-        "nl": "Update functies",
-        "fr": "Mettre à jour les fonctions",
-        "it": "Aggiorna funktions",
-        "es": "Actualizar funciones",
-        "pl": "Zaktualizuj funkcje",
-        "zh-cn": "更新功能"
-          },
-      "0.0.1": {
-        "en": "first release",
-        "de": "erste Veröffentlichung",
-        "ru": "первый выпуск",
-        "pt": "primeiro lançamento",
-        "nl": "eerste uitgave",
-        "fr": "première sortie",
-        "it": "prima uscita",
-        "es": "primer lanzamiento",
-        "pl": "pierwsze wydanie",
-        "zh-cn": "初版"
-      }
+          }     
     },
     "title": "todoist2",
     "desc": {

@@ -635,7 +635,7 @@ systemDictionary = {
       },
       "Name für Task ID Feld": {
         "en": "Name for Task ID field",
-        "de": "Name für das Feld Aufgaben-ID",
+        "de": "Anzeige für das Feld Aufgaben-ID",
         "ru": "Имя для поля ID задачи",
         "pt": "Nome para o campo ID da Tarefa",
         "nl": "Naam voor taak-ID-veld",
@@ -647,7 +647,7 @@ systemDictionary = {
       },
       "Name für Priorität Feld": {
         "en": "Name for priority field",
-        "de": "Name für das Prioritätsfeld",
+        "de": "Anzeige für das Prioritätsfeld",
         "ru": "Имя для поля приоритета",
         "pt": "Nome para o campo prioritário",
         "nl": "Naam voor prioriteitsveld",
@@ -659,7 +659,7 @@ systemDictionary = {
       },
       "Name für URL Feld": {
         "en": "Name for URL field",
-        "de": "Name für das URL-Feld",
+        "de": "Anzeige für das URL-Feld",
         "ru": "Имя для поля URL",
         "pt": "Nome para o campo de URL",
         "nl": "Naam voor URL-veld",
@@ -671,7 +671,7 @@ systemDictionary = {
       },
       "Name für Project ID Feld": {
         "en": "Name for Project ID field",
-        "de": "Name für das Feld Projekt-ID",
+        "de": "Anzeige für das Feld Projekt-ID",
         "ru": "Имя для поля ID проекта",
         "pt": "Nome para o campo de ID do projeto",
         "nl": "Naam voor het veld Project-ID",
@@ -683,7 +683,7 @@ systemDictionary = {
       },
       "Name für Comment Count Feld": {
         "en": "Name for Comment Count field",
-        "de": "Name für das Feld Anzahl der Kommentare",
+        "de": "Anzeige für das Feld Anzahl der Kommentare",
         "ru": "Имя для поля количества комментариев",
         "pt": "Nome para o campo de contagem de comentários",
         "nl": "Naam voor het veld Aantal reacties",
@@ -695,7 +695,7 @@ systemDictionary = {
       },
       "Name für Parent ID Feld": {
         "en": "Name for Parent ID field",
-        "de": "Name für das Feld Eltern-ID",
+        "de": "Anzeige für das Feld Eltern-ID",
         "ru": "Имя для поля родительского идентификатора",
         "pt": "Nome para o campo de ID pai",
         "nl": "Naam voor het veld Ouder-ID",
@@ -707,7 +707,7 @@ systemDictionary = {
       },
       "Name for task field": {
         "en": "Name for task field",
-        "de": "Name für das Aufgabenfeld",
+        "de": "Anzeige für das Aufgabenfeld",
         "ru": "Имя для поля задачи",
         "pt": "Nome para o campo de tarefa",
         "nl": "Naam voor taakveld",
@@ -719,7 +719,7 @@ systemDictionary = {
       },
       "Name for button": {
         "en": "Name for button",
-        "de": "Name für Schaltfläche",
+        "de": "Anzeige für Button",
         "ru": "Название кнопки",
         "pt": "Nome para o botão",
         "nl": "Naam voor knop",
@@ -752,5 +752,17 @@ systemDictionary = {
         "es": "Cuando no hay Todo, ¿se ve la mesa?",
         "pl": "Jeśli nie ma zadań do wykonania, czy tabela jest widoczna?",
         "zh-cn": "如果没有待办事项，该表是否可见？"
+      },
+      "Name for no todo": {
+        "en": "Display for no todo",
+        "de": "Anzeige wenn kein Todo da ist",
+        "ru": "Имя для no todo",
+        "pt": "Nome para nenhuma tarefa",
+        "nl": "Naam voor no todo",
+        "fr": "Nom pour pas de todo",
+        "it": "Nome per niente cose da fare",
+        "es": "Nombre para no todo",
+        "pl": "Nazwij brak rzeczy do zrobienia",
+        "zh-cn": "待办事项名称"
       }
 }    

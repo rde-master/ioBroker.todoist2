@@ -1767,7 +1767,7 @@ async function tasktoproject(project){
                         css2 = css2.replace(/\\/g, '');
                         css2 = css2.replace(/\"/g, '');
                         if(json_task === "[]"){
-                            HTMLstring = HTMLstring + '<tr><td id="button_html">' + "no Todos" + "</td><td>";
+                            HTMLstring = HTMLstring + '<tr><td id="button_html">' + adapter.config.html_notodo_name + "</td><td>";
                                     if(adapter.config.html_id){HTMLstring = HTMLstring + "-" + '</td><td>'};
                                     if(adapter.config.html_priority){HTMLstring = HTMLstring + "-" + '</td><td>'};
                                     if(adapter.config.html_url){HTMLstring = HTMLstring + "-" + '</td><td>'};
@@ -1784,7 +1784,7 @@ async function tasktoproject(project){
                     adapter.setState('HTML.Projects-HTML.'+project.projects_names[j], {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {servConn.setState("todoist2.0.Control.Close.ID", id)}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
                     }
                     if(json_task === "[]"){
-                        var baue_json = '{"'+adapter.config.json_name+'":"' + "no Todo" + '"';
+                        var baue_json = '{"'+adapter.config.json_name+'":"' + adapter.config.json_notodo_name + '"';
                             if(adapter.config.json_id){baue_json = baue_json + ', "ID":"' + "-" + '"'};
                             if(adapter.config.json_priority){baue_json = baue_json + ', "Priority":"' + "-" + '"'};
                             if(adapter.config.json_url){baue_json = baue_json + ', "URL":"' + "-" + '"'};
@@ -1806,7 +1806,7 @@ async function tasktoproject(project){
                     adapter.setState('JSON.Projects-JSON.'+project.projects_names[j], {val: json_task, ack: true});
                     }
                     if(text_task == ""){
-                        text_task = "No Todos";
+                        text_task = adapter.config.text_notodo_name;
                     }else{
                     
                         text_task = text_task.substr(0, text_task.length-adapter.config.text_separator.length);
@@ -1962,7 +1962,7 @@ async function tasktolabels(labels){
                 css2 = css2.replace(/\\/g, '');
                 css2 = css2.replace(/\"/g, '');
                 if(label.length == 0){
-                    HTMLstring = HTMLstring + '<tr><td id="button_html">' + "no Todo" + "</td><td>";
+                    HTMLstring = HTMLstring + '<tr><td id="button_html">' + adapter.config.html_notodo_name + "</td><td>";
                             if(adapter.config.html_id){HTMLstring = HTMLstring + "-" + '</td><td>'};
                             if(adapter.config.html_priority){HTMLstring = HTMLstring + "-" + '</td><td>'};
                             if(adapter.config.html_url){HTMLstring = HTMLstring + "-" + '</td><td>'};
@@ -1979,7 +1979,7 @@ async function tasktolabels(labels){
             adapter.setState('HTML.Labels-HTML.'+labels.labes_names[j], {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {servConn.setState("todoist2.0.Control.Close.ID", id)}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
             }
                if(json_task === "[]"){
-                var baue_json = '{"'+adapter.config.json_name+'":"' + "no Todo" + '"';
+                var baue_json = '{"'+adapter.config.json_name+'":"' + adapter.config.json_notodo_name + '"';
                             if(adapter.config.json_id){baue_json = baue_json + ', "ID":"' + "-" + '"'};
                             if(adapter.config.json_priority){baue_json = baue_json + ', "Priority":"' + "-" + '"'};
                             if(adapter.config.json_url){baue_json = baue_json + ', "URL":"' + "-" + '"'};
@@ -2000,7 +2000,7 @@ async function tasktolabels(labels){
                adapter.setState('JSON.Labels-JSON.'+labels.labes_names[j], {val: json_task, ack: true});
                }
                if(text_task == ""){
-                text_task = "No Todos";
+                text_task = adapter.config.text_notodo_name;
                 }else{                   
                     text_task = text_task.substr(0, text_task.length-adapter.config.text_separator.length);
                 }
@@ -2054,7 +2054,7 @@ async function tasktofilter(filter_json, filter_name){
         if(filter_json.length == 0){
             if(adapter.config.html_objects == true){
                 
-                HTMLstring = HTMLstring + '<tr><td id="button_html">' + "no Todo" + "</td><td>";
+                HTMLstring = HTMLstring + '<tr><td id="button_html">' + adapter.config.html_notodo_name + "</td><td>";
                             if(adapter.config.html_id){HTMLstring = HTMLstring + "-" + '</td><td>'};
                             if(adapter.config.html_priority){HTMLstring = HTMLstring + "-" + '</td><td>'};
                             if(adapter.config.html_url){HTMLstring = HTMLstring + "-" + '</td><td>'};
@@ -2071,7 +2071,7 @@ async function tasktofilter(filter_json, filter_name){
                 adapter.setState('HTML.Filter-HTML.'+filter_name, {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {servConn.setState("todoist2.0.Control.Close.ID", id)}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
             }
             
-            var baue_json = '{"'+adapter.config.json_name+'":"' + "no Todo" + '"';
+            var baue_json = '{"'+adapter.config.json_name+'":"' + adapter.config.json_notodo_name + '"';
                             if(adapter.config.json_id){baue_json = baue_json + ', "ID":"' + "-" + '"'};
                             if(adapter.config.json_priority){baue_json = baue_json + ', "Priority":"' + "-" + '"'};
                             if(adapter.config.json_url){baue_json = baue_json + ', "URL":"' + "-" + '"'};
@@ -2094,7 +2094,7 @@ async function tasktofilter(filter_json, filter_name){
                 adapter.setState('JSON.Filter-JSON.'+filter_name, {val: json_task, ack: true});
             }
                
-            var text_filter = "No Todos";
+            var text_filter = adapter.config.text_notodo_name;
                 
             if(adapter.config.text_objects == true){
                 adapter.setState('TEXT.Filter-TEXT.'+filter_name, {val: text_filter, ack: true});
@@ -2211,7 +2211,7 @@ async function tasktofilter(filter_json, filter_name){
             adapter.setState('HTML.Filter-HTML.'+filter_name, {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {servConn.setState("todoist2.0.Control.Close.ID", id)}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
             }
             if(json_task === "[]"){
-                json_task = '[{"name":"no Todos"}]';
+                json_task = '[{"name":'+ adapter.config.json_id_name +'}]';
             }
             json_task = json_task.replace(/\\n/g, '');
             json_task = json_task.replace(/\\/g, '');
@@ -2220,7 +2220,7 @@ async function tasktofilter(filter_json, filter_name){
             adapter.setState('JSON.Filter-JSON.'+filter_name, {val: json_task, ack: true});
             }
             if(text_task == ""){
-                text_task = "No Todos";
+                text_task = adapter.config.text_notodo_name;
             }else{                   
                 text_task = text_task.substr(0, text_task.length-adapter.config.text_separator.length);
             }

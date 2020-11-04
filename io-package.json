@@ -339,16 +339,19 @@
       "html_project_name": "project id",
       "html_comment_name": "comment count",
       "html_parent_name": "parent ID",
+      "html_notodo_name": "no Todo",
       "json_id_name": "ID",
       "json_priority_name": "priority",
       "json_url_name": "url",
       "json_project_name": "project id",
       "json_comment_name": "comment count",
       "json_parent_name": "parent ID",
+      "json_notodo_name": "no todo",
       "html_name": "Task",
       "json_name": "Task",
       "html_button": true,
-      "html_button_name": "close"
+      "html_button_name": "close",
+      "text_notodo_name": "no Todo"
     },
     "objects": [],
     "instanceObjects": [

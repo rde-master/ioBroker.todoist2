@@ -313,11 +313,15 @@
             <div class="row">
                 <h5 class="col s12 m12 l12 translate">Einstellung HTML</h5>
                 <div class="col s12">
-                <div class="input-field col s12 m12 l12">     
+                <div class="input-field col s6 m6 l6">     
                     <input id="html_visable" type="checkbox" class="value" />
                     <span class="translate" for="html_visable">When no Todo, is the table visable?</span>
                               
                 </div>
+                <div class="input-field col s6 m6 l6">
+                    <input id="html_notodo_name" type="text" class="value" />
+                        <label class="translate" for="html_notodo_name">Name for no todo</label>                                  
+                    </div>
             </div>
             <div class="col s12">
                     <div class="input-field col s6 m6 l6 polling-settings">
@@ -409,7 +413,12 @@
                             <input id="json_name" type="text" class="value" />
                                 <label class="translate" for="json_name">Name for task field</label>                                  
                             </div>
+                            <div class="input-field col s2 m2 l2">
+                                <input id="json_notodo_name" type="text" class="value" />
+                                    <label class="translate" for="json_notodo_name">Name for no todo</label>                                  
+                                </div>
                         </div> 
+                        
 
                         <span class=" col s12 m12 l12 translate">Welche Felder sollen angezeigt werden?</span>     
                         <div class="input-field col s2 m2 l2">
@@ -465,7 +474,12 @@
                                 <input id="text_separator" type="text" class="value" />
                                 <label class="translate" for="text_separator">, or - or _ or / or what you want</label>
                                 <span></span>                             
-                            </div>  
+                            </div> 
+                            <div class="input-field col s2 m2 l2">
+                                <input id="text_notodo_name" type="text" class="value" />
+                                    <label class="translate" for="text_notodo_name">Name for no todo</label>
+
+                            </div> 
                         </div>
     
         </div>

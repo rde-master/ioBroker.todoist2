@@ -155,6 +155,10 @@ Example for SVG Icon in Button
 
 ## Changelog
 ### 0.8.1
+* (rde-master) add Option to set the Name when there is no todo.
+
+
+### 0.8.1
 * (rde-master) add Option for SVG ICON
 * (rde-master) add Option disable Table when no Todo is there
 * (rde-master) add Option to hide Table Headlines when there is no Name for it

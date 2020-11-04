@@ -43,7 +43,7 @@
   "license": "MIT",
   "main": "main.js",
   "name": "iobroker.todoist2",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "readmeFilename": "README.md",
   "repository": {
     "type": "git",

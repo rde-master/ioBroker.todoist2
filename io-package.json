@@ -4,8 +4,20 @@
     "require": {
       "js-controller": ">1.5.8"
     },
-    "version": "0.8.1",
+    "version": "0.8.2",
     "news": {
+      "0.8.2": {
+        "en": "Name for no todo",
+    "de": "Name für keine Aufgabe",
+    "ru": "Имя для no todo",
+    "pt": "Nome para nenhuma tarefa",
+    "nl": "Naam voor no todo",
+    "fr": "Nom pour pas de todo",
+    "it": "Nome per niente cose da fare",
+    "es": "Nombre para no todo",
+    "pl": "Nazwij brak rzeczy do zrobienia",
+    "zh-cn": "待办事项名称"
+      },
       "0.8.1": {
         "en": "add Option for SVG ICON, add Option disable Table when no Todo is there, add Option to hide Table Headlines when there is no Name for it, experimental: add Option, when you close a Task in Vis or per Objekt then the Main function is called to Refresh the Objekts and VIS",
     "de": "Option für SVG ICON hinzufügen, Option hinzufügen Tabelle deaktivieren, wenn kein Todo vorhanden ist, Option hinzufügen, um Tabellenüberschriften auszublenden, wenn kein Name dafür vorhanden ist, experimentell: Option hinzufügen, wenn Sie eine Aufgabe in Vis oder pro Objekt schließen, ist die Hauptfunktion aufgerufen, um die Objekte und das VIS zu aktualisieren",

@@ -468,15 +468,15 @@ function syncronisation(){
                 
 
                 
-                 
+                                //adapter.log.warn("task: " + sync_task_contend);
             
                                  addTask(sync_task_contend, sync_ziel, "", "", "", "", "", "", false);
-                                adapter.log.info("ergebnist: ");
+                                //adapter.log.info("ergebnist: ");
                                 
                                 if(sync_delete == true){
                                     
                                 closeTask(sync_task_id);
-                                    adapter.log.info("ergebnis2: ");
+                                   // adapter.log.info("ergebnis2: ");
                                     
                                     
                                 }
@@ -598,47 +598,45 @@ async function addTask(item, proejct_id, section_id, parent, order, label_id, pr
       
         if(dublicate_sperre == false){
          
+          var datasend = {content: item };
+          if(proejct_id != "" && proejct_id != null){
+            datasend.project_id = parseInt(proejct_id);
+            };            
+            if(section_id != "" && section_id != null){
+            datasend.section_id= parseInt(section_id);
+            };
+            if(parent != "" && parent != null){
+            datasend.parent=parent;
+            };
+            if(order != "" && order != null){
+            datasend.order= parseInt(order);
+            };
+            if(label_id != "" && label_id != null){
+             datasend.label_ids=label_id;
+            };
+            if(priority != "" && priority != null){
+            datasend.priority=parseInt(priority);
+            };
+            if(date != "" && date != null){
+            datasend.date=date;
+            };
+
+            if(debug)adapter.log.info("Daten zum senden: " + datasend);
             
+
+            
+
             await axios({
                 method: 'post',
                 baseURL: 'https://api.todoist.com',
                 url: '/rest/v1/tasks',
-                responseType: 'json',
+                
                 headers: 
                 { 'Cache-Control': 'no-cache',
                 Authorization: 'Bearer ' + APItoken,
                 'X-Request-Id': uuid,
                 'Content-Type': 'application/json' },
-                data: '{"content": "' + item + '"',
-                transformRequest: [function (data, headers) {
-                    
-                    if(proejct_id != "" && proejct_id != null){
-                        data = data + ', "project_id": "' + parseInt(proejct_id)+ '"';
-                        };
-                        if(section_id != "" && section_id != null){
-                        data = data + ', "section_id": "' + parseInt(section_id)+ '"';
-                        };
-                        if(parent != "" && parent != null){
-                            data = data + ', "parent": "' + parent+ '"';
-                        };
-                        if(order != "" && order != null){
-                        data = data + ', "order": "' + parseInt(order)+ '"';
-                        };
-                        if(label_id != "" && label_id != null){
-                            data = data + ', "label_ids": "' + label_id+ '"';
-                        };
-                        if(priority != "" && priority != null){
-                            data = data + ', "priority": "' + parseInt(priority)+ '"';
-                        };
-                        if(date != "" && date != null){
-                            data = data + ', "date": "' +  date+ '"';
-                        };
-                        data = data + "}"
-                        if(debug)adapter.log.info("Daten zum senden: " + data);
-                    return data;
-                        
-                  }]             
-                
+                data: datasend,      
             }
             ).then( 
                 function (response) {

@@ -2,19 +2,24 @@
 
 <head>
     <!-- these 4 files always have to be included -->
+    <link rel="stylesheet" type="text/css" href="../../lib/css/fancytree/ui.fancytree.min.css" />
     <link rel="stylesheet" type="text/css" href="../../css/adapter.css" />
     <link rel="stylesheet" type="text/css" href="../../lib/css/materialize.css">
 
     <script type="text/javascript" src="../../lib/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../../lib/js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="../../socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="../../lib/js/jquery.fancytree-all.min.js"></script>
 
     <!-- these files always have to be included -->
     <script type="text/javascript" src="../../js/translate.js"></script>
     <script type="text/javascript" src="../../lib/js/materialize.js"></script>
     <script type="text/javascript" src="../../js/adapter-settings.js"></script>
     <script type="text/javascript" src="words.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
     <script type="text/javascript">
         //var isStarted =   null;
+    
 
 
         
@@ -23,7 +28,22 @@
             if (!settings) return;
             //$('#tabs').tabs();
             
-            
+            //++++++++++ TABS ++++++++++
+            //Enhance Tabs with onShow-Function
+            $('ul.tabs li a').on('click', function () { onTabShow($(this).attr('href')); });
+            function onTabShow(tabId) {
+                console.log('onTabShow');
+                switch (tabId) {
+                    case "#tab-main":
+                        loadOptions();
+                        break;
+                    
+                }
+            }
+            function loadOptions() {
+                $('.collapsible').collapsible();
+            }
+            loadOptions();
 
             
             //if (!settings.pollingInterval) settings.pollingInterval = 60000;
@@ -134,12 +154,26 @@
                     <li class="tab col s2"><a href="#tab-configlists" class="translate active">Config Lists</a></li>
                 </ul>
             </div>
+
+
+
+             <!-- tab "main - settings"  -->
+
+
+
             <div id="tab-main" class="col s12 page">
                 <div class="row">
                     <div class="col s6">
-                        <img src="todoist.png" class="logo" alt="logo"/>
+                        <img src="todoist.png" class="logo" alt="logo"/> 
                     </div>
+                    
                 </div>
+                <ul class="collapsible">
+                    <li>
+                        <div class="collapsible-header">
+                            <i class="material-icons">expand_more</i><h6 class="translate">Todoist Settings</h6>
+                        </div>
+                        <div class="collapsible-body">
                 <div class="row">
                      <div class="input-field col s12 m8 l8 polling-settings">
                         <input id="pollingInterval" type="text" class="value" />
@@ -155,8 +189,16 @@
                         <span><a href="https://todoist.com/Users/viewPrefs?page=integrations" target="_blank" class="translate help">Read README.md how to get token</a></span>
                     </div>
                 </div>
-                <div class="col s12 m12 l12">
-                    <h5 class="translate">Einstellungen</h5>
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header">
+                <i class="material-icons">expand_more</i><h6 class="translate">Einstellungen</h6>
+            </div>
+            <div class="collapsible-body">
+                <div class="row">
+               
+                    
                     <div class="input-field col s12 m4 l4">
                         <input id="debug" type="checkbox" class="value" />
                         <span class="translate" for="debug">debug</span>
@@ -173,9 +215,15 @@
                         <br><span class="translate">Alte Objekte werden automatisch, ja nach Intravall, gelöscht. (BETA!!!)</span>
                     </div>
                 </div>
-                <div class="col s12 m12 l12">
-                        <h5 class="translate">Auswahl Anlage Objekte</h5>
-                    <div class="input-field col s12 m4 l4">
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header">
+                <i class="material-icons">expand_more</i><h6 class="translate">Auswahl Anlage Objekte</h6>
+            </div>
+            <div class="collapsible-body">
+                <div class="row">
+                    <div class="input-field col s12 m4 l4">      
                         <input id="project" type="checkbox" class="value" />
                         <span class="translate" for="project">Project</span>
                         <br><span class="translate">Projekte als Objekte anlegen</span>
@@ -196,8 +244,14 @@
                             <br><span class="translate">Labels als Objekte anlegen</span>
                     </div>
                 </div>
-                <div class="col s12 m12 l12">
-                    <h5 class="translate">Art der Objekte</h5>
+                </div>          
+            </li>
+            <li>
+                <div class="collapsible-header">
+                    <i class="material-icons">expand_more</i><h6 class="translate">Art der Objekte</h6>
+                </div>
+                <div class="collapsible-body">
+                    <div class="row">
                     <div class="input-field col s12 m4 l4">
                         <input id="html_objects" type="checkbox" class="value" />
                         <span class="translate" for="html_objects">HTML</span>
@@ -215,13 +269,17 @@
                     </div>
                 </div>    
             </div>
+        </div>          
+    </li>
         
+        </ul>
+
+        <!-- tab "blackist"  -->
+
         <div id="tab-blackist" class="col s12 page">    
             <p></p>
             <span class="translate">Blacklist: Hier kannst du Blacklist für die einzelnen Bereiche anlegen.</span>
-            <p></p>
-            <div class="col s12" id="blacklist">
-                
+            <p></p>  
                 <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
                 <div class="table-values-div">
                      <table class="table-values" style="width: 100%;">
@@ -239,7 +297,11 @@
                 </div>
             </div>
             
-        </div>
+        
+
+
+
+         <!-- tab "sync"  -->
 
         <div id="tab-sync" class="col s12 page">    
             <p></p>
@@ -268,6 +330,9 @@
             </div>
             
         </div>
+
+
+         <!-- tab "filterlist"  -->
 
         <div id="tab-filterlist" class="col s12 page">    
             <p></p>
@@ -303,6 +368,10 @@
             
         </div>
 
+
+         <!-- tab "config Listen"  -->
+
+
         <div id="tab-configlists" class="col s12 page">
             <div class="row">
                 <p></p>
@@ -310,7 +379,15 @@
             <span class=" col s12 m12 l12 translate">Hier können Sie die Einstellungen der Listen ändern</span>
             <p></p>
             </div>
-            <div class="row">
+
+            <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header">
+                        <i class="material-icons">expand_more</i><h6 class="translate">Einstellung HTML</h6>
+                    </div>
+                    <div class="collapsible-body">
+
+                <div class="row">
                 <h5 class="col s12 m12 l12 translate">Einstellung HTML</h5>
                 <div class="col s12">
                 <div class="input-field col s6 m6 l6">     
@@ -402,6 +479,16 @@
                     
                 </div>
             </div>
+
+        </div>          
+    </li>
+
+    <li>
+        <div class="collapsible-header">
+            <i class="material-icons">expand_more</i><h6 class="translate">Einstellung JSON</h6>
+        </div>
+        <div class="collapsible-body">
+
             <div class="row">
                     <div class="col s12">
                     <h5 class="translate">Einstellung JSON</h5>
@@ -466,6 +553,15 @@
                         
                     </div>
                  </div>
+
+                 </div>
+                 </li>
+                 <li>
+                    <div class="collapsible-header">
+                        <i class="material-icons">expand_more</i><h6 class="translate">Einstellung Text</h6>
+                    </div>
+                    <div class="collapsible-body">
+               
                     <div class="row">
                         <h5 class="col s12 m12 l12 translate">Einstellung Text</h5>
                             
@@ -481,10 +577,12 @@
 
                             </div> 
                         </div>
-    
-        </div>
-
+                    </div>      
+                    </div>
+                </li>
+            </ul>
     </div>
+
 </div>       
 </body>
 

@@ -764,5 +764,17 @@ systemDictionary = {
         "es": "Nombre para no todo",
         "pl": "Nazwij brak rzeczy do zrobienia",
         "zh-cn": "待办事项名称"
+      },
+      "Todoist Settings": {
+        "en": "Todoist Settings",
+        "de": "Todoist Einstellungen",
+        "ru": "Настройки Todoist",
+        "pt": "Configurações de Todoist",
+        "nl": "Todoist-instellingen",
+        "fr": "Paramètres Todoist",
+        "it": "Impostazioni di Todoist",
+        "es": "Configuración de Todoist",
+        "pl": "Ustawienia Todoist",
+        "zh-cn": "Todoist设置"
       }
 }    

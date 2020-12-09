@@ -154,6 +154,9 @@ Example for SVG Icon in Button
 
 
 ## Changelog
+### 0.8.3
+* (rde-master) add new collaps menu in the Admin Page
+
 ### 0.8.2
 * (rde-master) add Option to set the Name when there is no todo.
 

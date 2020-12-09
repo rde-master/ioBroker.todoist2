@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "todoist2",
-    "version": "0.8.2",
+    "version": "0.8.3",
     "news": {
+      "0.8.3": {
+        "en": "add new collaps menu in the Admin Page",
+        "de": "Fügen Sie auf der Admin-Seite ein neues Menü zum Reduzieren hinzu",
+        "ru": "добавить новое сворачиваемое меню на странице администратора",
+        "pt": "adicione um novo menu de recolhimento na página de administração",
+        "nl": "voeg een nieuw samenvouwmenu toe op de beheerpagina",
+        "fr": "ajouter un nouveau menu de réduction dans la page d'administration",
+        "it": "aggiungere un nuovo menu compressi nella pagina di amministrazione",
+        "es": "agregar un nuevo menú colapsado en la página de administración",
+        "pl": "dodaj nowe menu zwijania na Stronie Administracyjnej",
+        "zh-cn": "在管理页面中添加新的折叠菜单"
+      },
       "0.8.2": {
         "en": "Name for no todo",
     "de": "Name für keine Aufgabe",
@@ -206,19 +218,7 @@
         "es": "agregar nuevas opciones de sincronización",
         "pl": "dodaj nowe opcje synchronizacji",
         "zh-cn": "添加新的同步选项"
-          },
-      "0.1.5": {
-        "en": "add new Tasks, and remove Old Objekts Beta",
-        "de": "Füge neue Aufgaben hinzu und entferne Old Objekts Beta",
-        "ru": "добавить новые задачи и удалить бета-версию старых объектов",
-        "pt": "adicionar novas tarefas e remover Old Objekts Beta",
-        "nl": "voeg nieuwe taken toe en verwijder Old Objekts Beta",
-        "fr": "ajouter de nouvelles tâches et supprimer Old Objekts Beta",
-        "it": "aggiungere nuove attività e rimuovere Old Objekts Beta",
-        "es": "agregar nuevas tareas y eliminar Old Objekts Beta",
-        "pl": "dodaj nowe Zadania i usuń Stare Objekts Beta",
-        "zh-cn": "添加新任务，并删除旧Objekts Beta"
-          }     
+          }    
     },
     "title": "todoist2",
     "desc": {

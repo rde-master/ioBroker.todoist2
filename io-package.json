@@ -1,9 +1,6 @@
 {
   "common": {
     "name": "todoist2",
-    "require": {
-      "js-controller": ">1.5.8"
-    },
     "version": "0.8.2",
     "news": {
       "0.8.2": {
@@ -239,6 +236,11 @@
     "authors": [
       "rde-master <info@rde-master.de>"
       ],
+    "keywords": [
+        "notification",
+        "todoist",
+        "message"
+     ],
     "license": "MIT",
     "platform": "Javascript/Node.js",
     "mode": "daemon",
@@ -248,10 +250,10 @@
     "icon": "todoist.png",
     "materialize": true,
     "compact": true,
-    "keywords": [
-      "notification",
-      "todoist",
-      "message"
+    "dependencies": [
+      {
+          "js-controller": ">=1.4.2"
+      }
     ],
     "extIcon": "https://raw.githubusercontent.com/rde-master/ioBroker.todoist2/master/admin/todoist.png",
     "type": "messaging",

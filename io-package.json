@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "todoist2",
-    "version": "0.8.4",
+    "version": "0.8.5",
     "news": {
+      "0.8.5": {
+        "en": "Bugfix",
+        "de": "Bug-Fix",
+        "ru": "Исправлена ошибка",
+        "pt": "Bugfix",
+        "nl": "Bugfix",
+        "fr": "Correction d'un bug",
+        "it": "Risoluzione del problema",
+        "es": "Arreglo del fallo",
+        "pl": "Naprawa błędów",
+        "zh-cn": "错误修正"
+        },
       "0.8.4":{
         "en": "add option to add an image in the html button",
         "de": "Option hinzufügen, um ein Bild in die HTML-Schaltfläche einzufügen",
@@ -252,7 +264,7 @@
     "compact": true,
     "dependencies": [
       {
-          "js-controller": ">=1.4.2"
+          "js-controller": ">=1.5.8"
       }
     ],
     "extIcon": "https://raw.githubusercontent.com/rde-master/ioBroker.todoist2/master/admin/todoist.png",

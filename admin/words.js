@@ -776,5 +776,17 @@ systemDictionary = {
         "es": "Configuración de Todoist",
         "pl": "Ustawienia Todoist",
         "zh-cn": "Todoist设置"
+      },
+      "icon for Button": {
+        "en": "icon for Button",
+        "de": "Symbol für Button",
+        "ru": "значок для кнопки",
+        "pt": "ícone para botão",
+        "nl": "pictogram voor knop",
+        "fr": "icône pour Button",
+        "it": "icona per Button",
+        "es": "icono de botón",
+        "pl": "ikona przycisku",
+        "zh-cn": "按钮的图标"
       }
 }    

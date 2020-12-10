@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "todoist2",
-    "version": "0.8.3",
+    "version": "0.8.4",
     "news": {
+      "0.8.4":{
+        "en": "add option to add an image in the html button",
+        "de": "Option hinzufügen, um ein Bild in die HTML-Schaltfläche einzufügen",
+        "ru": "добавить возможность добавить изображение в кнопку html",
+        "pt": "adicionar opção para adicionar uma imagem no botão html",
+        "nl": "optie toevoegen om een afbeelding toe te voegen in de html-knop",
+        "fr": "ajouter une option pour ajouter une image dans le bouton html",
+        "it": "aggiungi opzione per aggiungere un'immagine nel pulsante html",
+        "es": "agregar opción para agregar una imagen en el botón html",
+        "pl": "dodaj opcję dodania obrazu w przycisku html",
+        "zh-cn": "添加选项以在html按钮中添加图像"
+      },
       "0.8.3": {
         "en": "add new collaps menu in the Admin Page",
         "de": "Fügen Sie auf der Admin-Seite ein neues Menü zum Reduzieren hinzu",
@@ -206,19 +218,7 @@
         "es": "nueva estructura de backend",
         "pl": "nowa struktura zaplecza",
         "zh-cn": "新的后端结构"
-        },
-      "0.2.0": {
-        "en": "add new Sync Options",
-        "de": "neue Synchronisierungsoptionen hinzufügen",
-        "ru": "добавить новые параметры синхронизации",
-        "pt": "adicionar novas opções de sincronização",
-        "nl": "nieuwe synchronisatie-opties toevoegen",
-        "fr": "ajouter de nouvelles options de synchronisation",
-        "it": "aggiungere nuove opzioni di sincronizzazione",
-        "es": "agregar nuevas opciones de sincronización",
-        "pl": "dodaj nowe opcje synchronizacji",
-        "zh-cn": "添加新的同步选项"
-          }    
+        }        
     },
     "title": "todoist2",
     "desc": {

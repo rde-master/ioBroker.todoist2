@@ -186,15 +186,7 @@ async function startAdapter(options) {
             state_task_delete(new_id, state);
         }
 
-    });
-
-    adapter.on('objectChange', (id, obj) => {
-        
-        //adapter.log.warn("AAchtung änderung state!!");
-
-    });
-
-    
+    });    
 
     return adapter;
 }

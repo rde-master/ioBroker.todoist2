@@ -124,16 +124,18 @@ Example for CSS HTML Table
 Example for CSS HTML Button
  ``` 
 .button {
-  background-color: #4CAF50;
-  border: none;
-  color: white;
-  padding: 8px 16px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
+ background-color: #4CAF50;
+ border: none;
+ color: white;
+ padding: 8px 16px;
+ text-align: center;
+ text-decoration: none;
+ display: inline-block;
+ font-size: 16px;
+ margin: 4px 2px;
+ cursor: pointer;
+ transition-duration: 0.4s;
+}
 
 .button__icon{
 width: 1.2em;
@@ -142,6 +144,13 @@ fill: black;
 margin-right: 0.5em;
 }
 
+.button:hover {
+  background-color: red; 
+  color: black;
+}
+
+.button:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }
 
 ```

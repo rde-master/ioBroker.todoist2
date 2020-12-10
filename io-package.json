@@ -218,19 +218,7 @@
           "es": "traducción agregada",
           "pl": "dodano tłumaczenie",
           "zh-cn": "已添加翻译"
-        },
-      "0.3.0": {
-        "en": "new backend structur",
-        "de": "neue Backend-Struktur",
-        "ru": "новая структура серверной части",
-        "pt": "nova estrutura de backend",
-        "nl": "nieuwe backend-structur",
-        "fr": "nouvelle structure backend",
-        "it": "nuova struttura di backend",
-        "es": "nueva estructura de backend",
-        "pl": "nowa struktura zaplecza",
-        "zh-cn": "新的后端结构"
-        }        
+        }  
     },
     "title": "todoist2",
     "desc": {

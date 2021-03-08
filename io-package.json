@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "todoist2",
-    "version": "0.8.5",
+    "version": "0.8.6",
     "news": {
+      "0.8.6": {
+        "en": "Bugfix",
+        "de": "Bug-Fix",
+        "ru": "Исправлена ошибка",
+        "pt": "Bugfix",
+        "nl": "Bugfix",
+        "fr": "Correction d'un bug",
+        "it": "Risoluzione del problema",
+        "es": "Arreglo del fallo",
+        "pl": "Naprawa błędów",
+        "zh-cn": "错误修正"
+        },
       "0.8.5": {
         "en": "Bugfix",
         "de": "Bug-Fix",
@@ -206,19 +218,7 @@
         "es": "Limpieza de código",
         "pl": "Czyszczenie kodu",
         "zh-cn": "代码清理"
-      },
-      "0.3.5": {       
-          "en": "translation added",
-          "de": "Übersetzung hinzugefügt",
-          "ru": "перевод добавлен",
-          "pt": "tradução adicionada",
-          "nl": "vertaling toegevoegd",
-          "fr": "traduction ajoutée",
-          "it": "traduzione aggiunta",
-          "es": "traducción agregada",
-          "pl": "dodano tłumaczenie",
-          "zh-cn": "已添加翻译"
-        }  
+      }    
     },
     "title": "todoist2",
     "desc": {

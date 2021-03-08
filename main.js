@@ -1201,7 +1201,13 @@ async function getProject(){
                 */
                var Listenname = projects_name;
                 var listenID = projects;
+                
+                Listenname = Listenname.replace(/\.|\?|\"|\(|\)|\{|\}|\[|\]|\:|\;|\$|\^|\°|\#|\%|\&|\<|\>|\*|\+|\/|\\/g, '-'); //ERstetzt die Zeichen - aus dem Quellstring weil, sonst sonst probleme
+                
                 if(adapter.config.html_objects == true){
+
+                
+
                 await adapter.setObjectNotExistsAsync("HTML.Projects-HTML." + Listenname, {
                     type: 'state',
                     common: {
@@ -1323,7 +1329,11 @@ async function getLabels(){
                 */
                  if(debug) adapter.log.info("labels anlegen...." + Labels1_names);
                 
+                Labels1_names = Labels1_names.replace(/\.|\?|\"|\(|\)|\{|\}|\[|\]|\:|\;|\$|\^|\°|\#|\%|\&|\<|\>|\*|\+|\/|\\/g, '-'); //ERstetzt die Zeichen - aus dem Quellstring weil, sonst sonst probleme
+
                 if(adapter.config.html_objects == true){
+
+
                 await adapter.setObjectNotExistsAsync("HTML.Labels-HTML." + Labels1_names, {
                     type: 'state',
                     common: {
@@ -1463,6 +1473,7 @@ async function getSections(){
                 var Sections2name = Sections_names[i];
                 var Sections2ID = Sectionsid[i];
                 
+                Sections2name = Sections2name.replace(/\.|\?|\"|\(|\)|\{|\}|\[|\]|\:|\;|\$|\^|\°|\#|\%|\&|\<|\>|\*|\+|\/|\\/g, '-'); //ERstetzt die Zeichen - aus dem Quellstring weil, sonst sonst probleme
                 
                 await adapter.setObjectNotExistsAsync("Sections." + Sections2name, {
                     type: 'state',
@@ -1558,7 +1569,7 @@ async function tasktotask(){
         
         //Anlage für jeden Task in einen eigenen State:
         
-        var content2 = content.replace(/\./g, '-'); //ERstetzt die Punke - aus dem Quellstring weil, sonst ordner angelegt werden
+        var content2 = content.replace(/\.|\?|\"|\(|\)|\{|\}|\[|\]|\:|\;|\$|\^|\°|\#|\%|\&|\<|\>|\*|\+|\/|\\/g, '-'); //ERstetzt die Zeichen - aus dem Quellstring weil, sonst sonst probleme
         
         adapter.setObjectNotExists("Tasks." + content2, {
                 type: 'state',
@@ -2267,7 +2278,7 @@ if (adapter.config.tasks == true){
                 
                 //adapter.log.error("nummer: " + i + "content: " + all_task_objekts[i].content);
                 //adapter.log.info("überprüfung: " +  all_task_objekts[i].content + " mit " + new_id);
-                var bearbeitet12 = all_task_objekts[i].content.replace(/\./g, '-') // Punkte entfernden und mit - erseztten
+                var bearbeitet12 = all_task_objekts[i].content.replace(/\.|\?|\"|\(|\)|\{|\}|\[|\]|\:|\;|\$|\^|\°|\#|\%|\&|\<|\>|\*|\+|\/|\\/g, '-'); // Punkte entfernden und mit - erseztten
                 
                 
                 //Prüfen ob etwas von der API gelöscht wurde
@@ -2315,7 +2326,8 @@ if (adapter.config.project == true && adapter.config.html_objects == true){
             for(var i = 0; i < all_project_objekts.length; i++){
                 
                 //Prüfen ob etwas auf der Blacklist steht.
-                var bearbeitet12 = all_project_objekts[i].name.replace(/\./g, '-') // Punkte entfernden und mit - erseztten
+                var bearbeitet12 = all_project_objekts[i].name.replace(/\.|\?|\"|\(|\)|\{|\}|\[|\]|\:|\;|\$|\^|\°|\#|\%|\&|\<|\>|\*|\+|\/|\\/g, '-'); // Punkte entfernden und mit - erseztten
+                
                 var bearbeitet13 = all_project_objekts[i].id;
                 
                 var is_blacklist = false;
@@ -2374,7 +2386,9 @@ if (adapter.config.project == true && adapter.config.html_objects == true){
                 
 
                  //Prüfen ob etwas auf der Blacklist steht.
-                 var bearbeitet12 = all_project_objekts[i].name.replace(/\./g, '-') // Punkte entfernden und mit - erseztten
+                 var bearbeitet12 = all_project_objekts[i].name.replace(/\.|\?|\"|\(|\)|\{|\}|\[|\]|\:|\;|\$|\^|\°|\#|\%|\&|\<|\>|\*|\+|\/|\\/g, '-'); // Punkte entfernden und mit - erseztten
+                 
+                 
                  var bearbeitet13 = all_project_objekts[i].id;
                  var is_blacklist = false;
                  for (var w = 0; w < bl_projects.length; w++){  
@@ -2432,7 +2446,8 @@ if (adapter.config.project == true && adapter.config.text_objects == true){
                 
 
                  //Prüfen ob etwas auf der Blacklist steht.
-                 var bearbeitet12 = all_project_objekts[i].name.replace(/\./g, '-') // Punkte entfernden und mit - erseztten
+                 var bearbeitet12 = all_project_objekts[i].name.replace(/\.|\?|\"|\(|\)|\{|\}|\[|\]|\:|\;|\$|\^|\°|\#|\%|\&|\<|\>|\*|\+|\/|\\/g, '-'); // Punkte entfernden und mit - erseztten
+                 
                  var bearbeitet13 = all_project_objekts[i].id;
                  var is_blacklist = false;
                  for (var w = 0; w < bl_projects.length; w++){  
@@ -2496,7 +2511,8 @@ adapter.getStates('HTML.Labels-HTML.*', function (err, states) {
             
             //Prüfen ob etwas auf der Blacklist steht.
             var bearbeitet13 = all_label_objekts[i].id;
-            var bearbeitet12 = all_label_objekts[i].name.replace(/\./g, '-') // Punkte entfernden und mit - erseztten
+            var bearbeitet12 = all_label_objekts[i].name.replace(/\.|\?|\"|\(|\)|\{|\}|\[|\]|\:|\;|\$|\^|\°|\#|\%|\&|\<|\>|\*|\+|\/|\\/g, '-'); // Punkte entfernden und mit - erseztten
+            
             var is_blacklist = false;
             //adapter.log.warn("länge bl_labels " + bl_labels.length);
             for (var w = 0; w < bl_labels.length; w++){  
@@ -2561,7 +2577,7 @@ adapter.getStates('JSON.Labels-JSON.*', function (err, states) {
 
         for(var i = 0; i < all_label_objekts.length; i++){
             
-            var bearbeitet12 = all_label_objekts[i].name.replace(/\./g, '-') // Punkte entfernden und mit - erseztten
+            var bearbeitet12 = all_label_objekts[i].name.replace(/\.|\?|\"|\(|\)|\{|\}|\[|\]|\:|\;|\$|\^|\°|\#|\%|\&|\<|\>|\*|\+|\/|\\/g, '-'); // Punkte entfernden und mit - erseztten
             var bearbeitet13 = all_label_objekts[i].id;
             var is_blacklist = false;
             for (var w = 0; w < bl_labels.length; w++){  
@@ -2620,7 +2636,7 @@ if (adapter.config.labels == true && adapter.config.text_objects == true){
     
             for(var i = 0; i < all_label_objekts.length; i++){
                 
-                var bearbeitet12 = all_label_objekts[i].name.replace(/\./g, '-') // Punkte entfernden und mit - erseztten
+                var bearbeitet12 = all_label_objekts[i].name.replace(/\.|\?|\"|\(|\)|\{|\}|\[|\]|\:|\;|\$|\^|\°|\#|\%|\&|\<|\>|\*|\+|\/|\\/g, '-'); // Punkte entfernden und mit - erseztten
                 var bearbeitet13 = all_label_objekts[i].id;
                 var is_blacklist = false;
                 for (var w = 0; w < bl_labels.length; w++){  
@@ -2811,8 +2827,10 @@ async function filterlist(){
     if(debug) adapter.log.info("name: " +filter_name);
     if(debug) adapter.log.info("querry: " + filter_query);
 
+    filter_name = filter_name.replace(/\.|\?|\"|\(|\)|\{|\}|\[|\]|\:|\;|\$|\^|\°|\#|\%|\&|\<|\>|\*|\+|\/|\\/g, '-'); //ERstetzt die Zeichen - aus dem Quellstring weil, sonst sonst probleme
 
     if(adapter.config.html_objects == true){
+
     await adapter.setObjectNotExistsAsync("HTML.Filter-HTML." + filter_name, {
         type: 'state',
         common: {

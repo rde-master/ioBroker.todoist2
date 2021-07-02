@@ -4,3 +4,4 @@ admin/index_m_old2.html
 admin/index_m_test.html
 tsconfig.json
 .travis.yml
+.dev-server

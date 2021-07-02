@@ -166,6 +166,12 @@ Example for any image you like:
 ```
 
 ## Changelog
+### 0.8.7
+* (rde-master) Bugfix for Filter JSON there was missing a "}"
+* (rde-master) Bugfix for Filter HTML no longer shows duplicate entries
+* (rde-master) Bugfix for Filter URL now encoding so that you can use "# &" for better Filters
+* (rde-master) Bugfix for auto delete old objects
+
 ### 0.8.6
 * (rde-master) Bugfix and bump axios to 0.21.1
 

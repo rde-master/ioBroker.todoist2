@@ -15,10 +15,13 @@
 
 
 
+// @ts-ignore
 const utils = require('@iobroker/adapter-core'); // Get common adapter utils
 const adapterName = require('./package.json').name.split('.').pop();
 //const request = require("request");
+// @ts-ignore
 const axios = require('axios').default;
+// @ts-ignore
 const stringify = require('json-stringify-safe');
 
 
@@ -74,7 +77,7 @@ async function startAdapter(options) {
         rechnen = adapter.config.pollingInterval/2;
 
         //adapter.log.warn("blacklist: " + blacklist.length);
-        
+        //adapter.log.warn("TESTEN_neu");
         //Hier leiten wir die Blacklist in 3 Arrays auf:
         for(var i = 0; i < blacklist.length; i++){
             if(blacklist[i].activ == true && blacklist[i].art == "project"){
@@ -2021,14 +2024,14 @@ async function tasktofilter(filter_json, filter_name){
     if(debug) adapter.log.info("Funktion task to filter mit name: " + filter_name);
     if(debug) adapter.log.info("länge: " + filter_json.length);
     if(debug) adapter.log.info("daten: "+ JSON.stringify(filter_json));
-                        
+                       
         var j;
         //if(debug) adapter.log.warn("anzahl task: " + json.length);
         var json = filter_json;
 
         var json_task = "[]";
         var json_task_parse = JSON.parse(json_task);
-
+        
         
         //Verarbeitung von Filter
         var css = JSON.stringify(adapter.config.html_css_table);
@@ -2129,8 +2132,8 @@ async function tasktofilter(filter_json, filter_name){
             json_task_parse = JSON.parse(json_task);
 
             var text_task = "";
-
-            for (i = 0; i < json.length; i++) {
+            
+            
                 
                 var Liste = parseInt(json[i].project_id);
                 var content = JSON.stringify(json[i].content);
@@ -2184,6 +2187,7 @@ async function tasktofilter(filter_json, filter_name){
                     if(adapter.config.json_project_id){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + json[i].project_id + '"'};
                     if(adapter.config.json_comment_cound){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + json[i].comment_count + '"'};
                     if(adapter.config.json_parent_id){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + json[i].parent_id + '"'};
+                    baue_json = baue_json + "}";
                             baue_json = JSON.stringify(baue_json);
                             
                             baue_json = baue_json.replace(/\\/g, '');
@@ -2198,7 +2202,7 @@ async function tasktofilter(filter_json, filter_name){
                     text_task = text_task + content + adapter.config.text_separator;
                     if(debug) adapter.log.info("Aufbau Filter Liste Text: " + text_task);
                 
-            }
+            
             if(debug) adapter.log.info("schreibe in filterliste: " +filter_name);
             if(debug) adapter.log.info(HTMLstring);
             
@@ -2231,7 +2235,7 @@ async function tasktofilter(filter_json, filter_name){
     
         }
 
-
+        
         resolve("ok");      
 
 });
@@ -2326,7 +2330,7 @@ if (adapter.config.project == true && adapter.config.html_objects == true){
             for(var i = 0; i < all_project_objekts.length; i++){
                 
                 //Prüfen ob etwas auf der Blacklist steht.
-                var bearbeitet12 = all_project_objekts[i].name.replace(/[^a-zA-Z0-9]/g, '-'); // Punkte entfernden und mit - erseztten
+                var bearbeitet12 = all_project_objekts[i].name; // .replace(/[^a-zA-Z0-9]/g, '-')Punkte entfernden und mit - erseztten
                 
                 var bearbeitet13 = all_project_objekts[i].id;
                 
@@ -2386,7 +2390,7 @@ if (adapter.config.project == true && adapter.config.html_objects == true){
                 
 
                  //Prüfen ob etwas auf der Blacklist steht.
-                 var bearbeitet12 = all_project_objekts[i].name.replace(/[^a-zA-Z0-9]/g, '-'); // Punkte entfernden und mit - erseztten
+                 var bearbeitet12 = all_project_objekts[i].name; // .replace(/[^a-zA-Z0-9]/g, '-') Punkte entfernden und mit - erseztten
                  
                  
                  var bearbeitet13 = all_project_objekts[i].id;
@@ -2446,7 +2450,7 @@ if (adapter.config.project == true && adapter.config.text_objects == true){
                 
 
                  //Prüfen ob etwas auf der Blacklist steht.
-                 var bearbeitet12 = all_project_objekts[i].name.replace(/[^a-zA-Z0-9]/g, '-'); // Punkte entfernden und mit - erseztten
+                 var bearbeitet12 = all_project_objekts[i].name; // Punkte entfernden und mit - erseztten .replace(/[^a-zA-Z0-9]/g, '-')
                  
                  var bearbeitet13 = all_project_objekts[i].id;
                  var is_blacklist = false;
@@ -2461,7 +2465,8 @@ if (adapter.config.project == true && adapter.config.text_objects == true){
                  if(is_blacklist == true){
                      continue;
                  }
-
+                //adapter.log.info("liste aller dinge " + bearbeitet12);
+                //adapter.log.info("zu prüfendes ding " + new_id);
 
                 
                  if (bearbeitet12 == new_id) {
@@ -2511,7 +2516,7 @@ adapter.getStates('HTML.Labels-HTML.*', function (err, states) {
             
             //Prüfen ob etwas auf der Blacklist steht.
             var bearbeitet13 = all_label_objekts[i].id;
-            var bearbeitet12 = all_label_objekts[i].name.replace(/[^a-zA-Z0-9]/g, '-'); // Punkte entfernden und mit - erseztten
+            var bearbeitet12 = all_label_objekts[i].name; //  .replace(/[^a-zA-Z0-9]/g, '-')Punkte entfernden und mit - erseztten
             
             var is_blacklist = false;
             //adapter.log.warn("länge bl_labels " + bl_labels.length);
@@ -2577,7 +2582,7 @@ adapter.getStates('JSON.Labels-JSON.*', function (err, states) {
 
         for(var i = 0; i < all_label_objekts.length; i++){
             
-            var bearbeitet12 = all_label_objekts[i].name.replace(/[^a-zA-Z0-9]/g, '-'); // Punkte entfernden und mit - erseztten
+            var bearbeitet12 = all_label_objekts[i].name; //.replace(/[^a-zA-Z0-9]/g, '-') Punkte entfernden und mit - erseztten
             var bearbeitet13 = all_label_objekts[i].id;
             var is_blacklist = false;
             for (var w = 0; w < bl_labels.length; w++){  
@@ -2636,7 +2641,7 @@ if (adapter.config.labels == true && adapter.config.text_objects == true){
     
             for(var i = 0; i < all_label_objekts.length; i++){
                 
-                var bearbeitet12 = all_label_objekts[i].name.replace(/[^a-zA-Z0-9]/g, '-'); // Punkte entfernden und mit - erseztten
+                var bearbeitet12 = all_label_objekts[i].name; //.replace(/[^a-zA-Z0-9]/g, '-') Punkte entfernden und mit - erseztten
                 var bearbeitet13 = all_label_objekts[i].id;
                 var is_blacklist = false;
                 for (var w = 0; w < bl_labels.length; w++){  
@@ -2818,6 +2823,9 @@ async function filterlist(){
     var filter_aktiv = filter_list[i].filterlist_aktiv;
     var filter_name = filter_list[i].filterlist_filter_name;
     var filter_query = filter_list[i].filterlist_query;
+
+    //url muss encoded werden, damit die zeichen wie # oder leerzeichen korrekt an die api gesendet werden
+    filter_query = encodeURIComponent(filter_query);
 
     if(filter_aktiv != true){
         continue; 

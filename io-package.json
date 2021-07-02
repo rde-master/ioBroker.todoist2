@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "todoist2",
-    "version": "0.8.6",
+    "version": "0.8.7",
     "news": {
+      "0.8.7": {
+        "en": "Bugfix",
+        "de": "Bug-Fix",
+        "ru": "Исправлена ошибка",
+        "pt": "Bugfix",
+        "nl": "Bugfix",
+        "fr": "Correction d'un bug",
+        "it": "Risoluzione del problema",
+        "es": "Arreglo del fallo",
+        "pl": "Naprawa błędów",
+        "zh-cn": "错误修正"
+        },
       "0.8.6": {
         "en": "Bugfix",
         "de": "Bug-Fix",
@@ -206,19 +218,7 @@
         "es": "Agregar nueva opción de filtro (¡Solo Todoist Premium!)",
         "pl": "Dodaj nową opcję filtra (tylko Todoist Premium!)",
         "zh-cn": "添加新的过滤器选项（仅限高级Todoist！）"
-       },
-      "0.4.0": {
-        "en": "Code Cleanup",
-        "de": "Codebereinigung",
-        "ru": "Очистка кода",
-        "pt": "Limpeza de código",
-        "nl": "Code opschonen",
-        "fr": "Nettoyage de code",
-        "it": "Pulizia del codice",
-        "es": "Limpieza de código",
-        "pl": "Czyszczenie kodu",
-        "zh-cn": "代码清理"
-      }    
+       }         
     },
     "title": "todoist2",
     "desc": {

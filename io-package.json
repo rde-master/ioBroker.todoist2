@@ -243,6 +243,8 @@
      ],
     "license": "MIT",
     "platform": "Javascript/Node.js",
+    "connectionType": "cloud",
+    "dataSource": "poll",
     "mode": "daemon",
     "messagebox": true,
     "readme": "https://raw.githubusercontent.com/rde-master/ioBroker.todoist2/master/README.md",

@@ -256,7 +256,7 @@ Example for any image you like:
 
 ## License
 The MIT License (MIT)
-Copyright (c) 2020 rde-master <info@rde-master.de>
+Copyright (c) 2021 rde-master <info@rde-master.de>
 
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

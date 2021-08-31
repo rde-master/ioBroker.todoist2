@@ -1,9 +1,9 @@
 {
   "common": {
     "name": "todoist2",
-    "version": "0.8.8",
+    "version": "0.8.9",
     "news": {
-      "0.8.8": {
+      "0.8.9": {
         "en": "Bugfix",
         "de": "Bug-Fix",
         "ru": "Исправлена ошибка",

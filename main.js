@@ -3004,8 +3004,9 @@ async function main() {
         
         if(adapter.config.project === true){
             var projects =  await getProject();
-
-            tasktoproject(projects);	
+            if (typeof projects !== "undefined") {
+            tasktoproject(projects);
+            }	
         }
         
         if(adapter.config.section === true){
@@ -3015,9 +3016,9 @@ async function main() {
 
         if(adapter.config.labels === true){
             var labels =  await getLabels();
-            
+            if (typeof labels !== "undefined") {
             tasktolabels(labels);	
-            
+            }
         }
         
         if(adapter.config.tasks === true){

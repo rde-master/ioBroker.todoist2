@@ -167,6 +167,9 @@ Example for any image you like:
 
 ## Changelog
 ### 0.8.8
+* (rde-master) Bugfix for no labels ar defined
+
+### 0.8.8
 * (rde-master) Bugfix for error when no Network is available
 * (rde-master) Bugfix for Date
 

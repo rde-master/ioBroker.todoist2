@@ -218,10 +218,10 @@ if(state.val == true && state.val !== undefined){
 //Erstelle neuen Task wenn der Objekt New.Task geänderd wird.
 async function new_with_state(id, state){
 
-    var new_project = await adapter.getStateAsync('New.Project');
-    var new_priority = await adapter.getStateAsync('New.Priority');
-    var new_date =  await adapter.getStateAsync('New.Date');
-    var new_label =  await adapter.getStateAsync('New.Label');
+    var new_project = await adapter.getStateAsync('Control.New.Project');
+    var new_priority = await adapter.getStateAsync('Control.New.Priority');
+    var new_date =  await adapter.getStateAsync('Control.New.Date');
+    var new_label =  await adapter.getStateAsync('Control.New.Label');
     
 
     //wenn Felder leer sind dise auch löschen.
@@ -237,12 +237,12 @@ async function new_with_state(id, state){
     if(debug) adapter.log.info("Date: " + new_date.val);
     if(debug) adapter.log.info("Label: " + new_label.val);
 
-    if(state.ack == false){
-        adapter.log.warn("Please use Ack, only then the Task go to added");
-    }
-    if(state.akk){
+    //if(state.ack == false){
+    //    adapter.log.warn("Please use Ack, only then the Task go to added");
+    //}
+    //if(state.akk){
     await addTask(state.val, new_project.val, "", "", "", new_label.val, new_priority.val, new_date.val, true);
-    }
+    //}
 }
 
 //Baue neue States
@@ -565,7 +565,16 @@ function createUUID(){
 //true --> aktiviert (sollte standard sein)
 async function addTask(item, proejct_id, section_id, parent, order, label_id, priority, date, dupli){
     
-    if(debug) adapter.log.info("neuen Task anlegen starten....");
+    if(debug)adapter.log.info("neuen Task anlegen starten....");
+     if(debug)adapter.log.info("item: " + item);
+     if(debug)adapter.log.info("proejct_id: " + proejct_id);
+     if(debug)adapter.log.info("section_id: " + section_id);
+     if(debug)adapter.log.info("parent: " + parent);
+     if(debug)adapter.log.info("order: " + order);
+     if(debug)adapter.log.info("label_id: " + label_id);
+     if(debug)adapter.log.info("priority: " + priority);
+     if(debug)adapter.log.info("date: " + date);
+     if(debug) adapter.log.info("dupli: " + dupli);
     var dublicate_sperre = false;
     
     if(adapter.config.dublicate == true){
@@ -594,6 +603,7 @@ async function addTask(item, proejct_id, section_id, parent, order, label_id, pr
         if(dublicate_sperre == false){
          
           var datasend = {content: item };
+          
           if(proejct_id != "" && proejct_id != null){
             datasend.project_id = parseInt(proejct_id);
             };            
@@ -613,10 +623,10 @@ async function addTask(item, proejct_id, section_id, parent, order, label_id, pr
             datasend.priority=parseInt(priority);
             };
             if(date != "" && date != null){
-            datasend.due.date=date;
+            datasend.due_string=date;
             };
 
-            if(debug)adapter.log.info("Daten zum senden: " + datasend);
+            if(debug) adapter.log.info("Daten zum senden: " + JSON.stringify(datasend));
             
 
             

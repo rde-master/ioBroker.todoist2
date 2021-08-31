@@ -2961,7 +2961,7 @@ async function main() {
         online_count ++;
         if(online_count > 10){
             clearInterval(mainintval);
-            adapter.log.err("Adapter cant't finde the API. You need to restart the Adapter to try again!!!!")   ;       
+            adapter.log.error("Adapter cant't finde the API. You need to restart the Adapter to try again!!!!")   ;       
         }
         adapter.log.warn("Check again in " + poll + " seconds!");
         var x = 10 - online_count;

@@ -60,7 +60,7 @@ async function startAdapter(options) {
 
     adapter = new utils.Adapter(options);
 	
-	
+
 
     adapter.on('message', obj => {
         //adapter.log.info(JSON.stringify(obj));
@@ -613,7 +613,7 @@ async function addTask(item, proejct_id, section_id, parent, order, label_id, pr
             datasend.priority=parseInt(priority);
             };
             if(date != "" && date != null){
-            datasend.date=date;
+            datasend.due.date=date;
             };
 
             if(debug)adapter.log.info("Daten zum senden: " + datasend);
@@ -1850,7 +1850,7 @@ async function tasktolabels(labels){
                         }
                     }
                     if(is_blacklist == true){
-                         adapter.log.info("überspringen task2");
+                        if(debug) adapter.log.info("überspringe task");
                         continue;
                     }
 

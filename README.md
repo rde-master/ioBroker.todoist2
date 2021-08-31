@@ -166,7 +166,7 @@ Example for any image you like:
 ```
 
 ## Changelog
-### 0.8.8
+### 0.8.9
 * (rde-master) Bugfix for no labels ar defined
 
 ### 0.8.8

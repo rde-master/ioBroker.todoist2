@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "todoist2",
-    "version": "0.8.9",
+    "version": "0.8.10",
     "news": {
+      "0.8.10": {
+        "en": "Bugfix Filter Lists",
+        "de": "Bug-Fix Filster Listen",
+        "ru": "Исправлена ошибка",
+        "pt": "Bugfix",
+        "nl": "Bugfix",
+        "fr": "Correction d'un bug",
+        "it": "Risoluzione del problema",
+        "es": "Arreglo del fallo",
+        "pl": "Naprawa błędów",
+        "zh-cn": "错误修正"
+        },
       "0.8.9": {
         "en": "Bugfix",
         "de": "Bug-Fix",
@@ -206,19 +218,7 @@
         "es": "Arreglo del fallo",
         "pl": "Naprawa błędów",
         "zh-cn": "错误修正"
-       },
-      "0.6.0": {
-        "en": "Add new List Options",
-        "de": "Neue Listenoptionen hinzufügen",
-        "ru": "Добавить новые параметры списка",
-        "pt": "Adicionar novas opções de lista",
-        "nl": "Nieuwe lijstopties toevoegen",
-        "fr": "Ajouter de nouvelles options de liste",
-        "it": "Aggiungi nuove opzioni elenco",
-        "es": "Agregar nuevas opciones de lista",
-        "pl": "Dodaj nowe opcje listy",
-        "zh-cn": "添加新的列表选项"
-      }             
+       }            
     },
     "title": "todoist2",
     "desc": {

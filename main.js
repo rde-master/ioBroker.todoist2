@@ -2041,7 +2041,7 @@ async function tasktofilter(filter_json, filter_name){
 
         var json_task = "[]";
         var json_task_parse = JSON.parse(json_task);
-        
+        var text_task = "";
         
         //Verarbeitung von Filter
         var css = JSON.stringify(adapter.config.html_css_table);
@@ -2136,21 +2136,20 @@ async function tasktofilter(filter_json, filter_name){
 
             
             //adapter.setState('Lists.' + project.projects_name[j], {ack: true, val: 'empty'});
-            var i = 0;
+           
 
-            json_task = "[]";
-            json_task_parse = JSON.parse(json_task);
-
-            var text_task = "";
             
+
+            
+
             
                 
-                var Liste = parseInt(json[i].project_id);
-                var content = JSON.stringify(json[i].content);
-                var id = JSON.stringify(json[i].id);
+                var Liste = parseInt(json[j].project_id);
+                var content = JSON.stringify(json[j].content);
+                var id = JSON.stringify(json[j].id);
                 content = content.replace(/\"/g, ''); //entfernt die Anfuehrungszeichen aus dem Quellstring
                 //content = content[0].toUpperCase() + content.substring(1); // Macht den ersten Buchstaben des strings zu einem Grossbuchstaben
-                var taskurl = JSON.stringify(json[i].url);
+                var taskurl = JSON.stringify(json[j].url);
                 taskurl = taskurl.replace(/\"/g, '');
                 
                 
@@ -2160,16 +2159,16 @@ async function tasktofilter(filter_json, filter_name){
                     
                     //Fehler in der Priorität anpassen - es kommen die Falschen zahlen umgedreht:
                     var prio_neu = 0;
-                    if(json[i].priority == 1){
+                    if(json[j].priority == 1){
                         prio_neu = 4;
                     }
-                    if(json[i].priority == 2){
+                    if(json[j].priority == 2){
                         prio_neu = 3;
                     }
-                    if(json[i].priority == 3){
+                    if(json[j].priority == 3){
                         prio_neu = 2;
                     }
-                    if(json[i].priority == 4){
+                    if(json[j].priority == 4){
                         prio_neu = 1;
                     }
 
@@ -2178,9 +2177,9 @@ async function tasktofilter(filter_json, filter_name){
                             if(adapter.config.html_id){HTMLstring = HTMLstring + id + '</td><td>'};
                             if(adapter.config.html_priority){HTMLstring = HTMLstring + prio_neu + '</td><td>'};
                             if(adapter.config.html_url){HTMLstring = HTMLstring + taskurl + '</td><td>'};
-                            if(adapter.config.html_project_id){HTMLstring = HTMLstring + json[i].project_id + '</td><td>'};
-                            if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + json[i].comment_count + '</td><td>'};
-                            if(adapter.config.html_parent_id){HTMLstring = HTMLstring + json[i].parent_id + '</td><td>'};
+                            if(adapter.config.html_project_id){HTMLstring = HTMLstring + json[j].project_id + '</td><td>'};
+                            if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + json[j].comment_count + '</td><td>'};
+                            if(adapter.config.html_parent_id){HTMLstring = HTMLstring + json[j].parent_id + '</td><td>'};
                             if(adapter.config.html_button){HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">'+ adapter.config.html_svg_button + adapter.config.html_button_name+'</button>' + '</td></tr>';}
                             HTMLstring = HTMLstring + '</td></tr>';
                     
@@ -2194,9 +2193,9 @@ async function tasktofilter(filter_json, filter_name){
                     if(adapter.config.json_id){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + id + '"'};
                     if(adapter.config.json_priority){baue_json = baue_json + ', "' + adapter.config.json_priority_name + '":"' + prio_neu + '"'};
                     if(adapter.config.json_url){baue_json = baue_json + ', "' + adapter.config.json_url_name + '":"' + taskurl + '"'};
-                    if(adapter.config.json_project_id){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + json[i].project_id + '"'};
-                    if(adapter.config.json_comment_cound){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + json[i].comment_count + '"'};
-                    if(adapter.config.json_parent_id){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + json[i].parent_id + '"'};
+                    if(adapter.config.json_project_id){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + json[j].project_id + '"'};
+                    if(adapter.config.json_comment_cound){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + json[j].comment_count + '"'};
+                    if(adapter.config.json_parent_id){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + json[j].parent_id + '"'};
                     baue_json = baue_json + "}";
                             baue_json = JSON.stringify(baue_json);
                             
@@ -2219,10 +2218,11 @@ async function tasktofilter(filter_json, filter_name){
             //json wandeln 
                 //json_task = JSON.stringify(json_task);
             
-            //Setzte den Status:
-            if(adapter.config.html_objects == true){
-                
-
+            
+    
+        }
+        //Setzte den Status:
+        if(adapter.config.html_objects == true){ 
             adapter.setState('HTML.Filter-HTML.'+filter_name, {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {servConn.setState("todoist2.0.Control.Close.ID", id)}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
             }
             if(json_task === "[]"){
@@ -2242,9 +2242,6 @@ async function tasktofilter(filter_json, filter_name){
             if(adapter.config.text_objects == true){
                 adapter.setState('TEXT.Filter-TEXT.'+filter_name, {val: text_task, ack: true});
             }
-    
-        }
-
         
         resolve("ok");      
 

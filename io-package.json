@@ -221,6 +221,18 @@
        }            
     },
     "title": "todoist2",
+    "titleLang": {
+      "en": "todoist2",
+      "de": "todoist2",
+      "ru": "todoist2",
+      "pt": "todoist2",
+      "nl": "todoist2",
+      "fr": "todoist2",
+      "it": "todoist2",
+      "es": "todoist2",
+      "pl": "todoist2",
+      "zh-cn": "todoist2"
+  },
     "desc": {
       "en": "This adapter communikates with todoist",
       "de": "Dieser Adapter kommuniziert mit todoist",

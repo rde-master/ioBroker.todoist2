@@ -1743,9 +1743,9 @@ async function tasktoproject(project){
                             if(adapter.config.json_id){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + id + '"'};
                             if(adapter.config.json_priority){baue_json = baue_json + ', "' + adapter.config.json_priority_name + '":"' + prio_neu + '"'};
                             if(adapter.config.json_url){baue_json = baue_json + ', "' + adapter.config.json_url_name + '":"' + taskurl + '"'};
-                            if(adapter.config.json_project_id){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + json[i].project_id + '"'};
-                            if(adapter.config.json_comment_cound){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + json[i].comment_count + '"'};
-                            if(adapter.config.json_parent_id){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + json[i].parent_id + '"'};
+                            if(adapter.config.json_project_id){baue_json = baue_json + ', "' + adapter.config.json_project_name + '":"' + json[i].project_id + '"'};
+                            if(adapter.config.json_comment_cound){baue_json = baue_json + ', "' + adapter.config.json_comment_name + '":"' + json[i].comment_count + '"'};
+                            if(adapter.config.json_parent_id){baue_json = baue_json + ', "' + adapter.config.json_parent_name + '":"' + json[i].parent_id + '"'};
                             baue_json = baue_json + "}";
                             baue_json = JSON.stringify(baue_json);
                             
@@ -1937,9 +1937,9 @@ async function tasktolabels(labels){
                                 if(adapter.config.json_id){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + id + '"'};
                                 if(adapter.config.json_priority){baue_json = baue_json + ', "' + adapter.config.json_priority_name + '":"' + prio_neu + '"'};
                                 if(adapter.config.json_url){baue_json = baue_json + ', "' + adapter.config.json_url_name + '":"' + taskurl + '"'};
-                                if(adapter.config.json_project_id){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + json[i].project_id + '"'};
-                                if(adapter.config.json_comment_cound){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + json[i].comment_count + '"'};
-                                if(adapter.config.json_parent_id){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + json[i].parent_id + '"'};
+                                if(adapter.config.json_project_id){baue_json = baue_json + ', "' + adapter.config.json_project_name + '":"' + json[i].project_id + '"'};
+                                if(adapter.config.json_comment_cound){baue_json = baue_json + ', "' + adapter.config.json_comment_name + '":"' + json[i].comment_count + '"'};
+                                if(adapter.config.json_parent_id){baue_json = baue_json + ', "' + adapter.config.json_parent_name + '":"' + json[i].parent_id + '"'};
                                 baue_json = baue_json + "}";
                                 baue_json = JSON.stringify(baue_json);
                                 
@@ -2193,9 +2193,9 @@ async function tasktofilter(filter_json, filter_name){
                     if(adapter.config.json_id){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + id + '"'};
                     if(adapter.config.json_priority){baue_json = baue_json + ', "' + adapter.config.json_priority_name + '":"' + prio_neu + '"'};
                     if(adapter.config.json_url){baue_json = baue_json + ', "' + adapter.config.json_url_name + '":"' + taskurl + '"'};
-                    if(adapter.config.json_project_id){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + json[j].project_id + '"'};
-                    if(adapter.config.json_comment_cound){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + json[j].comment_count + '"'};
-                    if(adapter.config.json_parent_id){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + json[j].parent_id + '"'};
+                    if(adapter.config.json_project_id){baue_json = baue_json + ', "' + adapter.config.json_project_name + '":"' + json[j].project_id + '"'};
+                    if(adapter.config.json_comment_cound){baue_json = baue_json + ', "' + adapter.config.json_comment_name + '":"' + json[j].comment_count + '"'};
+                    if(adapter.config.json_parent_id){baue_json = baue_json + ', "' + adapter.config.json_parent_name + '":"' + json[j].parent_id + '"'};
                     baue_json = baue_json + "}";
                             baue_json = JSON.stringify(baue_json);
                             

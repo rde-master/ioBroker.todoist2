@@ -1998,15 +1998,9 @@ async function tasktolabels(labels){
 
 
                     
-                    var HTMLstring ='<tr><th>' ;
-                    if(adapter.config.html_name !=""){ HTMLstring = HTMLstring + adapter.config.html_name + '</th><th>';}
-                    if(adapter.config.html_id && adapter.config.html_id_name!=""){HTMLstring = HTMLstring + adapter.config.html_id_name + '</th><th>'};
-                    if(adapter.config.html_priority && adapter.config.html_priority_name!=""){HTMLstring = HTMLstring + adapter.config.html_priority_name + '</th><th>'};
-                    if(adapter.config.html_url && adapter.config.html_url_name!=""){HTMLstring = HTMLstring + adapter.config.html_url_name + '</th><th>'};
-                    if(adapter.config.html_project_id && adapter.config.html_project_id_name!=""){HTMLstring = HTMLstring + adapter.config.html_project_id_name + '</th><th>'};
-                    if(adapter.config.html_comment_cound && adapter.config.html_comment_cound_name!=""){HTMLstring = HTMLstring + adapter.config.html_comment_cound_name + '</th><th>'};
-                    if(adapter.config.html_parent_id && adapter.config.html_parent_id_name!=""){HTMLstring = HTMLstring + adapter.config.html_parent_id_name + '</th><th>'};
-                    HTMLstring = HTMLstring + "" + '</th></tr>';
+                    var HTMLstring = "";
+                    await html_verarbeitung.heading_html(adapter).then(data => {HTMLstring = HTMLstring + data});
+                    
                     //adapter.setState('Lists.' + project.projects_name[j], {ack: true, val: 'empty'});
                     var i = 0;
                     var json_task = "[]";
@@ -2035,30 +2029,11 @@ async function tasktolabels(labels){
                         		//HTML
                                 
                                 //Fehler in der Priorität anpassen - es kommen die Falschen zahlen umgedreht:
-                            var prio_neu = 0;
-                            if(json[i].priority == 1){
-                                prio_neu = 4;
-                            }
-                            if(json[i].priority == 2){
-                                prio_neu = 3;
-                            }
-                            if(json[i].priority == 3){
-                                prio_neu = 2;
-                            }
-                            if(json[i].priority == 4){
-                                prio_neu = 1;
-                            }
-
-
-                                HTMLstring = HTMLstring + '<tr><td id="button_html">' + content + "</td><td>";
-                            if(adapter.config.html_id){HTMLstring = HTMLstring + id + '</td><td>'};
-                            if(adapter.config.html_priority){HTMLstring = HTMLstring + prio_neu + '</td><td>'};
-                            if(adapter.config.html_url){HTMLstring = HTMLstring + taskurl + '</td><td>'};
-                            if(adapter.config.html_project_id){HTMLstring = HTMLstring + json[i].project_id + '</td><td>'};
-                            if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + json[i].comment_count + '</td><td>'};
-                            if(adapter.config.html_parent_id){HTMLstring = HTMLstring + json[i].parent_id + '</td><td>'};
-                            if(adapter.config.html_button){HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')"> ' + adapter.config.html_svg_button + adapter.config.html_button_name+'</button>' + '</td></tr>';}
-                            HTMLstring = HTMLstring + '</td></tr>';
+                                var prio_neu = 0;
+                                await helper.reorder_prio(json[i].priority).then(data => {prio_neu = data});
+                               
+                                await html_verarbeitung.table_html(adapter, json[i], prio_neu).then(data => {HTMLstring = HTMLstring + data});
+                                
                                 
                                 
                                 
@@ -2108,15 +2083,8 @@ async function tasktolabels(labels){
                 css2 = css2.replace(/\\/g, '');
                 css2 = css2.replace(/\"/g, '');
                 if(label.length == 0){
-                    HTMLstring = HTMLstring + '<tr><td id="button_html">' + adapter.config.html_notodo_name + "</td><td>";
-                            if(adapter.config.html_id){HTMLstring = HTMLstring + "-" + '</td><td>'};
-                            if(adapter.config.html_priority){HTMLstring = HTMLstring + "-" + '</td><td>'};
-                            if(adapter.config.html_url){HTMLstring = HTMLstring + "-" + '</td><td>'};
-                            if(adapter.config.html_project_id){HTMLstring = HTMLstring + "-" + '</td><td>'};
-                            if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + "-" + '</td><td>'};
-                            if(adapter.config.html_parent_id){HTMLstring = HTMLstring + "-" + '</td><td>'};
-                            //HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">Close</button>' + '</td></tr>';
-                            HTMLstring = HTMLstring + '</td></tr>';
+                    await html_verarbeitung.table_html_empty(adapter).then(data => {HTMLstring = HTMLstring + data});
+                            
                             //wenn html tablle bei keinem todo auch nicht angezeigt werden soll:
                             if(adapter.config.html_visable == false){
                                 HTMLstring = "";

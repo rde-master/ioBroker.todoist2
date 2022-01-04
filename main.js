@@ -25,6 +25,7 @@ const axios = require('axios').default;
 const stringify = require('json-stringify-safe');
 // @ts-ignore
 const html_verarbeitung = require('./lib/html_verarbeitung.js');
+const json_verarbeitung = require('./lib/json_verarbeitung.js');
 const helper = require('./lib/helper_funktions.js');
 
 
@@ -1794,7 +1795,7 @@ if(adapter.config.json_objects === true){
 //zur Verarbeitung von den Objekten in den Projekten und den einzelnen Tasks
 async function tasktoproject(project){
     
-            if(debug) adapter.log.info("Funktion taskt to project");
+            if(debug) adapter.log.info("Funktion task to project");
                 if(debug) adapter.log.info("länge: " + project.projects_id.length);
                                 
                 var j;
@@ -1878,20 +1879,9 @@ async function tasktoproject(project){
                             if(debug) adapter.log.info("Aufbau Projekt Liste HTML: " + HTMLstring);
                             
                             //JSON
-                            var baue_json = '{"'+adapter.config.json_name+'":"' + content + '"';
-                            if(adapter.config.json_id){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + id + '"'};
-                            if(adapter.config.json_priority){baue_json = baue_json + ', "' + adapter.config.json_priority_name + '":"' + prio_neu + '"'};
-                            if(adapter.config.json_url){baue_json = baue_json + ', "' + adapter.config.json_url_name + '":"' + taskurl + '"'};
-                            if(adapter.config.json_project_id){baue_json = baue_json + ', "' + adapter.config.json_project_name + '":"' + json[i].project_id + '"'};
-                            if(adapter.config.json_comment_cound){baue_json = baue_json + ', "' + adapter.config.json_comment_name + '":"' + json[i].comment_count + '"'};
-                            if(adapter.config.json_parent_id){baue_json = baue_json + ', "' + adapter.config.json_parent_name + '":"' + json[i].parent_id + '"'};
-                            baue_json = baue_json + "}";
-                            baue_json = JSON.stringify(baue_json);
+                                                       
+                            await json_verarbeitung.table_json(adapter, json[i], prio_neu).then(data => {json_task_parse.push(data);});
                             
-                            baue_json = baue_json.replace(/\\/g, '');
-                            baue_json = baue_json.replace(/\\/g, '');
-                            
-                            json_task_parse.push(baue_json);
             
                             json_task = JSON.stringify(json_task_parse);
                             if(debug) adapter.log.info("Aufbau Projekt Liste JSON: " + json_task)

@@ -1706,7 +1706,7 @@ async function getSections(){
 async function tasktotask(){
                            
     var i;
-    if(debug) adapter.log.info("Funktion taskt to task");
+    if(debug) adapter.log.info("Funktion task to task");
     //if(debug) adapter.log.warn("anzahl task: " + json.length);
     var json = all_task_objekts;
 
@@ -1732,11 +1732,22 @@ async function tasktotask(){
             continue;
         }
 
-        json_neu_parse.push({"name":json[i].content, "ID":json[i].project_id});
+        if(adapter.config.json_objects === true){	
+            var prio_neu = 0;
+            await helper.reorder_prio(json[i].priority).then(data => { prio_neu = data });
+            await json_verarbeitung.table_json(adapter, json[i], prio_neu, all_project_objekts, all_label_objekts, all_sections_objects, all_collaborators_objects).then(data => { json_neu_parse.push(data); });
+            
+            json_neu = JSON.stringify(json_neu_parse);
 
-        json_neu = JSON.stringify(json_neu_parse);
-        if(debug) adapter.log.info("Aufbau Projekt Liste: " + json_neu);
+            json_neu = json_neu.replace(/\\n/g, '');
+            json_neu = json_neu.replace(/\\/g, '');
+            json_neu = json_neu.replace(/\""/g, '');
 
+            //json_neu_parse.push({"name":json[i].content, "ID":json[i].project_id});
+
+            
+            if(debug) adapter.log.info("Aufbau Projekt Liste: " + json_neu);
+        }
 
         var content = JSON.stringify(json[i].content);
         var id = JSON.stringify(json[i].id);
@@ -1794,295 +1805,274 @@ if(adapter.config.json_objects === true){
 
 //zur Verarbeitung von den Objekten in den Projekten und den einzelnen Tasks
 async function tasktoproject(project){
-    
-            if(debug) adapter.log.info("Funktion task to project");
-                if(debug) adapter.log.info("länge: " + project.projects_id.length);
-                                
-                var j;
-                //if(debug) adapter.log.warn("anzahl task: " + json.length);
-                var json = all_task_objekts;
-                //Verarbeitung von Projekten
-                
-                //Schleife zum Befüllen der Projekt Tasks in HTML, Texts und JSON.
-                for (j = 0; j < project.projects_id.length; j++) {
+
+    if (debug) adapter.log.info("Funktion task to project");
+    if (debug) adapter.log.info("länge: " + project.projects_id.length);
+
+    var j;
+    //if(debug) adapter.log.warn("anzahl task: " + json.length);
+    var json = all_task_objekts;
+    //Verarbeitung von Projekten
+
+    //Schleife zum Befüllen der Projekt Tasks in HTML, Texts und JSON.
+    for (j = 0; j < project.projects_id.length; j++) {
 
 
-                    var is_blacklist = false;
-                    for (var w = 0; w < bl_projects.length; w++){               
-                        if(project.projects_id[j] == bl_projects[w].id){
-                           // adapter.log.info("projects in Tasks: " + project.projects_id[j]);
-                           // adapter.log.info("liste: " +  JSON.stringify(bl_projects[w]));
-                            is_blacklist = true;
-                           // adapter.log.warn("Blacklist erkannt: " + JSON.stringify(bl_projects[w]));
-                        }
-                    }
-                    if(is_blacklist == true){
-                        if(debug) adapter.log.info("überspringen task");
-                        continue;
-                    }
+        var is_blacklist = false;
+        for (var w = 0; w < bl_projects.length; w++) {
+            if (project.projects_id[j] == bl_projects[w].id) {
+                // adapter.log.info("projects in Tasks: " + project.projects_id[j]);
+                // adapter.log.info("liste: " +  JSON.stringify(bl_projects[w]));
+                is_blacklist = true;
+                // adapter.log.warn("Blacklist erkannt: " + JSON.stringify(bl_projects[w]));
+            }
+        }
+        if (is_blacklist == true) {
+            if (debug) adapter.log.info("überspringen task");
+            continue;
+        }
 
-                    //let HTMLstring = html_verarbeitung.raw_html(adapter);
-                    var HTMLstring = "";
-                    await html_verarbeitung.heading_html(adapter).then(data => {HTMLstring = HTMLstring + data});
-                    
-                    //adapter.setState('Lists.' + project.projects_name[j], {ack: true, val: 'empty'});
-                    var i = 0;
+        //let HTMLstring = html_verarbeitung.raw_html(adapter);
+        var HTMLstring = "";
+        if (adapter.config.html_objects == true) {
+            await html_verarbeitung.heading_html(adapter).then(data => { HTMLstring = HTMLstring + data });
+        }
+        //adapter.setState('Lists.' + project.projects_name[j], {ack: true, val: 'empty'});
+        var i = 0;
 
-                    var json_task = "[]";
-                    var json_task_parse = JSON.parse(json_task);
+        var json_task = "[]";
+        var json_task_parse = JSON.parse(json_task);
 
-                    var text_task = "";
+        var text_task = "";
 
-                    for (i = 0; i < json.length; i++) {
-                        
-                        var Liste = parseInt(json[i].project_id);
-                        var content = JSON.stringify(json[i].content);
-                        var id = JSON.stringify(json[i].id);
-                        content = content.replace(/\"/g, ''); //entfernt die Anfuehrungszeichen aus dem Quellstring
-                        //content = content[0].toUpperCase() + content.substring(1); // Macht den ersten Buchstaben des strings zu einem Grossbuchstaben
-                        var taskurl = JSON.stringify(json[i].url);
-                        taskurl = taskurl.replace(/\"/g, '');
-                        
-                        
-                        
-                        //Anlage für jeden Task in einen eigenen State:
-                        /*
-                        var content2 = content.replace(/\./g, '-'); //ERstetzt die Punke - aus dem Quellstring weil, sonst ordner angelegt werden
-                        if(adapter.config.tasks === true){
-                        adapter.setObjectNotExists("Tasks." + content2, {
-                    			type: 'state',
-                    				common: {
-                                        role: 'text',
-                        				name: 'ID ' + id,
-                        				type: 'string',
-                    					},
-                    						native: {}
-              							});
-                        }
-                        */
-                        //Zuordnung zu den Listen:
-                        if (Liste === project.projects_id[j]) {
-                            if(debug)adapter.log.info('[' + content + '] in ' + project.projects_names[j] + ' found');
-                            
-                            //HTML
-                            
-                            //Fehler in der Priorität anpassen - es kommen die Falschen zahlen umgedreht:
-                            var prio_neu = 0;
-                            await helper.reorder_prio(json[i].priority).then(data => {prio_neu = data});
-                           
-                            await html_verarbeitung.table_html(adapter, json[i], prio_neu).then(data => {HTMLstring = HTMLstring + data});
-                            
-                            
-                            
-                            //var json_zwischen = JSON.stringify(json[i]);
-                            //json_task = json_task + json_zwischen;
-                            if(debug) adapter.log.info("Aufbau Projekt Liste HTML: " + HTMLstring);
-                            
-                            //JSON
-                                                       
-                            await json_verarbeitung.table_json(adapter, json[i], prio_neu).then(data => {json_task_parse.push(data);});
-                            
-            
-                            json_task = JSON.stringify(json_task_parse);
-                            if(debug) adapter.log.info("Aufbau Projekt Liste JSON: " + json_task)
+        for (i = 0; i < json.length; i++) {
 
-                            //TEXT
-                            text_task = text_task + content + adapter.config.text_separator;
-                            
-                            if(debug) adapter.log.info("Aufbau Projekt Liste Text: " + text_task);
-                        }
-                    }
-                    if(debug) adapter.log.info("schreibe in liste: " + 'Lists.'+project.projects_names[j]);
-                    if(debug) adapter.log.info(HTMLstring);
-                    
-                    //json wandeln 
-                        //json_task = JSON.stringify(json_task);
-                    
-                    //Setzte den Status:
-                    if(adapter.config.html_objects == true){
-                        var css = JSON.stringify(adapter.config.html_css_table);
-                        css = css.replace(/\\n/g, '');
-                        css = css.replace(/\\/g, '');
-                        css = css.replace(/\"/g, '');
+            var Liste = parseInt(json[i].project_id);
+            var content = JSON.stringify(json[i].content);
 
-                        var css2 = JSON.stringify(adapter.config.html_css_button);
-                        css2 = css2.replace(/\\n/g, '');
-                        css2 = css2.replace(/\\/g, '');
-                        css2 = css2.replace(/\"/g, '');
-                        if(json_task === "[]"){
-                            await html_verarbeitung.table_html_empty(adapter).then(data => {HTMLstring = HTMLstring + data});
-                            
-                        if(adapter.config.html_visable == false){
-                            HTMLstring = "";
-                        }            
-                        }
-                        
-                    adapter.setState('HTML.Projects-HTML.'+project.projects_names[j], {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {servConn.setState("todoist2.0.Control.Close.ID", id)}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
-                    }
-                    if(json_task === "[]"){
+            content = content.replace(/\"/g, ''); //entfernt die Anfuehrungszeichen aus dem Quellstring
+            //content = content[0].toUpperCase() + content.substring(1); // Macht den ersten Buchstaben des strings zu einem Grossbuchstaben
 
-                        await json_verarbeitung.table_json_empty(adapter).then(data => {json_task_parse.push(data);});
-                            
-                    }
-                    json_task = json_task.replace(/\\n/g, '');
-                    json_task = json_task.replace(/\\/g, '');
-                    json_task = json_task.replace(/\""/g, '');
+            //Zuordnung zu den Listen:
+            if (Liste === project.projects_id[j]) {
+                if (debug) adapter.log.info('[' + content + '] in ' + project.projects_names[j] + ' found');
 
-                    if(adapter.config.json_objects == true){
-                    adapter.setState('JSON.Projects-JSON.'+project.projects_names[j], {val: json_task, ack: true});
-                    }
-                    if(text_task == ""){
-                        text_task = adapter.config.text_notodo_name;
-                    }else{
-                    
-                        text_task = text_task.substr(0, text_task.length-adapter.config.text_separator.length);
-                    }
-                        if(adapter.config.text_objects == true){
-                        adapter.setState('TEXT.Projects-TEXT.'+project.projects_names[j], {val: text_task, ack: true});
-                    }
-            
+                //HTML
+                if (adapter.config.html_objects == true) {
+                    //Fehler in der Priorität anpassen - es kommen die Falschen zahlen umgedreht:
+                    var prio_neu = 0;
+                    await helper.reorder_prio(json[i].priority).then(data => { prio_neu = data });
+
+                    await html_verarbeitung.table_html(adapter, json[i], prio_neu, all_project_objekts, all_label_objekts, all_sections_objects, all_collaborators_objects).then(data => { HTMLstring = HTMLstring + data });
+
+
+
+                    //var json_zwischen = JSON.stringify(json[i]);
+                    //json_task = json_task + json_zwischen;
+                    if (debug) adapter.log.info("Aufbau Projekt Liste HTML: " + HTMLstring);
                 }
+                //JSON
+                if (adapter.config.json_objects == true) {
+                    var prio_neu = 0;
+                    await helper.reorder_prio(json[i].priority).then(data => { prio_neu = data });
+                    await json_verarbeitung.table_json(adapter, json[i], prio_neu, all_project_objekts, all_label_objekts, all_sections_objects, all_collaborators_objects).then(data => { json_task_parse.push(data); });
+                    if (debug) adapter.log.info("Aufbau Projekt Liste JSON: " + json_task)
+                }
+                //TEXT
+                if (adapter.config.text_objects == true) {
+                    text_task = text_task + content + adapter.config.text_separator;
+                    if (debug) adapter.log.info("Aufbau Projekt Liste Text: " + text_task);
+                }
+            }
+        }
+        if (debug) adapter.log.info("schreibe in liste: " + 'Lists.' + project.projects_names[j]);
+        if (debug) adapter.log.info(HTMLstring);
+
+        //json wandeln 
+        //json_task = JSON.stringify(json_task);
+
+        //Setzte den Status:
+        //HTML
+        if (adapter.config.html_objects == true) {
+            var css = JSON.stringify(adapter.config.html_css_table);
+            css = css.replace(/\\n/g, '');
+            css = css.replace(/\\/g, '');
+            css = css.replace(/\"/g, '');
+
+            var css2 = JSON.stringify(adapter.config.html_css_button);
+            css2 = css2.replace(/\\n/g, '');
+            css2 = css2.replace(/\\/g, '');
+            css2 = css2.replace(/\"/g, '');
+
+            if (json_task === "[]") {
+                if (adapter.config.html_visable == false) {
+                    HTMLstring = "";
+                } else {
+                    await html_verarbeitung.table_html_empty(adapter).then(data => { HTMLstring = HTMLstring + data });
+                }
+            }
+
+            adapter.setState('HTML.Projects-HTML.' + project.projects_names[j], { val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {servConn.setState("todoist2.0.Control.Close.ID", id)}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true });
+        }
+
+        if (adapter.config.json_objects == true) {
+            if (json_task === "[]") {
+                await json_verarbeitung.table_json_empty(adapter).then(data => { json_task_parse.push(data); });
+            }
+
+            json_task = JSON.stringify(json_task_parse);
+
+            json_task = json_task.replace(/\\n/g, '');
+            json_task = json_task.replace(/\\/g, '');
+            json_task = json_task.replace(/\""/g, '');
 
 
-                
-	
+            adapter.setState('JSON.Projects-JSON.' + project.projects_names[j], { val: json_task, ack: true });
+        }
+
+        if (adapter.config.text_objects == true) {
+            if (text_task == "") {
+                text_task = adapter.config.text_notodo_name;
+            } else {
+                text_task = text_task.substr(0, text_task.length - adapter.config.text_separator.length);
+            }
+            adapter.setState('TEXT.Projects-TEXT.' + project.projects_names[j], { val: text_task, ack: true });
+        }
+
+    }// ende der schleife
 }
 
 //zur Verarbeitung der Tasks in den Labels:
 
 async function tasktolabels(labels){
 	
-                if(debug) adapter.log.info("Funktion taskt to labels");        
-                var json = all_task_objekts;
-                var j;
-                if(debug) adapter.log.info("anzahl task: " + json.length);
-                
-                //Verarbeitung von Projekten
-                
-                
-                for (j = 0; j < labels.labels_id.length; j++) {
+    if (debug) adapter.log.info("Funktion task to labels");
+    var json = all_task_objekts;
+    var j;
+    if (debug) adapter.log.info("anzahl task: " + json.length);
 
-                    var is_blacklist = false;
-                    for (var w = 0; w < bl_labels.length; w++){               
-                        if(labels.labels_id[j] == bl_labels[w].id){
-                            //adapter.log.info("projects in Tasks: " + labels.labels_id[j]);
-                            //adapter.log.info("liste: " +  JSON.stringify(bl_labels[w]));
-                            is_blacklist = true;
-                            //adapter.log.warn("Blacklist erkannt: " + JSON.stringify(bl_labels[w]));
-                        }
-                    }
-                    if(is_blacklist == true){
-                        if(debug) adapter.log.info("überspringe task");
-                        continue;
-                    }
+    //Verarbeitung von Labels
 
+    for (j = 0; j < labels.labels_id.length; j++) {
 
-                    
-                    var HTMLstring = "";
-                    await html_verarbeitung.heading_html(adapter).then(data => {HTMLstring = HTMLstring + data});
-                    
-                    //adapter.setState('Lists.' + project.projects_name[j], {ack: true, val: 'empty'});
-                    var i = 0;
-                    var json_task = "[]";
-                    var json_task_parse = JSON.parse(json_task);
-
-                    var text_task = "";
-
-                    for (i = 0; i < json.length; i++) {
-                        
-                        var Liste = parseInt(json[i].project_id);
-                        var content = JSON.stringify(json[i].content);
-                        var id = JSON.stringify(json[i].id);
-                        var label = json[i].label_ids;
-                        content = content.replace(/\"/g, ''); //entfernt die Anfuehrungszeichen aus dem Quellstring
-                        //content = content[0].toUpperCase() + content.substring(1); // Macht den ersten Buchstaben des strings zu einem Grossbuchstaben
-                        var taskurl = JSON.stringify(json[i].url);
-                        taskurl = taskurl.replace(/\"/g, '');
-                        
-                        
-                        
-                        var d = 0;
-                        for(d = 0; d < label.length; d++){
-                        	
-                        	if(label[d] === labels.labels_id[j]){
-                        		if(debug)adapter.log.info('[' + content + '] in ' + labels.labes_names[j] + ' found');
-                        		//HTML
-                                
-                                //Fehler in der Priorität anpassen - es kommen die Falschen zahlen umgedreht:
-                                var prio_neu = 0;
-                                await helper.reorder_prio(json[i].priority).then(data => {prio_neu = data});
-                               
-                                await html_verarbeitung.table_html(adapter, json[i], prio_neu).then(data => {HTMLstring = HTMLstring + data});
-                                
-                                
-                                
-                                
-                            //var json_zwischen = JSON.stringify(json[i]);
-                            //json_task = json_task + json_zwischen;
-                                // JSON
-                                await json_verarbeitung.table_json(adapter, json[i], prio_neu).then(data => {json_task_parse.push(data);});
-                            
-                
-                                json_task = JSON.stringify(json_task_parse);
-                            if(debug) adapter.log.info("Aufbau Projekt Liste: " + json_task)
-                                //TEXT
-                            text_task = text_task + content + adapter.config.text_separator;
-                            if(debug) adapter.log.info("Aufbau Projekt Liste Text: " + text_task);    
-                        	}
-                        	
-                        }
-                        
-                    }
-               if(debug) adapter.log.info("schreibe in Label: " + 'Label.'+ labels.labes_names[j]);
-               if(debug) adapter.log.info(HTMLstring);
-               
-               //json wandeln 
-				//json_task = JSON.stringify(json_task);
-               // json_task = json_task.replace(/\\/g, ''); //Backschlasche entfernen!
-               //Setzte den Status:
-               if(adapter.config.html_objects == true){
-                var css = JSON.stringify(adapter.config.html_css_table);
-                css = css.replace(/\\n/g, '');
-                css = css.replace(/\\/g, '');
-                css = css.replace(/\"/g, '');
-
-                var css2 = JSON.stringify(adapter.config.html_css_button);
-                css2 = css2.replace(/\\n/g, '');
-                css2 = css2.replace(/\\/g, '');
-                css2 = css2.replace(/\"/g, '');
-                if(label.length == 0){
-                    await html_verarbeitung.table_html_empty(adapter).then(data => {HTMLstring = HTMLstring + data});
-                            
-                            //wenn html tablle bei keinem todo auch nicht angezeigt werden soll:
-                            if(adapter.config.html_visable == false){
-                                HTMLstring = "";
-                            }          
-                }
-            adapter.setState('HTML.Labels-HTML.'+labels.labes_names[j], {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {servConn.setState("todoist2.0.Control.Close.ID", id)}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
+        var is_blacklist = false;
+        for (var w = 0; w < bl_labels.length; w++) {
+            if (labels.labels_id[j] == bl_labels[w].id) {
+                //adapter.log.info("projects in Tasks: " + labels.labels_id[j]);
+                //adapter.log.info("liste: " +  JSON.stringify(bl_labels[w]));
+                is_blacklist = true;
+                //adapter.log.warn("Blacklist erkannt: " + JSON.stringify(bl_labels[w]));
             }
-               if(json_task === "[]"){
-                await json_verarbeitung.table_json_empty(adapter).then(data => {json_task_parse.push(data);});
-                        
-               }
-                json_task = json_task.replace(/\\n/g, '');
-                json_task = json_task.replace(/\\/g, '');
-                json_task = json_task.replace(/\""/g, '');
-               if(adapter.config.json_objects){
-               adapter.setState('JSON.Labels-JSON.'+labels.labes_names[j], {val: json_task, ack: true});
-               }
-               if(text_task == ""){
+        }
+        if (is_blacklist == true) {
+            if (debug) adapter.log.info("überspringe task");
+            continue;
+        }
+
+        var HTMLstring = "";
+        //HTML
+        if (adapter.config.html_objects == true) {
+            await html_verarbeitung.heading_html(adapter).then(data => { HTMLstring = HTMLstring + data });
+        }
+        //adapter.setState('Lists.' + project.projects_name[j], {ack: true, val: 'empty'});
+        var i = 0;
+        var json_task = "[]";
+        var json_task_parse = JSON.parse(json_task);
+
+        var text_task = "";
+
+        for (i = 0; i < json.length; i++) {
+
+            var content = JSON.stringify(json[i].content);
+            var label = json[i].label_ids;
+            content = content.replace(/\"/g, ''); //entfernt die Anfuehrungszeichen aus dem Quellstring
+            //content = content[0].toUpperCase() + content.substring(1); // Macht den ersten Buchstaben des strings zu einem Grossbuchstaben
+
+            var d = 0;
+            for (d = 0; d < label.length; d++) {
+
+                if (label[d] === labels.labels_id[j]) {
+                    if (debug) adapter.log.info('[' + content + '] in ' + labels.labes_names[j] + ' found');
+                    //HTML
+                    if (adapter.config.html_objects == true) {
+                        //Fehler in der Priorität anpassen - es kommen die Falschen zahlen umgedreht:
+                        var prio_neu = 0;
+                        await helper.reorder_prio(json[i].priority).then(data => { prio_neu = data });
+                        await html_verarbeitung.table_html(adapter, json[i], prio_neu, all_project_objekts, all_label_objekts, all_sections_objects, all_collaborators_objects).then(data => { HTMLstring = HTMLstring + data });
+                    }
+                    // JSON
+                    if (adapter.config.json_objects) {
+                        var prio_neu = 0;
+                        await helper.reorder_prio(json[i].priority).then(data => { prio_neu = data });
+                        await json_verarbeitung.table_json(adapter, json[i], prio_neu, all_project_objekts, all_label_objekts, all_sections_objects, all_collaborators_objects).then(data => { json_task_parse.push(data); });
+
+                        if (debug) adapter.log.info("Aufbau Label Liste: " + json_task)
+                    }
+                    //TEXT
+                    if (adapter.config.text_objects == true) {
+                        text_task = text_task + content + adapter.config.text_separator;
+                        if (debug) adapter.log.info("Aufbau Projekt Liste Text: " + text_task);
+                    }
+                }
+
+            }//ende schleife
+
+        } // ende schleife
+
+        if (debug) adapter.log.info("schreibe in Label: " + 'Label.' + labels.labes_names[j]);
+        if (debug) adapter.log.info(HTMLstring);
+
+
+        //Setzte den Status:
+        if (adapter.config.html_objects == true) {
+            var css = JSON.stringify(adapter.config.html_css_table);
+            css = css.replace(/\\n/g, '');
+            css = css.replace(/\\/g, '');
+            css = css.replace(/\"/g, '');
+
+            var css2 = JSON.stringify(adapter.config.html_css_button);
+            css2 = css2.replace(/\\n/g, '');
+            css2 = css2.replace(/\\/g, '');
+            css2 = css2.replace(/\"/g, '');
+
+            if (label.length == 0) {
+                await html_verarbeitung.table_html_empty(adapter).then(data => { HTMLstring = HTMLstring + data });
+
+                //wenn html tablle bei keinem todo auch nicht angezeigt werden soll:
+                if (adapter.config.html_visable == false) {
+                    HTMLstring = "";
+                }
+            }
+            adapter.setState('HTML.Labels-HTML.' + labels.labes_names[j], { val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {servConn.setState("todoist2.0.Control.Close.ID", id)}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true });
+        }
+
+        if (adapter.config.json_objects) {
+
+            if (json_task === "[]") {
+                await json_verarbeitung.table_json_empty(adapter).then(data => { json_task_parse.push(data); });
+            }
+
+            json_task = JSON.stringify(json_task_parse);
+
+            json_task = json_task.replace(/\\n/g, '');
+            json_task = json_task.replace(/\\/g, '');
+            json_task = json_task.replace(/\""/g, '');
+
+            adapter.setState('JSON.Labels-JSON.' + labels.labes_names[j], { val: json_task, ack: true });
+        }
+
+
+        if (adapter.config.text_objects == true) {
+            if (text_task == "") {
                 text_task = adapter.config.text_notodo_name;
-                }else{                   
-                    text_task = text_task.substr(0, text_task.length-adapter.config.text_separator.length);
-                }
-                if(adapter.config.text_objects == true){
-                    adapter.setState('TEXT.Labels-TEXT.'+labels.labes_names[j], {val: text_task, ack: true});
-                }
-            
+            } else {
+                text_task = text_task.substr(0, text_task.length - adapter.config.text_separator.length);
             }
-               
-             
-       
+            adapter.setState('TEXT.Labels-TEXT.' + labels.labes_names[j], { val: text_task, ack: true });
+        }
+
+    }//ende schleife
+                   
 }
 
 
@@ -2099,7 +2089,7 @@ async function tasktofilter(filter_json, filter_name){
         var json_task = "[]";
         var json_task_parse = JSON.parse(json_task);
         var text_task = "";
-        
+
         //Verarbeitung von Filter
         var css = JSON.stringify(adapter.config.html_css_table);
         css = css.replace(/\\n/g, '');
@@ -2112,15 +2102,14 @@ async function tasktofilter(filter_json, filter_name){
         css2 = css2.replace(/\"/g, '');
 
         var HTMLstring = "";
-        await html_verarbeitung.heading_html(adapter).then(data => {HTMLstring = HTMLstring + data});
+        await html_verarbeitung.heading_html(adapter).then(data => { HTMLstring = HTMLstring + data });
         
 
         //wenn filter leer:
         if(filter_json.length == 0){
             if(adapter.config.html_objects == true){
                 await html_verarbeitung.table_html_empty(adapter).then(data => {HTMLstring = HTMLstring + data});
-                            
-                
+
                  //wenn html tablle bei keinem todo auch nicht angezeigt werden soll:
                  if(adapter.config.html_visable == false){
                     HTMLstring = "";
@@ -2165,50 +2154,32 @@ async function tasktofilter(filter_json, filter_name){
                 continue;
             }
 
-            
-            //adapter.setState('Lists.' + project.projects_name[j], {ack: true, val: 'empty'});
-           
-
-            
-
-            
-
-            
-                
-                var Liste = parseInt(json[j].project_id);
-                var content = JSON.stringify(json[j].content);
-                var id = JSON.stringify(json[j].id);
-                content = content.replace(/\"/g, ''); //entfernt die Anfuehrungszeichen aus dem Quellstring
-                //content = content[0].toUpperCase() + content.substring(1); // Macht den ersten Buchstaben des strings zu einem Grossbuchstaben
-                var taskurl = JSON.stringify(json[j].url);
-                taskurl = taskurl.replace(/\"/g, '');
-                
-                
-                //Zuordnung zu den Listen:
-  
-                    //HTML
                     
-                    //Fehler in der Priorität anpassen - es kommen die Falschen zahlen umgedreht:
-                    var prio_neu = 0;
-                    await helper.reorder_prio(json[j].priority).then(data => {prio_neu = data});
-                           
-                    await html_verarbeitung.table_html(adapter, json[j], prio_neu).then(data => {HTMLstring = HTMLstring + data});
-                            
-                    
-                    
-                    //var json_zwischen = JSON.stringify(json[i]);
-                    //json_task = json_task + json_zwischen;
-                    if(debug) adapter.log.info("Aufbau Filter Liste HTML: " + HTMLstring);
-                    
-                    //JSON
-                                              
-                    await json_verarbeitung.table_json(adapter, json[j], prio_neu).then(data => {json_task_parse.push(data);});
-                            
-                    if(debug) adapter.log.info("Aufbau Filter Liste JSON: " + json_task_parse)
+            //Zuordnung zu den Listen:
 
-                    //TEXT
-                    text_task = text_task + content + adapter.config.text_separator;
-                    if(debug) adapter.log.info("Aufbau Filter Liste Text: " + text_task);
+            //HTML
+
+            //Fehler in der Priorität anpassen - es kommen die Falschen zahlen umgedreht:
+            var prio_neu = 0;
+            await helper.reorder_prio(json[j].priority).then(data => { prio_neu = data });
+
+            await html_verarbeitung.table_html(adapter, json[j], prio_neu, all_project_objekts, all_label_objekts, all_sections_objects, all_collaborators_objects).then(data => { HTMLstring = HTMLstring + data });
+
+            //var json_zwischen = JSON.stringify(json[i]);
+            //json_task = json_task + json_zwischen;
+            if (debug) adapter.log.info("Aufbau Filter Liste HTML: " + HTMLstring);
+
+            //JSON                     
+            await json_verarbeitung.table_json(adapter, json[j], prio_neu, all_project_objekts, all_label_objekts, all_sections_objects, all_collaborators_objects).then(data => { json_task_parse.push(data); });
+            if (debug) adapter.log.info("Aufbau Filter Liste JSON: " + json_task_parse)
+
+            //TEXT
+            var content = JSON.stringify(json[j].content);
+            content = content.replace(/\"/g, ''); //entfernt die Anfuehrungszeichen aus dem Quellstring
+            //content = content[0].toUpperCase() + content.substring(1); // Macht den ersten Buchstaben des strings zu einem Grossbuchstaben
+
+            text_task = text_task + content + adapter.config.text_separator;
+            if (debug) adapter.log.info("Aufbau Filter Liste Text: " + text_task);
                 
             
             if(debug) adapter.log.info("schreibe in filterliste: " +filter_name);
@@ -2219,7 +2190,8 @@ async function tasktofilter(filter_json, filter_name){
             
             
     
-        }
+        }//ende schleife
+
         //Setzte den Status:
         if(adapter.config.html_objects == true){ 
             adapter.setState('HTML.Filter-HTML.'+filter_name, {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {servConn.setState("todoist2.0.Control.Close.ID", id)}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});

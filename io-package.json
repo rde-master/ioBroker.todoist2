@@ -345,6 +345,7 @@
       "json_description": false,
       "json_section_id": false,
       "json_created": false,
+      "json_order": false,
 
       "json_project_id_change": false,
       "json_parent_id_change": false,
@@ -353,7 +354,7 @@
       "json_assigner_id_change": false,
       "json_labels_id_change": false,
       "json_section_id_change": false,
-      "json_order": false,
+      
 
       "text_separator":", ",
 

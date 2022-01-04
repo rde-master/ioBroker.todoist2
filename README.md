@@ -166,6 +166,11 @@ Example for any image you like:
 ```
 
 ## Changelog
+### 0.9.1
+* (rde-master) Bugfix description
+* (rde-master) Bugfix Translation
+
+
 ### 0.9.0
 Major Changes:
 * (rde-master) New API Funktions are implemented (Dates, Creator,...)

@@ -12,7 +12,7 @@
     "json-stringify-safe": "^5.0.0"
   },
   "deprecated": false,
-  "description": "The adapter allows to send and receive telegram messages from ioBroker and to be a broker.",
+  "description": "The adapter connects to the todoist API for ioBroker.",
   "devDependencies": {
     "@iobroker/testing": "^2.2.0",
     "@types/chai": "^4.2.11",

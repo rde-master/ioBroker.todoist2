@@ -1920,19 +1920,9 @@ async function tasktoproject(project){
                     adapter.setState('HTML.Projects-HTML.'+project.projects_names[j], {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {servConn.setState("todoist2.0.Control.Close.ID", id)}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
                     }
                     if(json_task === "[]"){
-                        var baue_json = '{"'+adapter.config.json_name+'":"' + adapter.config.json_notodo_name + '"';
-                            if(adapter.config.json_id){baue_json = baue_json + ', "ID":"' + "-" + '"'};
-                            if(adapter.config.json_priority){baue_json = baue_json + ', "Priority":"' + "-" + '"'};
-                            if(adapter.config.json_url){baue_json = baue_json + ', "URL":"' + "-" + '"'};
-                            if(adapter.config.json_project_id){baue_json = baue_json + ', "Project ID":"' + "-" + '"'};
-                            if(adapter.config.json_comment_cound){baue_json = baue_json + ', "Comment Cound":"' + "-" + '"'};
-                            if(adapter.config.json_parent_id){baue_json = baue_json + ', "Parent ID":"' + "-" + '"'};
-                            baue_json = baue_json + "}";
-                            baue_json = JSON.stringify(baue_json);
+
+                        await json_verarbeitung.table_json_empty(adapter).then(data => {json_task_parse.push(data);});
                             
-                            baue_json = baue_json.replace(/\\/g, '');
-                            baue_json = baue_json.replace(/\\/g, '');
-                            json_task_parse.push(baue_json);
                     }
                     json_task = json_task.replace(/\\n/g, '');
                     json_task = json_task.replace(/\\/g, '');
@@ -2030,20 +2020,8 @@ async function tasktolabels(labels){
                             //var json_zwischen = JSON.stringify(json[i]);
                             //json_task = json_task + json_zwischen;
                                 // JSON
-                                var baue_json = '{"'+adapter.config.json_name+'":"' + content + '"';
-                                if(adapter.config.json_id){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + id + '"'};
-                                if(adapter.config.json_priority){baue_json = baue_json + ', "' + adapter.config.json_priority_name + '":"' + prio_neu + '"'};
-                                if(adapter.config.json_url){baue_json = baue_json + ', "' + adapter.config.json_url_name + '":"' + taskurl + '"'};
-                                if(adapter.config.json_project_id){baue_json = baue_json + ', "' + adapter.config.json_project_name + '":"' + json[i].project_id + '"'};
-                                if(adapter.config.json_comment_cound){baue_json = baue_json + ', "' + adapter.config.json_comment_name + '":"' + json[i].comment_count + '"'};
-                                if(adapter.config.json_parent_id){baue_json = baue_json + ', "' + adapter.config.json_parent_name + '":"' + json[i].parent_id + '"'};
-                                baue_json = baue_json + "}";
-                                baue_json = JSON.stringify(baue_json);
-                                
-                                baue_json = baue_json.replace(/\\/g, '');
-                                baue_json = baue_json.replace(/\\/g, '');
-                                
-                                json_task_parse.push(baue_json);
+                                await json_verarbeitung.table_json(adapter, json[i], prio_neu).then(data => {json_task_parse.push(data);});
+                            
                 
                                 json_task = JSON.stringify(json_task_parse);
                             if(debug) adapter.log.info("Aufbau Projekt Liste: " + json_task)
@@ -2083,19 +2061,8 @@ async function tasktolabels(labels){
             adapter.setState('HTML.Labels-HTML.'+labels.labes_names[j], {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {servConn.setState("todoist2.0.Control.Close.ID", id)}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
             }
                if(json_task === "[]"){
-                var baue_json = '{"'+adapter.config.json_name+'":"' + adapter.config.json_notodo_name + '"';
-                            if(adapter.config.json_id){baue_json = baue_json + ', "ID":"' + "-" + '"'};
-                            if(adapter.config.json_priority){baue_json = baue_json + ', "Priority":"' + "-" + '"'};
-                            if(adapter.config.json_url){baue_json = baue_json + ', "URL":"' + "-" + '"'};
-                            if(adapter.config.json_project_id){baue_json = baue_json + ', "Project ID":"' + "-" + '"'};
-                            if(adapter.config.json_comment_cound){baue_json = baue_json + ', "Comment Cound":"' + "-" + '"'};
-                            if(adapter.config.json_parent_id){baue_json = baue_json + ', "Parent ID":"' + "-" + '"'};
-                            baue_json = baue_json + "}";
-                            baue_json = JSON.stringify(baue_json);
-                            
-                            baue_json = baue_json.replace(/\\/g, '');
-                            baue_json = baue_json.replace(/\\/g, '');
-                            json_task_parse.push(baue_json);
+                await json_verarbeitung.table_json_empty(adapter).then(data => {json_task_parse.push(data);});
+                        
                }
                 json_task = json_task.replace(/\\n/g, '');
                 json_task = json_task.replace(/\\/g, '');
@@ -2162,21 +2129,8 @@ async function tasktofilter(filter_json, filter_name){
                 adapter.setState('HTML.Filter-HTML.'+filter_name, {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {servConn.setState("todoist2.0.Control.Close.ID", id)}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
             }
             
-            var baue_json = '{"'+adapter.config.json_name+'":"' + adapter.config.json_notodo_name + '"';
-                            if(adapter.config.json_id){baue_json = baue_json + ', "ID":"' + "-" + '"'};
-                            if(adapter.config.json_priority){baue_json = baue_json + ', "Priority":"' + "-" + '"'};
-                            if(adapter.config.json_url){baue_json = baue_json + ', "URL":"' + "-" + '"'};
-                            if(adapter.config.json_project_id){baue_json = baue_json + ', "Project ID":"' + "-" + '"'};
-                            if(adapter.config.json_comment_cound){baue_json = baue_json + ', "Comment Cound":"' + "-" + '"'};
-                            if(adapter.config.json_parent_id){baue_json = baue_json + ', "Parent ID":"' + "-" + '"'};
-                            baue_json = baue_json + "}";
-                            baue_json = JSON.stringify(baue_json);
-                            
-                            baue_json = baue_json.replace(/\\/g, '');
-                            baue_json = baue_json.replace(/\\/g, '');
-                            json_task_parse.push(baue_json);
-            
-                            json_task = JSON.stringify(json_task_parse);
+            await json_verarbeitung.table_json_empty(adapter).then(data => {json_task_parse.push(data);});
+                         
             
             if(adapter.config.json_objects == true){
                 json_task = json_task.replace(/\\n/g, '');
@@ -2247,22 +2201,9 @@ async function tasktofilter(filter_json, filter_name){
                     if(debug) adapter.log.info("Aufbau Filter Liste HTML: " + HTMLstring);
                     
                     //JSON
-                    var baue_json = '{"'+adapter.config.json_name+'":"' + content + '"';
-                    if(adapter.config.json_id){baue_json = baue_json + ', "' + adapter.config.json_id_name + '":"' + id + '"'};
-                    if(adapter.config.json_priority){baue_json = baue_json + ', "' + adapter.config.json_priority_name + '":"' + prio_neu + '"'};
-                    if(adapter.config.json_url){baue_json = baue_json + ', "' + adapter.config.json_url_name + '":"' + taskurl + '"'};
-                    if(adapter.config.json_project_id){baue_json = baue_json + ', "' + adapter.config.json_project_name + '":"' + json[j].project_id + '"'};
-                    if(adapter.config.json_comment_cound){baue_json = baue_json + ', "' + adapter.config.json_comment_name + '":"' + json[j].comment_count + '"'};
-                    if(adapter.config.json_parent_id){baue_json = baue_json + ', "' + adapter.config.json_parent_name + '":"' + json[j].parent_id + '"'};
-                    baue_json = baue_json + "}";
-                            baue_json = JSON.stringify(baue_json);
+                                              
+                    await json_verarbeitung.table_json(adapter, json[j], prio_neu).then(data => {json_task_parse.push(data);});
                             
-                            baue_json = baue_json.replace(/\\/g, '');
-                            baue_json = baue_json.replace(/\\/g, '');
-                            
-                            json_task_parse.push(baue_json);
-            
-                            json_task = JSON.stringify(json_task_parse);
                     if(debug) adapter.log.info("Aufbau Filter Liste JSON: " + json_task)
 
                     //TEXT

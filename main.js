@@ -2204,7 +2204,7 @@ async function tasktofilter(filter_json, filter_name){
                                               
                     await json_verarbeitung.table_json(adapter, json[j], prio_neu).then(data => {json_task_parse.push(data);});
                             
-                    if(debug) adapter.log.info("Aufbau Filter Liste JSON: " + json_task)
+                    if(debug) adapter.log.info("Aufbau Filter Liste JSON: " + json_task_parse)
 
                     //TEXT
                     text_task = text_task + content + adapter.config.text_separator;
@@ -2223,24 +2223,27 @@ async function tasktofilter(filter_json, filter_name){
         //Setzte den Status:
         if(adapter.config.html_objects == true){ 
             adapter.setState('HTML.Filter-HTML.'+filter_name, {val: '<style>' + css + css2 + '</style>' + '<script>' + 'function myFunction(id) {servConn.setState("todoist2.0.Control.Close.ID", id)}' + '</script>' + '<table id="task_table">' + HTMLstring + '</table>', ack: true});
-            }
-            if(json_task === "[]"){
-                json_task = '[{"name":'+ adapter.config.json_id_name +'}]';
-            }
+        }
+        if(adapter.config.json_objects == true){    
+            
+                
+            json_task = JSON.stringify(json_task_parse);
             json_task = json_task.replace(/\\n/g, '');
             json_task = json_task.replace(/\\/g, '');
             json_task = json_task.replace(/\""/g, '');
-            if(adapter.config.json_objects == true){
+
+        
             adapter.setState('JSON.Filter-JSON.'+filter_name, {val: json_task, ack: true});
-            }
+        }
+        
+        if(adapter.config.text_objects == true){
             if(text_task == ""){
                 text_task = adapter.config.text_notodo_name;
             }else{                   
                 text_task = text_task.substr(0, text_task.length-adapter.config.text_separator.length);
-            }
-            if(adapter.config.text_objects == true){
-                adapter.setState('TEXT.Filter-TEXT.'+filter_name, {val: text_task, ack: true});
-            }
+            }          
+            adapter.setState('TEXT.Filter-TEXT.'+filter_name, {val: text_task, ack: true});
+        }
         
         resolve("ok");      
 

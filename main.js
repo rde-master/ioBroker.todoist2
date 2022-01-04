@@ -2130,7 +2130,7 @@ async function tasktolabels(labels){
 
 
 async function tasktofilter(filter_json, filter_name){
-    return new Promise(function (resolve, reject) {
+    return new Promise(async function (resolve, reject) {
     if(debug) adapter.log.info("Funktion task to filter mit name: " + filter_name);
     if(debug) adapter.log.info("länge: " + filter_json.length);
     if(debug) adapter.log.info("daten: "+ JSON.stringify(filter_json));
@@ -2154,29 +2154,16 @@ async function tasktofilter(filter_json, filter_name){
         css2 = css2.replace(/\\/g, '');
         css2 = css2.replace(/\"/g, '');
 
-                     var HTMLstring ='<tr><th>' ;
-                    if(adapter.config.html_name !=""){ HTMLstring = HTMLstring + adapter.config.html_name + '</th><th>';}
-                    if(adapter.config.html_id && adapter.config.html_id_name!=""){HTMLstring = HTMLstring + adapter.config.html_id_name + '</th><th>'};
-                    if(adapter.config.html_priority && adapter.config.html_priority_name!=""){HTMLstring = HTMLstring + adapter.config.html_priority_name + '</th><th>'};
-                    if(adapter.config.html_url && adapter.config.html_url_name!=""){HTMLstring = HTMLstring + adapter.config.html_url_name + '</th><th>'};
-                    if(adapter.config.html_project_id && adapter.config.html_project_id_name!=""){HTMLstring = HTMLstring + adapter.config.html_project_id_name + '</th><th>'};
-                    if(adapter.config.html_comment_cound && adapter.config.html_comment_cound_name!=""){HTMLstring = HTMLstring + adapter.config.html_comment_cound_name + '</th><th>'};
-                    if(adapter.config.html_parent_id && adapter.config.html_parent_id_name!=""){HTMLstring = HTMLstring + adapter.config.html_parent_id_name + '</th><th>'};
-                    HTMLstring = HTMLstring + "" + '</th></tr>';
+        var HTMLstring = "";
+        await html_verarbeitung.heading_html(adapter).then(data => {HTMLstring = HTMLstring + data});
+        
 
         //wenn filter leer:
         if(filter_json.length == 0){
             if(adapter.config.html_objects == true){
+                await html_verarbeitung.table_html_empty(adapter).then(data => {HTMLstring = HTMLstring + data});
+                            
                 
-                HTMLstring = HTMLstring + '<tr><td id="button_html">' + adapter.config.html_notodo_name + "</td><td>";
-                            if(adapter.config.html_id){HTMLstring = HTMLstring + "-" + '</td><td>'};
-                            if(adapter.config.html_priority){HTMLstring = HTMLstring + "-" + '</td><td>'};
-                            if(adapter.config.html_url){HTMLstring = HTMLstring + "-" + '</td><td>'};
-                            if(adapter.config.html_project_id){HTMLstring = HTMLstring + "-" + '</td><td>'};
-                            if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + "-" + '</td><td>'};
-                            if(adapter.config.html_parent_id){HTMLstring = HTMLstring + "-" + '</td><td>'};
-                            //HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">Close</button>' + '</td></tr>';
-                            HTMLstring = HTMLstring + '</td></tr>';
                  //wenn html tablle bei keinem todo auch nicht angezeigt werden soll:
                  if(adapter.config.html_visable == false){
                     HTMLstring = "";
@@ -2259,29 +2246,10 @@ async function tasktofilter(filter_json, filter_name){
                     
                     //Fehler in der Priorität anpassen - es kommen die Falschen zahlen umgedreht:
                     var prio_neu = 0;
-                    if(json[j].priority == 1){
-                        prio_neu = 4;
-                    }
-                    if(json[j].priority == 2){
-                        prio_neu = 3;
-                    }
-                    if(json[j].priority == 3){
-                        prio_neu = 2;
-                    }
-                    if(json[j].priority == 4){
-                        prio_neu = 1;
-                    }
-
-
-                    HTMLstring = HTMLstring + '<tr><td id="button_html">' + content + "</td><td>";
-                            if(adapter.config.html_id){HTMLstring = HTMLstring + id + '</td><td>'};
-                            if(adapter.config.html_priority){HTMLstring = HTMLstring + prio_neu + '</td><td>'};
-                            if(adapter.config.html_url){HTMLstring = HTMLstring + taskurl + '</td><td>'};
-                            if(adapter.config.html_project_id){HTMLstring = HTMLstring + json[j].project_id + '</td><td>'};
-                            if(adapter.config.html_comment_cound){HTMLstring = HTMLstring + json[j].comment_count + '</td><td>'};
-                            if(adapter.config.html_parent_id){HTMLstring = HTMLstring + json[j].parent_id + '</td><td>'};
-                            if(adapter.config.html_button){HTMLstring = HTMLstring + '<button class="button" type="button" onclick="myFunction(' + id + ')">'+ adapter.config.html_svg_button + adapter.config.html_button_name+'</button>' + '</td></tr>';}
-                            HTMLstring = HTMLstring + '</td></tr>';
+                    await helper.reorder_prio(json[j].priority).then(data => {prio_neu = data});
+                           
+                    await html_verarbeitung.table_html(adapter, json[j], prio_neu).then(data => {HTMLstring = HTMLstring + data});
+                            
                     
                     
                     //var json_zwischen = JSON.stringify(json[i]);

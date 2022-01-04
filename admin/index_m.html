@@ -443,7 +443,9 @@
                         </div>
                        
                     </div> 
-                    <div></div>
+                    <div> </div>
+                    <h5>labels and collumns</h5>
+                    <!-- zeile 1-->
                     <div class="input-field col s2 m2 l2">
                         <input id="html_id_name" type="text" class="value" />
                             <label class="translate" for="html_id_name">Name für Task ID Feld</label>     
@@ -470,8 +472,12 @@
                             <label class="translate" for="html_project_name">Name für Project ID Feld</label> 
                         <input id="html_project_id" type="checkbox" class="value" />
                         <span class="translate" for="html_project_id">task project id</span>
+                        <input id="html_project_id_change" type="checkbox" class="value" />
+                        <span class="translate" for="html_project_id_change">substitute id with name</span>
+                        
                         
                     </div>
+                    
                     <div class="input-field col s2 m2 l2">
                         <input id="html_comment_name" type="text" class="value" />
                             <label class="translate" for="html_comment_name">Name für Comment Count Feld</label> 
@@ -484,10 +490,104 @@
                             <label class="translate" for="html_parent_name">Name für Parent ID Feld</label>
                         <input id="html_parent_id" type="checkbox" class="value" />
                         <span class="translate" for="html_parent_id">task parent id</span>
+                        <input id="html_parent_id_change" type="checkbox" class="value" />
+                        <span class="translate" for="html_parent_id_change">substitute id with name</span>
                         
                     </div>
-                    
                 </div>
+                <!-- zeile 2-->
+                <div>
+                    
+                    <div class="input-field col s2 m2 l2">
+                        <input id="html_due_date_name" type="text" class="value" />
+                            <label class="translate" for="html_due_date_name">Name für Date Feld</label>     
+                        <input id="html_due_date" type="checkbox" class="value" />
+                            <span class="translate" for="html_due_date">Date</span>
+                                  
+                    </div>
+                    <div class="input-field col s2 m2 l2">
+                        <input id="html_due_string_name" type="text" class="value" />
+                            <label class="translate" for="html_due_string_name">Name für Date String Feld</label> 
+                            <input id="html_due_string" type="checkbox" class="value" />
+                            <span class="translate" for="html_due_string">task date string</span>
+                            
+                    </div>
+                    <div class="input-field col s2 m2 l2">
+                        <input id="html_due_recurring_name" type="text" class="value" />
+                            <label class="translate" for="html_due_recurring_name">Name für wiederholungs Feld</label> 
+                            <input id="html_due_recurring" type="checkbox" class="value" />
+                            <span class="translate" for="html_due_recurring">task date recurring</span>
+                            
+                    </div>
+                    <div class="input-field col s2 m2 l2">
+                        <input id="html_creator_id_name" type="text" class="value" />
+                            <label class="translate" for="html_creator_id_name">Name für Creator ID Feld</label> 
+                        <input id="html_creator_id" type="checkbox" class="value" />
+                        <span class="translate" for="html_creator_id">task creator id</span>
+                        <input id="html_creator_id_change" type="checkbox" class="value" />
+                        <span class="translate" for="html_creator_id_change">substitute id with name</span>
+                        
+                    </div>
+                    <div class="input-field col s2 m2 l2">
+                        <input id="html_assignee_id_name" type="text" class="value" />
+                            <label class="translate" for="html_assignee_id_name">Name für assignee id Feld</label> 
+                        <input id="html_assignee_id" type="checkbox" class="value" />
+                        <span class="translate" for="html_assignee_id">task assignee id</span>
+                        <input id="html_assignee_id_change" type="checkbox" class="value" />
+                        <span class="translate" for="html_assignee_id_change">substitute id with name</span>
+                        
+                    </div>
+                    <div class="input-field col s2 m2 l2">
+                        <input id="html_assigner_id_name" type="text" class="value" />
+                            <label class="translate" for="html_assigner_id_name">Name für assigner ID Feld</label>
+                        <input id="html_assigner_id" type="checkbox" class="value" />
+                        <span class="translate" for="html_assigner_id">task assigner id</span>
+                        <input id="html_assigner_id_change" type="checkbox" class="value" />
+                        <span class="translate" for="html_assigner_id_change">substitute id with name</span>
+                        
+                    </div>
+                </div>
+                <div>
+                    <!-- zeile 3-->
+                    <div class="input-field col s2 m2 l2">
+                        <input id="html_labels_name" type="text" class="value" />
+                            <label class="translate" for="html_labels_name">Name für Label ID's Feld</label> 
+                        <input id="html_labels_id" type="checkbox" class="value" />
+                        <span class="translate" for="html_labels_id">task label id's</span>
+                        <input id="html_labels_id_change" type="checkbox" class="value" />
+                        <span class="translate" for="html_labels_id_change">substitute id with name</span>
+                    </div>
+                    <div class="input-field col s2 m2 l2">
+                        <input id="html_description_name" type="text" class="value" />
+                            <label class="translate" for="html_description_name">Name für description Feld</label> 
+                        <input id="html_description" type="checkbox" class="value" />
+                        <span class="translate" for="html_description">task description</span>
+                        
+                    </div>   
+                    <div class="input-field col s2 m2 l2">
+                        <input id="html_section_id_name" type="text" class="value" />
+                            <label class="translate" for="html_section_id_name">Name für section ID's Feld</label> 
+                        <input id="html_section_id" type="checkbox" class="value" />
+                        <span class="translate" for="html_section_id">task section id's</span>
+                        <input id="html_section_id_change" type="checkbox" class="value" />
+                        <span class="translate" for="html_section_id_change">substitute id with name</span>
+                    </div>   
+                    <div class="input-field col s2 m2 l2">
+                        <input id="html_order_name" type="text" class="value" />
+                            <label class="translate" for="html_order_name">Name für order Feld</label> 
+                        <input id="html_order" type="checkbox" class="value" />
+                        <span class="translate" for="html_order">task order</span>
+                        
+                    </div>  
+                    <div class="input-field col s2 m2 l2">
+                        <input id="html_created_name" type="text" class="value" />
+                            <label class="translate" for="html_created_name">Name für created Feld</label> 
+                        <input id="html_created" type="checkbox" class="value" />
+                        <span class="translate" for="html_created">task created</span>
+                        
+                    </div>  
+                    </div>
+                    
             </div>
 
         </div>          

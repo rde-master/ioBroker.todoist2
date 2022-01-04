@@ -1174,6 +1174,83 @@ async function getData(){
 
 
 
+async function getRAW(){
+
+if(adapter.config.project === true){
+
+    //Datenpunkt anlegen
+
+    await adapter.setObjectNotExistsAsync("RAW.Project", {
+        type: 'state',
+        common: {
+            role: 'state',
+            name: 'RAW Project Data',
+            type: 'json'
+            
+        },
+        native: {}
+          });
+    
+    await adapter.setStateAsync("RAW.Project", {val: JSON.stringify(all_project_objekts), ack: true});
+}
+
+if(adapter.config.labels === true){
+
+    //Datenpunkt anlegen
+
+    await adapter.setObjectNotExistsAsync("RAW.Labels", {
+        type: 'state',
+        common: {
+            role: 'state',
+            name: 'RAW Labels Data',
+            type: 'json'
+            
+        },
+        native: {}
+          });
+    
+    await adapter.setStateAsync("RAW.Labels", {val: JSON.stringify(all_label_objekts), ack: true});
+}
+
+if(adapter.config.section === true){
+
+    //Datenpunkt anlegen
+
+    await adapter.setObjectNotExistsAsync("RAW.Sections", {
+        type: 'state',
+        common: {
+            role: 'state',
+            name: 'RAW Sections Data',
+            type: 'json'
+            
+        },
+        native: {}
+          });
+    
+    await adapter.setStateAsync("RAW.Sections", {val: JSON.stringify(all_sections_objects), ack: true});
+}
+
+if(adapter.config.tasks === true){
+
+    //Datenpunkt anlegen
+
+    await adapter.setObjectNotExistsAsync("RAW.Tasks", {
+        type: 'state',
+        common: {
+            role: 'state',
+            name: 'RAW Tasks Data',
+            type: 'json'
+            
+        },
+        native: {}
+          });
+    
+    await adapter.setStateAsync("RAW.Tasks", {val: JSON.stringify(all_task_objekts), ack: true});
+}
+
+
+}
+
 
 
 async function getProject(){
@@ -2998,7 +3075,12 @@ async function main() {
     status = await getData();
 
     // wenn daten da sind weiter:
+    if(adapter.config.raw_data === true){
+        var raw_data =  await getRAW();
         
+    }
+
+
         if(adapter.config.project === true){
             var projects =  await getProject();
             if (typeof projects !== "undefined") {

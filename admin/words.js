@@ -788,5 +788,29 @@ systemDictionary = {
         "es": "icono de botón",
         "pl": "ikona przycisku",
         "zh-cn": "按钮的图标"
+      },
+      "RAW Data": {
+        "en": "RAW Data",
+        "de": "Rohdaten",
+        "ru": "Необработанные данные",
+        "pt": "Dados não tratados",
+        "nl": "Ruwe data",
+        "fr": "Données brutes",
+        "it": "Dati RAW",
+        "es": "Datos RAW",
+        "pl": "Surowe dane",
+        "zh-cn": "原始数据"
+      },
+      "RAW Daten als Objekte anlegen": {
+        "en": "RAW Data as object",
+        "de": "Rohdaten als Objekt anlaegen",
+        "ru": "RAW-данные как объект",
+        "pt": "Dados RAW como objeto",
+        "nl": "RAW-gegevens als object",
+        "fr": "Données RAW en tant qu'objet",
+        "it": "Dati RAW come oggetto",
+        "es": "Datos RAW como objeto",
+        "pl": "Surowe dane jako obiekt",
+        "zh-cn": "RAW 数据作为对象"
       }
 }    

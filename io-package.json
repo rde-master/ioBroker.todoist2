@@ -287,6 +287,8 @@
       "section": false,
       "tasks": true,
       "labels": true,
+      "raw_data": false,
+      "project_collaborators": false,
       "dublicate": true,
       "text_objects": true,
       "json_objects": true,

@@ -812,5 +812,29 @@ systemDictionary = {
         "es": "Datos RAW como objeto",
         "pl": "Surowe dane jako obiekt",
         "zh-cn": "RAW 数据作为对象"
+      },
+      "Project Collaborators": {
+        "en": "Project Collaborators",
+        "de": "Projektmitarbeiter",
+        "ru": "Соавторы проекта",
+        "pt": "Colaboradores do Projeto",
+        "nl": "Projectmedewerkers",
+        "fr": "Collaborateurs de projet",
+        "it": "Collaboratori di progetto",
+        "es": "Colaboradores del proyecto",
+        "pl": "Współpracownicy projektu",
+        "zh-cn": "项目合作者"
+      },
+      "Project Collaborators als Objekte anlegen": {
+        "en": "Project Collaborators as Objects",
+        "de": "Project Collaborators als Objekte anlegen",
+        "ru": "Соавторы проекта как объекты",
+        "pt": "Colaboradores do projeto como objetos",
+        "nl": "Projectmedewerkers als objecten",
+        "fr": "Collaborateurs de projet en tant qu'objets",
+        "it": "Collaboratori di progetto come oggetti",
+        "es": "Colaboradores del proyecto como objetos",
+        "pl": "Współpracownicy projektu jako obiekty",
+        "zh-cn": "作为对象的项目合作者"
       }
 }    

@@ -38,6 +38,7 @@ let all_label_objekts = [];
 let all_project_objekts = [];
 let all_sections_objects = [];
 let all_filter_objects = [];
+let all_collaborators_objects = [];
 let blacklist;
 let sync;
 let filter_list;
@@ -989,43 +990,43 @@ async function getData(){
 
     //Projekte einlesen:
     if(adapter.config.project === true){
-    if(debug) adapter.log.info("get Projects");
+                if(debug) adapter.log.info("get Projects");
 
-    
-    await axios({
-        method: 'get',
-        baseURL: 'https://api.todoist.com',
-        url: '/rest/v1/projects',
-        responseType: 'json',
-        headers: 
-        { Authorization: 'Bearer ' + APItoken}
-    }    
-    ).then( 
-        function (response) {
-            //adapter.log.info('get Projects: ' + stringify(response, null, 2));
-            var projects_json = response.data;
-            all_project_objekts = projects_json;
-        }
-        
-    ).catch(
+                
+                await axios({
+                    method: 'get',
+                    baseURL: 'https://api.todoist.com',
+                    url: '/rest/v1/projects',
+                    responseType: 'json',
+                    headers: 
+                    { Authorization: 'Bearer ' + APItoken}
+                }    
+                ).then( 
+                    function (response) {
+                        //adapter.log.info('get Projects: ' + stringify(response, null, 2));
+                        var projects_json = response.data;
+                        all_project_objekts = projects_json;
+                    }
+                    
+                ).catch(
 
-        function (error) {
-            if (error.response) {
-                // The request was made and the server responded with a status code
-                adapter.log.warn('received error ' + error.response.status + ' response from todoist with content: ' + JSON.stringify(error.response.data));
-                adapter.log.warn(JSON.stringify(error.toJSON()));
-            } else if (error.request) {
-                // The request was made but no response was received
-                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                // http.ClientRequest in node.js
-               adapter.log.info(error.message);
-            } else {
-                // Something happened in setting up the request that triggered an Error
-                adapter.log.error(error.message); 
-            }
-}.bind(adapter)
+                    function (error) {
+                        if (error.response) {
+                            // The request was made and the server responded with a status code
+                            adapter.log.warn('received error ' + error.response.status + ' response from todoist with content: ' + JSON.stringify(error.response.data));
+                            adapter.log.warn(JSON.stringify(error.toJSON()));
+                        } else if (error.request) {
+                            // The request was made but no response was received
+                            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                            // http.ClientRequest in node.js
+                        adapter.log.info(error.message);
+                        } else {
+                            // Something happened in setting up the request that triggered an Error
+                            adapter.log.error(error.message); 
+                        }
+            }.bind(adapter)
 
-); 
+            ); 
 
 
 
@@ -1035,6 +1036,72 @@ async function getData(){
            { Authorization: 'Bearer ' + APItoken}
     };
     
+    }
+
+
+    // projekt Mitglieder Einlesen, wenn es Projekte mit mehren Mitgliedern gibt.
+    // wird nur ausgeführt wenn Projekte auch ausgewählt ist!
+    if(adapter.config.project_collaborators === true && adapter.config.project === true){
+
+        //da all_collaborators_objects mit push gefüllt wird muss vor beginn geleert werden:
+        all_collaborators_objects = [];
+
+        //schleife durch alle Projekt daten:
+        for(let x in all_project_objekts){
+            let collaborators = [];
+            //adapter.log.debug(JSON.stringify(all_project_objekts[x].shared));
+            
+            // nur wenn geschared ist gibt es Collaborators
+            if(all_project_objekts[x].shared === true){
+                if(debug) adapter.log.info("get Collaborators");
+                
+                await axios({
+                    method: 'get',
+                    baseURL: 'https://api.todoist.com',
+                    url: '/rest/v1/projects/'+all_project_objekts[x].id +'/collaborators',
+                    responseType: 'json',
+                    headers: 
+                    { Authorization: 'Bearer ' + APItoken}
+                }    
+                ).then( 
+                    function (response) {
+                        //adapter.log.info('get Projects: ' + stringify(response, null, 2));
+                        collaborators = response.data;
+                    }
+                    
+                ).catch(
+
+                    function (error) {
+                        if (error.response) {
+                            // The request was made and the server responded with a status code
+                            adapter.log.warn('received error ' + error.response.status + ' response from todoist with content: ' + JSON.stringify(error.response.data));
+                            adapter.log.warn(JSON.stringify(error.toJSON()));
+                        } else if (error.request) {
+                            // The request was made but no response was received
+                            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                            // http.ClientRequest in node.js
+                        adapter.log.info(error.message);
+                        } else {
+                            // Something happened in setting up the request that triggered an Error
+                            adapter.log.error(error.message); 
+                        }
+            }.bind(adapter)
+
+            ); 
+            collaborators.unshift("project_id:"+all_project_objekts[x].id);
+            //zu all collaborators Objekts hinzufügen
+            all_collaborators_objects.push(collaborators)
+        
+        }
+            
+
+        //ende for schleife
+        }
+
+
+        //adapter.log.debug(JSON.stringify(all_collaborators_objects));
+
+
     }
 
 
@@ -1247,6 +1314,25 @@ if(adapter.config.tasks === true){
     
     await adapter.setStateAsync("RAW.Tasks", {val: JSON.stringify(all_task_objekts), ack: true});
 }
+
+if(adapter.config.project_collaborators === true){
+
+    //Datenpunkt anlegen
+
+    await adapter.setObjectNotExistsAsync("RAW.Project_Collaborators", {
+        type: 'state',
+        common: {
+            role: 'state',
+            name: 'RAW Project Collaborators',
+            type: 'json'
+            
+        },
+        native: {}
+          });
+    
+    await adapter.setStateAsync("RAW.Project_Collaborators", {val: JSON.stringify(all_collaborators_objects), ack: true});
+}
+
 
 
 }

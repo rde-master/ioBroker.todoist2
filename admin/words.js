@@ -911,7 +911,7 @@ systemDictionary = {
       },
       "Name für wiederholungs Feld": {
         "en": "name for recurring field",
-        "de": "Name für wiederkehrendes Feld",
+        "de": "Name für Feld Wiederholung",
         "ru": "имя для повторяющегося поля",
         "pt": "nome para campo recorrente",
         "nl": "naam voor terugkerend veld",
@@ -935,7 +935,7 @@ systemDictionary = {
       },
       "Name für Creator ID Feld": {
         "en": "name for Creator ID field",
-        "de": "Name für Creator ID-Feld",
+        "de": "Name für Ersteller ID-Feld",
         "ru": "имя для поля Creator ID",
         "pt": "nome para o campo de ID do criador",
         "nl": "naam voor het veld Maker-ID",
@@ -959,7 +959,7 @@ systemDictionary = {
       },
       "Name für assignee id Feld": {
         "en": "name for assignee id field",
-        "de": "Name für das Feld \"Bevollmächtigte-ID\"",
+        "de": "Name für das Feld Aufgabenzugewiesener",
         "ru": "имя для поля идентификатора правопреемника",
         "pt": "nome para o campo de id do cessionário",
         "nl": "naam voor id-veld van de toegewezen persoon",
@@ -971,7 +971,7 @@ systemDictionary = {
       },
       "task assignee id": {
         "en": "task assignee id",
-        "de": "Aufgabenzuweisungs-ID",
+        "de": "Aufgabenzugewiesener-ID",
         "ru": "идентификатор исполнителя задачи",
         "pt": "id do cessionário da tarefa",
         "nl": "taak toegewezen id",
@@ -993,9 +993,21 @@ systemDictionary = {
         "pl": "nazwa pola identyfikatora przypisującego",
         "zh-cn": "分配人 ID 字段的名称"
       },
+      "task assigner id": {
+        "en": "task assigner id",
+        "de": "Aufgabenzuweiser-ID",
+        "ru": "идентификатор исполнителя задачи",
+        "pt": "id do atribuidor de tarefa",
+        "nl": "taaktoewijzings-ID",
+        "fr": "identifiant d'assignateur de tâche",
+        "it": "ID dell'assegnatore di attività",
+        "es": "ID del asignador de tareas",
+        "pl": "identyfikator osoby przypisującej zadanie",
+        "zh-cn": "任务分配者 ID"
+      },
       "Name für Label ID's Feld": {
         "en": "name for Label ID's field",
-        "de": "Name für das Feld der Label-ID",
+        "de": "Name für das Feld der Label-ID's",
         "ru": "имя поля идентификатора ярлыка",
         "pt": "nome para o campo do Label ID",
         "nl": "naam voor het veld Label-ID",
@@ -1019,7 +1031,7 @@ systemDictionary = {
       },
       "Name für description Feld<": {
         "en": "name for description field",
-        "de": "Name für Beschreibungsfeld",
+        "de": "Name für Aufgabenbeschreibung",
         "ru": "имя для поля описания",
         "pt": "nome para o campo de descrição",
         "nl": "naam voor beschrijvingsveld",
@@ -1043,7 +1055,7 @@ systemDictionary = {
       },
       "Name für section ID's Feld": {
         "en": "name for section ID's field",
-        "de": "Name für das Feld der Abschnitts-ID",
+        "de": "Name für die Sections-ID's",
         "ru": "имя для поля идентификатора раздела",
         "pt": "nome para o campo do ID da seção",
         "nl": "naam voor sectie-ID's veld",
@@ -1055,7 +1067,7 @@ systemDictionary = {
       },
       "task section id's": {
         "en": "task section id's",
-        "de": "Aufgabenabschnitts-IDs",
+        "de": "Section-IDs",
         "ru": "идентификаторы раздела задач",
         "pt": "ID de seção de tarefa",
         "nl": "taak sectie id's",
@@ -1067,7 +1079,7 @@ systemDictionary = {
       },
       "Name für order Feld": {
         "en": "name for order field",
-        "de": "Name für Bestellfeld",
+        "de": "Name für Reihenfolge",
         "ru": "имя для поля заказа",
         "pt": "nome para o campo do pedido",
         "nl": "naam voor bestelveld",
@@ -1079,7 +1091,7 @@ systemDictionary = {
       },
       "task order": {
         "en": "task order",
-        "de": "Aufgabenreihenfolge",
+        "de": "Reihenfolge",
         "ru": "порядок задач",
         "pt": "ordem de tarefa",
         "nl": "taakvolgorde",
@@ -1089,9 +1101,9 @@ systemDictionary = {
         "pl": "Zlecenie",
         "zh-cn": "任务顺序"
       },
-      "Name für created Feld<": {
+      "Name für created Feld": {
         "en": "name for created on field",
-        "de": "Name für erstellt auf Feld",
+        "de": "Name für Aufgabe erstellt am",
         "ru": "имя для созданного на поле",
         "pt": "nome para criado no campo",
         "nl": "naam voor aangemaakt op veld",

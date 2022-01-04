@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "todoist2",
-    "version": "0.8.11",
+    "version": "0.9.0",
     "news": {
+      "0.9.0": {
+        "en": "New API Funktions are implemented (Dates, Creator,...), code Cleanup, Added Funktion to write Names instead of id's, Added Funktion to write the RAW Data from the API of States",
+        "de": "Neue API-Funktionen wurden implementiert (Dates, Creator,...), Code Cleanup, Funktion hinzugefügt, um Namen anstelle von IDs zu schreiben, Hinzugefügte Funktion, um die RAW-Daten aus der API von Staaten zu schreiben",
+        "ru": "Реализованы новые функции API (даты, создатель, ...), очистка кода, добавлена функция для записи имен вместо идентификаторов, добавлена функция для записи данных RAW из API состояний.",
+        "pt": "Novas funções de API são implementadas (datas, criador, ...), limpeza de código, função adicionada para gravar nomes em vez de ids, função adicionada para gravar dados RAW da API de estados",
+        "nl": "Nieuwe API-functies zijn geïmplementeerd (Dates, Creator,...), code Cleanup, Funktion toegevoegd om namen te schrijven in plaats van id's, Funktion toegevoegd om de RAW-gegevens te schrijven vanuit de API van Staten",
+        "fr": "De nouvelles fonctions API sont implémentées (dates, créateur,...), nettoyage de code, fonction ajoutée pour écrire des noms au lieu d'identifiants, fonction ajoutée pour écrire les données RAW à partir de l'API des états",
+        "it": "Sono state implementate nuove funzioni API (Date, Creatore,...), pulizia del codice, funzione aggiunta per scrivere nomi invece di ID, funzione aggiunta per scrivere i dati RAW dall'API degli stati",
+        "es": "Se implementan nuevas funciones de API (fechas, creador, ...), limpieza de código, función agregada para escribir nombres en lugar de id, función agregada para escribir los datos RAW de la API de estados",
+        "pl": "Zaimplementowano nowe funkcje API (daty, twórca,...), czyszczenie kodu, dodano funkcję do zapisywania nazw zamiast identyfikatorów, dodano funkcję do zapisywania danych RAW z API stanów",
+        "zh-cn": "实现了新的 API 函数（日期、创建者、...）、代码清理、添加了用于写入名称而不是 id 的函数、添加了用于从状态 API 写入 RAW 数据的函数"
+        },
       "0.8.11": {
         "en": "Bugfix JSON naming",
         "de": "Bug-Fix Namen von JSON felder",
@@ -206,19 +218,7 @@
         "es": "Arreglo del fallo",
         "pl": "Naprawa błędów",
         "zh-cn": "错误修正"
-         },
-      "0.6.5": {
-        "en": "add HTML Button",
-        "de": "HTML-Schaltfläche hinzufügen",
-        "ru": "добавить кнопку HTML",
-        "pt": "adicionar botão HTML",
-        "nl": "HTML-knop toevoegen",
-        "fr": "ajouter un bouton HTML",
-        "it": "aggiungi il pulsante HTML",
-        "es": "agregar botón HTML",
-        "pl": "dodaj przycisk HTML",
-        "zh-cn": "添加HTML按钮"
-        }           
+         }           
     },
     "title": "todoist2",
     "titleLang": {

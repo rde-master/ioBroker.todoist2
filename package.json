@@ -14,7 +14,7 @@
   "deprecated": false,
   "description": "The adapter connects to the todoist API for ioBroker.",
   "devDependencies": {
-    "@iobroker/testing": "^2.2.0",
+    "@iobroker/testing": "^2.5.3",
     "@types/chai": "^4.2.11",
     "@types/chai-as-promised": "^7.1.4",
     "@types/gulp": "^4.0.6",

@@ -1,6 +1,6 @@
 /**
  Api erkärung:
- https://developer.todoist.com/rest/v1/
+ https://developer.todoist.com/rest/v2/
  Das ist ein test!
 */
 
@@ -501,7 +501,7 @@ async function check_online(){
     await axios({
         method: 'get',
         baseURL: 'https://api.todoist.com',
-        url: '/rest/v1/projects',
+        url: '/rest/v2/projects',
         //responseType: 'json',
         headers: 
            { Authorization: 'Bearer ' + APItoken}
@@ -639,7 +639,7 @@ async function addTask(item, proejct_id, section_id, parent, order, label_id, pr
             await axios({
                 method: 'post',
                 baseURL: 'https://api.todoist.com',
-                url: '/rest/v1/tasks',
+                url: '/rest/v2/tasks',
                 
                 headers: 
                 { 'Cache-Control': 'no-cache',
@@ -687,7 +687,7 @@ async function delTask(task_id){
 await axios({
     method: 'DELETE',
     baseURL: 'https://api.todoist.com',
-    url: '/rest/v1/tasks/' + task_id,
+    url: '/rest/v2/tasks/' + task_id,
     responseType: 'json',
     headers: 
     {  Authorization: 'Bearer ' + APItoken, },
@@ -729,7 +729,7 @@ async function addProject(project, parent){
 await axios({
     method: 'post',
     baseURL: 'https://api.todoist.com',
-    url: '/rest/v1/projects',
+    url: '/rest/v2/projects',
     responseType: 'json',
     headers: 
     { 'Cache-Control': 'no-cache',
@@ -775,7 +775,7 @@ async function dellProject(project_id){
     await axios({
         method: 'DELETE',
         baseURL: 'https://api.todoist.com',
-        url: '/rest/v1/projects/' + project_id,
+        url: '/rest/v2/projects/' + project_id,
         responseType: 'json',
         headers: 
         {  Authorization: 'Bearer ' + APItoken, },
@@ -815,7 +815,7 @@ async function closeTask(task_id){
     await axios({
         method: 'POST',
         baseURL: 'https://api.todoist.com',
-        url: '/rest/v1/tasks/' + task_id + '/close',
+        url: '/rest/v2/tasks/' + task_id + '/close',
         responseType: 'json',
         headers: 
         {  Authorization: 'Bearer ' + APItoken, },
@@ -857,7 +857,7 @@ async function reopenTask(task_id){
     await axios({
         method: 'POST',
         baseURL: 'https://api.todoist.com',
-        url: '/rest/v1/tasks/' + task_id + '/reopen',
+        url: '/rest/v2/tasks/' + task_id + '/reopen',
         responseType: 'json',
         headers: 
         {  Authorization: 'Bearer ' + APItoken, },
@@ -901,7 +901,7 @@ async function addSection(section, project_id){
 await axios({
     method: 'post',
     baseURL: 'https://api.todoist.com',
-    url: '/rest/v1/sections',
+    url: '/rest/v2/sections',
     responseType: 'json',
     headers: 
     { 'Cache-Control': 'no-cache',
@@ -949,7 +949,7 @@ async function delSection(section_id){
 await axios({
     method: 'DELETE',
     baseURL: 'https://api.todoist.com',
-    url: '/rest/v1/sections/' + section_id,
+    url: '/rest/v2/sections/' + section_id,
     responseType: 'json',
     headers: 
     {  Authorization: 'Bearer ' + APItoken, },
@@ -1000,7 +1000,7 @@ async function getData(){
                 await axios({
                     method: 'get',
                     baseURL: 'https://api.todoist.com',
-                    url: '/rest/v1/projects',
+                    url: '/rest/v2/projects',
                     responseType: 'json',
                     headers: 
                     { Authorization: 'Bearer ' + APItoken}
@@ -1035,7 +1035,7 @@ async function getData(){
 
 
     var project = { method: 'GET',
-          url: 'https://api.todoist.com/rest/v1/projects',
+          url: 'https://api.todoist.com/rest/v2/projects',
           headers: 
            { Authorization: 'Bearer ' + APItoken}
     };
@@ -1062,7 +1062,7 @@ async function getData(){
                 await axios({
                     method: 'get',
                     baseURL: 'https://api.todoist.com',
-                    url: '/rest/v1/projects/'+all_project_objekts[x].id +'/collaborators',
+                    url: '/rest/v2/projects/'+all_project_objekts[x].id +'/collaborators',
                     responseType: 'json',
                     headers: 
                     { Authorization: 'Bearer ' + APItoken}
@@ -1119,7 +1119,7 @@ async function getData(){
         await axios({
             method: 'get',
             baseURL: 'https://api.todoist.com',
-            url: '/rest/v1/labels',
+            url: '/rest/v2/labels',
             responseType: 'json',
             headers: 
             { Authorization: 'Bearer ' + APItoken}
@@ -1161,7 +1161,7 @@ async function getData(){
     await axios({
         method: 'get',
         baseURL: 'https://api.todoist.com',
-        url: '/rest/v1/sections',
+        url: '/rest/v2/sections',
         responseType: 'json',
         headers: 
         { Authorization: 'Bearer ' + APItoken}
@@ -1206,7 +1206,7 @@ async function getData(){
     await axios({
         method: 'get',
         baseURL: 'https://api.todoist.com',
-        url: '/rest/v1/tasks',
+        url: '/rest/v2/tasks',
         responseType: 'json',
         headers: 
         { Authorization: 'Bearer ' + APItoken}
@@ -2877,7 +2877,7 @@ async function getDate_filter(filter_query){
 await axios({
     method: 'get',
     baseURL: 'https://api.todoist.com',
-    url: '/rest/v1/tasks?filter=' + filter_query, 
+    url: '/rest/v2/tasks?filter=' + filter_query, 
     responseType: 'json',
     headers: 
     { Authorization: 'Bearer ' + APItoken}

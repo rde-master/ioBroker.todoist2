@@ -1867,7 +1867,7 @@ async function tasktoproject(project){
 
 
 
-                    //var json_zwischen = JSON.stringify(json[i]);
+                    //var json_zwischen = JSON.stringify(json[i]); 
                     //json_task = json_task + json_zwischen;
                     if (debug) adapter.log.info("Aufbau Projekt Liste HTML: " + HTMLstring);
                 }
@@ -1984,10 +1984,14 @@ async function tasktolabels(labels){
         for (i = 0; i < json.length; i++) {
 
             var content = JSON.stringify(json[i].content);
-            var label = json[i].label_ids;
+            var label = []
+            label = json[i].labels;
+
+            
+
             content = content.replace(/\"/g, ''); //entfernt die Anfuehrungszeichen aus dem Quellstring
             //content = content[0].toUpperCase() + content.substring(1); // Macht den ersten Buchstaben des strings zu einem Grossbuchstaben
-
+            if(label.length){
             var d = 0;
             for (d = 0; d < label.length; d++) {
 
@@ -2016,8 +2020,9 @@ async function tasktolabels(labels){
                 }
 
             }//ende schleife
-
+            }//ende if
         } // ende schleife
+    
 
         if (debug) adapter.log.info("schreibe in Label: " + 'Label.' + labels.labes_names[j]);
         if (debug) adapter.log.info(HTMLstring);
@@ -2993,7 +2998,7 @@ async function main() {
         if(adapter.config.labels === true){
             var labels =  await getLabels();
             if (typeof labels !== "undefined") {
-            tasktolabels(labels);	
+            tasktolabels(labels);	         
             }
         }
         

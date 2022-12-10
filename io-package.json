@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "todoist2",
-    "version": "0.9.0",
+    "version": "0.9.1",
     "news": {
+      "0.9.1": {
+        "en": "change to api v2",
+        "de": "wechsel in api v2",
+        "ru": "изменить на api v2",
+        "pt": "mudar para api v2",
+        "nl": "verandering van api v2",
+        "fr": "changement à api v2",
+        "it": "cambiamento a api v2",
+        "es": "cambio api v2",
+        "pl": "zmiana v2",
+        "uk": "змінити в api v2",
+        "zh-cn": "b. 改 装"
+      },
       "0.9.0": {
         "en": "New API Funktions are implemented (Dates, Creator,...), code Cleanup, Added Funktion to write Names instead of id's, Added Funktion to write the RAW Data from the API of States",
         "de": "Neue API-Funktionen wurden implementiert (Dates, Creator,...), Code Cleanup, Funktion hinzugefügt, um Namen anstelle von IDs zu schreiben, Hinzugefügte Funktion, um die RAW-Daten aus der API von Staaten zu schreiben",
@@ -206,19 +219,7 @@
         "es": "Corrección de errores Prio",
         "pl": "Bugfix Prio",
         "zh-cn": "错误修正Prio"
-        },
-      "0.6.6": {
-        "en": "Bugfix",
-        "de": "Bug-Fix",
-        "ru": "Исправлена ошибка",
-        "pt": "Bugfix",
-        "nl": "Bugfix",
-        "fr": "Correction d'un bug",
-        "it": "Risoluzione del problema",
-        "es": "Arreglo del fallo",
-        "pl": "Naprawa błędów",
-        "zh-cn": "错误修正"
-         }           
+        }         
     },
     "title": "todoist2",
     "titleLang": {

@@ -7,7 +7,7 @@
     "url": "https://github.com/rde-master/ioBroker.todoist2/issues"
   },
   "dependencies": {
-    "@iobroker/adapter-core": "^2.6.7",
+    "@iobroker/adapter-core": "^2.6.8",
     "axios": "^1.2.1",
     "json-stringify-safe": "^5.0.0"
   },
